@@ -51,7 +51,13 @@ public class Movie implements Parcelable {
         return title;
     }
 
-    public String getImageURL() {
+    // Will return the URL of the Movies image with a width of w500
+    public String getSmallImageURL() {
+        return "https://image.tmdb.org/t/p/w500" + backdrop_path;
+    }
+
+    // Will return the URL of the Movies image in its original size
+    public String getOriginalImageURL() {
         return "https://image.tmdb.org/t/p/w500" + backdrop_path;
     }
 

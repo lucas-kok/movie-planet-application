@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -27,16 +28,16 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private final MainActivity mainActivity;
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {
-        private final CardView mMovieCard;
         private final ImageView mMovieImage;
+        private final TextView mMovieTitleText;
 
         final MovieListAdapter mAdapter;
 
         public MovieViewHolder(View itemView, MovieListAdapter mAdapter) {
             super(itemView);
 
-            mMovieCard = itemView.findViewById(R.id.card_movie);
             mMovieImage = itemView.findViewById(R.id.iv_movie);
+            mMovieTitleText = itemView.findViewById(R.id.tv_movie_title);
 
             this.mAdapter = mAdapter;
         }
@@ -61,7 +62,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         Movie mCurrent = movies[position];
 
         // onClickListener to open the MovieViewActivity passing the clicked Movie with it
-        holder.mMovieCard.setOnClickListener(view -> {
+        holder.mMovieImage.setOnClickListener(view -> {
             // Todo: Create detail activity
             Intent intent = new Intent(mainActivity, MovieViewActivity.class);
 
@@ -74,7 +75,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         });
 
         // Setting the items UI elements to the Movies values
-        Picasso.get().load(mCurrent.getImageURL()).into(holder.mMovieImage);
+        Picasso.get().load(mCurrent.getSmallImageURL()).into(holder.mMovieImage);
+        holder.mMovieTitleText.setText(mCurrent.getTitle());
     }
 
     @Override

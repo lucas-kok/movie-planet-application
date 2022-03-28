@@ -49,18 +49,18 @@ public class MovieViewActivity extends AppCompatActivity {
             Log.d(TAG_NAME, "Opening Movie: " + movie.getTitle());
 
             // Getting the Movies values
-            String imageURL = movie.getImageURL();
+            String imageURL = movie.getSmallImageURL();
             String movieTitle = movie.getTitle();
             String originalLanguage = movie.getOriginalLanguage();
             double popularity = movie.getPopularity();
             int voteCount = movie.getVoteCount();
             double voteAverage = movie.getVoteAverage();
 
-            // Changing the UI elements to the Meals values
+            // Changing the UI elements to the Movies values
             actionBar.setSubtitle(movieTitle);
 
             Picasso.get().load(imageURL).into(movieImage);
-            titleText.setText(getString(R.string.label_tv_mv_title, movieTitle));
+            titleText.setText(movieTitle);
             originalLanguageText.setText(getString(R.string.label_tv_mv_original_language, originalLanguage));
             popularityText.setText(getString(R.string.label_tv_mv_popularity, popularity));
             voteCountText.setText(getString(R.string.label_tv_mv_vote_count, voteCount));
