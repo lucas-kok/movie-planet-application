@@ -24,5 +24,11 @@
 
     <!-- MainActivity -->
     <string name="label_tv_greeting">Hello World!</string>
+    <string name="label_iv_mv_movie_description">Movie Image</string>
     <string name="label_btn_fab_description">Floating Action Button</string>
+    <string name="label_toast_meals_found">Movies found!</string>
+
+    <!-- Movie detail page -->
+
+
 </resources>

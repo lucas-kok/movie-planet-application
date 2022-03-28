@@ -1,6 +1,7 @@
 package com.pekict.movieplanet.presentation;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,9 +21,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.pekict.movieplanet.R;
+import com.pekict.movieplanet.domain.Movie;
+import com.pekict.movieplanet.logic.MovieListAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +39,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView mMenuUserEmailText;
 
     private MovieViewModel mMovieViewModel;
+
+    private int mRecyclerViewColumns;
+    private int mRecyclerViewVerticalSpacing;
+    private RecyclerView mRecyclerView;
+    private MovieListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +70,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mMovieViewModel.getMovies().observe(this, movies -> {
-            Toast.makeText(getApplicationContext(), mMovieViewModel.getMovies().getValue().length + " Movies loaded", Toast.LENGTH_SHORT).show();
+            displayMovies(movies);
         });
+
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //In landscape
+            mRecyclerViewColumns = 4;
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            //In portrait
+            mRecyclerViewColumns = 2;
+        }
+        mRecyclerViewVerticalSpacing = 100;
+
+        mRecyclerView = findViewById(R.id.recyclerview);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
 
         loadMovies();
     }
@@ -80,8 +105,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             mMovieViewModel.fetchMovies(hasInternet);
             Log.d(TAG_NAME, "Meals fetched with ViewModel.");
-        }
-//    }
+//        }
+    }
+
+    public void displayMovies(Movie[] movies) {
+        mAdapter = new MovieListAdapter(this, movies, MainActivity.this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        Toast.makeText(getApplicationContext(), movies.length + " " + getResources().getString(R.string.label_toast_meals_found), Toast.LENGTH_SHORT).show();
+    }
 
     // Function that returns if the user has a internet-connection
     private boolean isNetworkAvailable() {
