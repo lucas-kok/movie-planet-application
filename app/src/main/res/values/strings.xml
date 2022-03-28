@@ -23,12 +23,16 @@
     <string name="label_filter_option_3">Option 3</string>
 
     <!-- MainActivity -->
-    <string name="label_tv_greeting">Hello World!</string>
-    <string name="label_iv_mv_movie_description">Movie Image</string>
+    <string name="label_iv_movie_description">Movie Image</string>
     <string name="label_btn_fab_description">Floating Action Button</string>
     <string name="label_toast_meals_found">Movies found!</string>
 
     <!-- Movie detail page -->
-
+    <string name="label_iv_mv_movie_description">Movie Image</string>
+    <string name="label_tv_mv_title">Title: %1$s</string>
+    <string name="label_tv_mv_original_language">Language: %1$s</string>
+    <string name="label_tv_mv_popularity">Popularity: %1$.2f</string>
+    <string name="label_tv_mv_vote_count">Votes: %1$d</string>
+    <string name="label_tv_mv_vote_average">Average Score: %1$.1f</string>
 
 </resources>

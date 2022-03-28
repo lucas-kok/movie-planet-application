@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pekict.movieplanet.presentation.MovieViewActivity;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.Movie;
 import com.pekict.movieplanet.presentation.MainActivity;
@@ -60,19 +60,17 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         Movie mCurrent = movies[position];
 
-        // onClickListener to open the MealViewActivity passing the clicked Meal with it
+        // onClickListener to open the MovieViewActivity passing the clicked Movie with it
         holder.mMovieCard.setOnClickListener(view -> {
             // Todo: Create detail activity
-//            Intent intent = new Intent(mainActivity, MealViewActivity.class);
-//
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelable("mealObj", mCurrent);
-//            bundle.putParcelable("cookObj", mCurrent.getCook());
-//            Log.e(TAG_NAME, "cookObj" + " : " + (bundle.get("cookObj") != null ? bundle.get("cookObj") : "NULL"));
-//
-//            intent.putExtra("bundle", bundle);
-//
-//            mainActivity.startActivity(intent);
+            Intent intent = new Intent(mainActivity, MovieViewActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("movieObj", mCurrent);
+
+            intent.putExtra("bundle", bundle);
+
+            mainActivity.startActivity(intent);
         });
 
         // Setting the items UI elements to the Movies values

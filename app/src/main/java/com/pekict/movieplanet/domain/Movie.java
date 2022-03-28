@@ -1,6 +1,9 @@
 package com.pekict.movieplanet.domain;
 
-public class Movie {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Movie implements Parcelable {
     private final int id;
     private final String original_title;
     private final String original_language;
@@ -21,7 +24,75 @@ public class Movie {
         this.vote_average = vote_average;
     }
 
+    protected Movie(Parcel in) {
+        id = in.readInt();
+        original_title = in.readString();
+        original_language = in.readString();
+        title = in.readString();
+        backdrop_path = in.readString();
+        popularity = in.readDouble();
+        vote_count = in.readInt();
+        vote_average = in.readDouble();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getOriginalTitle() {
+        return original_title;
+    }
+
+    public String getOriginalLanguage() {
+        return original_language;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public String getImageURL() {
         return "https://image.tmdb.org/t/p/w500" + backdrop_path;
+    }
+
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public int getVoteCount() {
+        return vote_count;
+    }
+
+    public double getVoteAverage() {
+        return vote_average;
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(original_title);
+        parcel.writeString(original_language);
+        parcel.writeString(title);
+        parcel.writeString(backdrop_path);
+        parcel.writeDouble(popularity);
+        parcel.writeInt(vote_count);
+        parcel.writeDouble(vote_average);
     }
 }

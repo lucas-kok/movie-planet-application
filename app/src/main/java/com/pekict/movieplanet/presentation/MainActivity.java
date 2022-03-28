@@ -33,6 +33,7 @@ import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG_NAME = MainActivity.class.getSimpleName();
+    private static volatile MainActivity instance;
 
     private DrawerLayout mDrawer;
     private TextView mMenuUserNameText;
@@ -45,10 +46,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
 
+    public static Context getContext() {
+        return instance.getApplicationContext();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        instance = this;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(getResources().getString(R.string.label_app_home));
@@ -84,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerViewVerticalSpacing = 100;
 
         mRecyclerView = findViewById(R.id.recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, mRecyclerViewColumns));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
 
         loadMovies();
