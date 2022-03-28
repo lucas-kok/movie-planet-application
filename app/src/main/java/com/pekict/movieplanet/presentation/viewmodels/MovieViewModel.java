@@ -36,6 +36,11 @@ public class MovieViewModel extends AndroidViewModel {
 
     // Function to fetch the meals
     public void fetchMovies(boolean hasInternet) {
-        mMovieRepository.fetchMeals(hasInternet);
+        mMovieRepository.fetchMovies(hasInternet);
+    }
+
+    // Function that will save the current Movies to the SQLite Database
+    public void savePopularMoviesToDatabase() {
+        mMovieRepository.savePopularMoviesToDatabase();
     }
 }

@@ -33,6 +33,7 @@ import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG_NAME = MainActivity.class.getSimpleName();
+    private static final String MEALS = "MEALS";
     private static volatile MainActivity instance;
 
     private DrawerLayout mDrawer;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int mRecyclerViewVerticalSpacing;
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
+
+    private Bundle mSavedInstanceState;
 
     public static Context getContext() {
         return instance.getApplicationContext();
@@ -78,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mMovieViewModel.getMovies().observe(this, movies -> {
             displayMovies(movies);
+
+            // Only saving to the Database when Movies are fetched from the API and not the same Database
+            if (isNetworkAvailable()) {
+                mMovieViewModel.savePopularMoviesToDatabase();
+            }
         });
 
         int orientation = getResources().getConfiguration().orientation;
@@ -94,15 +102,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, mRecyclerViewColumns));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
 
+        mSavedInstanceState = savedInstanceState;
+
         loadMovies();
     }
 
     public void loadMovies() {
-//        if (mSavedInstanceState != null) {
-//            mMeals = (Meal[]) mSavedInstanceState.getParcelableArray(MEALS);
-//            mMealViewModel.setMeals(mMeals);
-//            Log.d(TAG_NAME, "Meals fetched with savedInstance.");
-//        } else {
+        if (mSavedInstanceState != null) {
+            displayMovies((Movie[])mSavedInstanceState.getParcelableArray(MEALS));
+            Log.d(TAG_NAME, "Meals fetched with savedInstance.");
+        } else {
             boolean hasInternet = isNetworkAvailable();
             if (hasInternet) {
                 Log.i(TAG_NAME, "User has an internet connection");
@@ -112,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             mMovieViewModel.fetchMovies(hasInternet);
             Log.d(TAG_NAME, "Meals fetched with ViewModel.");
-//        }
+        }
     }
 
     public void displayMovies(Movie[] movies) {
@@ -153,5 +162,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelableArray(MEALS, mMovieViewModel.getMovies().getValue());
+        super.onSaveInstanceState(outState);
     }
 }

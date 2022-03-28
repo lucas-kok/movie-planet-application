@@ -23,28 +23,36 @@ public class MovieRepository {
 
     private static MutableLiveData<Movie[]> mMovies;
 
-    public MovieRepository() {
+    private final MovieDAO mMovieDAO;
+
+    public MovieRepository(Application application) {
         mMovies = new MutableLiveData<>();
+        mMovieDAO = MovieDatabase.getInstance(application).getMovieDAO();
     }
 
     // Get instance of Singleton MovieRepository
     public static MovieRepository getInstance(Application application) {
         if (instance == null) {
-            instance = new MovieRepository();
+            instance = new MovieRepository(application);
         }
         return instance;
     }
 
-    // Function that will start fetching the Meals based on if the user has internet
-    public void fetchMeals(boolean hasInternet) {
+    // Function that will start fetching the Movies based on if the user has internet
+    public void fetchMovies(boolean hasInternet) {
         if (hasInternet) {
-            new FetchMoviesAPIAsyncTask().execute();
+            new FetchPopularMoviesAPIAsyncTask().execute();
             Log.d(TAG_NAME, "Retrieving Movies from API");
         } else {
-            // Todo: Get meals from Room Database
-//            new GetMealsAsyncTask(mMealDAO).execute();
+            new GetPopularMealsAsyncTask(mMovieDAO).execute();
             Log.d(TAG_NAME, "Retrieving Movies from Database");
         }
+    }
+
+    // Function that saves the Movies to the database
+    public void savePopularMoviesToDatabase() {
+        new UpdatePopularMealsAsyncTask(mMovieDAO).execute(mMovies.getValue());
+        Log.d(TAG_NAME, "Meals saved in Database");
     }
 
     public LiveData<Movie[]> getMovies() {
@@ -55,8 +63,42 @@ public class MovieRepository {
         mMovies.setValue(movies);
     }
 
-    // AsyncTask Class that will fetch Meals from the API
-    private static class FetchMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
+    // AsyncTask Class that will get all Movies from the SQLite DataBase
+    private static class GetPopularMealsAsyncTask extends AsyncTask<Void, Void, Movie[]> {
+        private final MovieDAO mMovieDAO;
+
+        private GetPopularMealsAsyncTask(MovieDAO movieDAO) {
+            mMovieDAO = movieDAO;
+        }
+
+        @Override
+        protected Movie[] doInBackground(Void... voids) {
+            return mMovieDAO.getAllPopularMovies();
+        }
+
+        protected void onPostExecute(Movie[] result) {
+            mMovies.setValue(result);
+        }
+    }
+
+    // AsyncTask Class that updates all Movies from the SQLite DataBase
+    private static class UpdatePopularMealsAsyncTask extends AsyncTask<Movie[], Void, Void> {
+        private final MovieDAO mMovieDAO;
+
+        private UpdatePopularMealsAsyncTask(MovieDAO movieDAO) {
+            mMovieDAO = movieDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Movie[]... movies) {
+            mMovieDAO.deleteAllPopularMovies();
+            mMovieDAO.savePopularMovies(movies[0]);
+            return null;
+        }
+    }
+
+    // AsyncTask Class that will fetch Movies from the API
+    private static class FetchPopularMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
 
         @Override
         protected MovieFetchResponse doInBackground(String... strings) {

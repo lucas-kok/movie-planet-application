@@ -3,7 +3,12 @@ package com.pekict.movieplanet.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "popular_movie_table")
 public class Movie implements Parcelable {
+    @PrimaryKey
     private final int id;
     private final String original_title;
     private final String original_language;
@@ -13,7 +18,7 @@ public class Movie implements Parcelable {
     private final int vote_count;
     private final double vote_average;
 
-    public Movie(int id, String original_title, String original_language, String title, String backdrop_path, double popularity, int vote_count, int vote_average) {
+    public Movie(int id, String original_title, String original_language, String title, String backdrop_path, double popularity, int vote_count, double vote_average) {
         this.id = id;
         this.original_title = original_title;
         this.original_language = original_language;
@@ -39,16 +44,20 @@ public class Movie implements Parcelable {
         return id;
     }
 
-    public String getOriginalTitle() {
+    public String getOriginal_title() {
         return original_title;
     }
 
-    public String getOriginalLanguage() {
+    public String getOriginal_language() {
         return original_language;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public String getBackdrop_path() {
+        return backdrop_path;
     }
 
     // Will return the URL of the Movies image with a width of w500
@@ -65,11 +74,11 @@ public class Movie implements Parcelable {
         return popularity;
     }
 
-    public int getVoteCount() {
+    public int getVote_count() {
         return vote_count;
     }
 
-    public double getVoteAverage() {
+    public double getVote_average() {
         return vote_average;
     }
 

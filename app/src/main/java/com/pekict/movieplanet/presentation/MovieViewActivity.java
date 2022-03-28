@@ -51,10 +51,10 @@ public class MovieViewActivity extends AppCompatActivity {
             // Getting the Movies values
             String imageURL = movie.getSmallImageURL();
             String movieTitle = movie.getTitle();
-            String originalLanguage = movie.getOriginalLanguage();
+            String originalLanguage = movie.getOriginal_language();
             double popularity = movie.getPopularity();
-            int voteCount = movie.getVoteCount();
-            double voteAverage = movie.getVoteAverage();
+            int voteCount = movie.getVote_count();
+            double voteAverage = movie.getVote_average();
 
             // Changing the UI elements to the Movies values
             actionBar.setSubtitle(movieTitle);
