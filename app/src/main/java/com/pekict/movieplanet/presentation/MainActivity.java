@@ -107,21 +107,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadMovies();
     }
 
+    // Function to load the Movies depending on the Users situation
     public void loadMovies() {
         if (mSavedInstanceState != null) {
             displayMovies((Movie[])mSavedInstanceState.getParcelableArray(MEALS));
             Log.d(TAG_NAME, "Meals fetched with savedInstance.");
-        } else {
-            boolean hasInternet = isNetworkAvailable();
-            if (hasInternet) {
-                Log.i(TAG_NAME, "User has an internet connection");
-            } else {
-                Log.i(TAG_NAME, "User has no internet connection");
-            }
 
-            mMovieViewModel.fetchMovies(hasInternet);
-            Log.d(TAG_NAME, "Meals fetched with ViewModel.");
+            return;
         }
+
+        boolean hasInternet = isNetworkAvailable();
+        Log.i(TAG_NAME, "User has internet is: " + hasInternet);
+
+        mMovieViewModel.fetchMovies(hasInternet);
+        Log.d(TAG_NAME, "Meals fetched with ViewModel.");
     }
 
     public void displayMovies(Movie[] movies) {
@@ -139,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    // Function that's called when filter-menu is created
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
