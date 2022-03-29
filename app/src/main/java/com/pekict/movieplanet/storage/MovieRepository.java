@@ -39,7 +39,7 @@ public class MovieRepository {
     }
 
     // Function that will start fetching the Movies based on if the user has internet
-    public void fetchMovies(boolean hasInternet) {
+    public void fetchMovies(boolean hasInternet, int popularMoviePages) {
         if (hasInternet) {
             new FetchPopularMoviesAPIAsyncTask().execute();
             Log.d(TAG_NAME, "Retrieving Movies from API");

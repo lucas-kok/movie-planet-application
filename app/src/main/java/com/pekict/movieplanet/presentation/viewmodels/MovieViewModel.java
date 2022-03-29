@@ -17,12 +17,14 @@ public class MovieViewModel extends AndroidViewModel {
     private final MovieRepository mMovieRepository;
 
     private LiveData<Movie[]> mMovies;
+    private int popularMoviePages;
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
         mMovieRepository = MovieRepository.getInstance(application);
 
         mMovies = mMovieRepository.getMovies();
+        popularMoviePages = 1;
     }
 
     public LiveData<Movie[]> getMovies() {
@@ -36,7 +38,7 @@ public class MovieViewModel extends AndroidViewModel {
 
     // Function to fetch the meals
     public void fetchMovies(boolean hasInternet) {
-        mMovieRepository.fetchMovies(hasInternet);
+        mMovieRepository.fetchMovies(hasInternet, popularMoviePages);
     }
 
     // Function that will save the current Movies to the SQLite Database

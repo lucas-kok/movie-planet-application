@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,6 +102,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, mRecyclerViewColumns));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
+
+        Button loadMoreButton = findViewById(R.id.btn_load_more);
+        loadMoreButton.setOnClickListener(view -> {
+            // Todo: Increase page-counter
+            // Todo: fetch new page
+            // Todo: display new Movies?
+        });
 
         mSavedInstanceState = savedInstanceState;
 
