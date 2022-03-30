@@ -23,12 +23,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.pekict.movieplanet.R;
-import com.pekict.movieplanet.domain.Movie;
+import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.logic.MovieListAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int mRecyclerViewVerticalSpacing;
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
+    private Button mLoadMoreButton;
 
     private Bundle mSavedInstanceState;
 
@@ -82,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mMovieViewModel.getMovies().observe(this, movies -> {
             displayMovies(movies);
+            mLoadMoreButton.setVisibility(View.VISIBLE);
 
             // Only saving to the Database when Movies are fetched from the API and not the same Database
             if (isNetworkAvailable()) {
@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         mRecyclerViewVerticalSpacing = 100;
 
-        mRecyclerView = findViewById(R.id.recyclerview);
+        mRecyclerView = findViewById(R.id.recyclerview_popular_movies);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, mRecyclerViewColumns));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
 
-        Button loadMoreButton = findViewById(R.id.btn_load_more);
-        loadMoreButton.setOnClickListener(view -> {
-            // Todo: Increase page-counter
+        mLoadMoreButton = findViewById(R.id.btn_load_more);
+        mLoadMoreButton.setOnClickListener(view -> {
+            mMovieViewModel.loadMoreMovies(isNetworkAvailable());
             // Todo: fetch new page
             // Todo: display new Movies?
         });
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean hasInternet = isNetworkAvailable();
         Log.i(TAG_NAME, "User has internet is: " + hasInternet);
 
-        mMovieViewModel.fetchMovies(hasInternet);
+        mMovieViewModel.fetchMovies(hasInternet, 1);
         Log.d(TAG_NAME, "Meals fetched with ViewModel.");
     }
 

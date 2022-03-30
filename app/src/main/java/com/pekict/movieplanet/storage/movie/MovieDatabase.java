@@ -1,13 +1,12 @@
-package com.pekict.movieplanet.storage;
+package com.pekict.movieplanet.storage.movie;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 
-import com.pekict.movieplanet.domain.Movie;
+import com.pekict.movieplanet.domain.movie.Movie;
 
 @Database(entities = Movie.class, version = 1)
 public abstract class MovieDatabase extends RoomDatabase {

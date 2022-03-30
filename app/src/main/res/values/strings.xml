@@ -37,4 +37,9 @@
     <string name="label_tv_mv_vote_count">Votes: %1$d</string>
     <string name="label_tv_mv_vote_average">Average Score: %1$.1f</string>
 
+    <string name="label_tv_mv_reviews">Reviews</string>
+    <string name="label_tv_mv_review_author">Author: </string>
+    <string name="label_tv_mv_review_created">Created at: %1$s</string>
+    <string name="label_tv_mv_review_content">Content: </string>
+
 </resources>

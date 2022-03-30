@@ -1,13 +1,13 @@
-package com.pekict.movieplanet.domain;
+package com.pekict.movieplanet.domain.movie;
 
 public class MovieFetchResponse {
     private Movie[] results;
 
     public MovieFetchResponse(Movie[] results) {
-        results = results;
+        this.results = results;
     }
 
-    public Movie[] getResult() {
+    public Movie[] getResults() {
         return results;
     }
 }

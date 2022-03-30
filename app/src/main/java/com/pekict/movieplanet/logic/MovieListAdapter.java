@@ -3,7 +3,6 @@ package com.pekict.movieplanet.logic;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.pekict.movieplanet.presentation.MovieViewActivity;
 import com.pekict.movieplanet.R;
-import com.pekict.movieplanet.domain.Movie;
+import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.presentation.MainActivity;
+import com.pekict.movieplanet.presentation.MovieViewActivity;
 import com.squareup.picasso.Picasso;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {
@@ -36,8 +34,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         public MovieViewHolder(View itemView, MovieListAdapter mAdapter) {
             super(itemView);
 
-            mMovieImage = itemView.findViewById(R.id.iv_movie);
-            mMovieTitleText = itemView.findViewById(R.id.tv_movie_title);
+            mMovieImage = itemView.findViewById(R.id.iv_author_avatar);
+            mMovieTitleText = itemView.findViewById(R.id.tv_review_author);
 
             this.mAdapter = mAdapter;
         }

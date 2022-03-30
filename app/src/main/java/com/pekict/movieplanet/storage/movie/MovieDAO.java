@@ -1,10 +1,10 @@
-package com.pekict.movieplanet.storage;
+package com.pekict.movieplanet.storage.movie;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.pekict.movieplanet.domain.Movie;
+import com.pekict.movieplanet.domain.movie.Movie;
 
 @Dao
 public interface MovieDAO {

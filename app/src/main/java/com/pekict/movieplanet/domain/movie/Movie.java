@@ -1,4 +1,4 @@
-package com.pekict.movieplanet.domain;
+package com.pekict.movieplanet.domain.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;

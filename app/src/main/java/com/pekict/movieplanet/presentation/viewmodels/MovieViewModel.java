@@ -6,10 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.pekict.movieplanet.domain.Movie;
-import com.pekict.movieplanet.storage.MovieRepository;
-
-import java.util.List;
+import com.pekict.movieplanet.domain.movie.Movie;
+import com.pekict.movieplanet.storage.movie.MovieRepository;
 
 public class MovieViewModel extends AndroidViewModel {
     private static final String TAG_NAME = MovieViewModel.class.getSimpleName();
@@ -37,8 +35,13 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
     // Function to fetch the meals
-    public void fetchMovies(boolean hasInternet) {
+    public void fetchMovies(boolean hasInternet, int popularMoviePages) {
         mMovieRepository.fetchMovies(hasInternet, popularMoviePages);
+    }
+
+    public void loadMoreMovies(boolean hasInternet) {
+        popularMoviePages++;
+        fetchMovies(hasInternet, popularMoviePages);
     }
 
     // Function that will save the current Movies to the SQLite Database

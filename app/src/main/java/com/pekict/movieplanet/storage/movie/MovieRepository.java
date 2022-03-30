@@ -1,4 +1,4 @@
-package com.pekict.movieplanet.storage;
+package com.pekict.movieplanet.storage.movie;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -7,10 +7,9 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.pekict.movieplanet.domain.Movie;
-import com.pekict.movieplanet.domain.MovieFetchResponse;
-
-import java.util.List;
+import com.pekict.movieplanet.domain.movie.Movie;
+import com.pekict.movieplanet.domain.movie.MovieFetchResponse;
+import com.pekict.movieplanet.storage.APIService;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -41,7 +40,7 @@ public class MovieRepository {
     // Function that will start fetching the Movies based on if the user has internet
     public void fetchMovies(boolean hasInternet, int popularMoviePages) {
         if (hasInternet) {
-            new FetchPopularMoviesAPIAsyncTask().execute();
+            new FetchPopularMoviesAPIAsyncTask(popularMoviePages).execute();
             Log.d(TAG_NAME, "Retrieving Movies from API");
         } else {
             new GetPopularMealsAsyncTask(mMovieDAO).execute();
@@ -99,6 +98,12 @@ public class MovieRepository {
 
     // AsyncTask Class that will fetch Movies from the API
     private static class FetchPopularMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
+        private int mPopularMoviePages;
+
+        public FetchPopularMoviesAPIAsyncTask(int popularMoviePages) {
+            mPopularMoviePages = popularMoviePages;
+        }
+
 
         @Override
         protected MovieFetchResponse doInBackground(String... strings) {
@@ -131,9 +136,9 @@ public class MovieRepository {
 
         @Override
         protected void onPostExecute(MovieFetchResponse result) {
-            if (result != null && result.getResult() != null) {
-                mMovies.setValue(result.getResult());
-                Log.d(TAG_NAME, "onPostExecute found : " + result.getResult().length + " Movies");
+            if (result != null && result.getResults() != null) {
+                mMovies.setValue(result.getResults());
+                Log.d(TAG_NAME, "onPostExecute found : " + result.getResults().length + " Movies");
             } else {
                 Log.e(TAG_NAME, "No meals found!");
             }

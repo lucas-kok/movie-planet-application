@@ -41,7 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="gone"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/menu_main" />
 
@@ -61,7 +60,7 @@
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview"
+                    android:id="@+id/recyclerview_popular_movies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -74,8 +73,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:text="@string/label_btn_load_more" />
+                    android:layout_marginBottom="40dp"
+                    android:text="@string/label_btn_load_more"
+                    android:visibility="invisible" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
