@@ -13,9 +13,17 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pekict.movieplanet.R;
@@ -51,6 +59,8 @@ public class MovieViewActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
+        LinearLayout movieViewLayout = findViewById(R.id.ll_mv);
+
         ImageView movieImage = findViewById(R.id.iv_mv);
         TextView titleText = findViewById(R.id.tv_mv_title);
         TextView originalLanguageText = findViewById(R.id.tv_mv_original_language);
@@ -58,6 +68,22 @@ public class MovieViewActivity extends AppCompatActivity {
         TextView popularityText = findViewById(R.id.tv_mv_popularity);
         TextView voteCountText = findViewById(R.id.tv_mv_vote_count);
         TextView voteAverageText = findViewById(R.id.tv_mv_vote_average);
+
+        ImageButton expandReviewsButton = findViewById(R.id.btn_expand_reviews);
+        expandReviewsButton.setOnClickListener(view -> {
+            if (mRecyclerView.getVisibility() == View.VISIBLE) {
+                // TransitionManager will smooth out the showing/disappearing of the Reviews
+                TransitionManager.beginDelayedTransition(movieViewLayout,
+                        new AutoTransition());
+                mRecyclerView.setVisibility(View.GONE);
+                expandReviewsButton.setImageResource(R.drawable.ic_expand);
+            } else {
+                TransitionManager.beginDelayedTransition(movieViewLayout,
+                        new AutoTransition());
+                mRecyclerView.setVisibility(View.VISIBLE);
+                expandReviewsButton.setImageResource(R.drawable.ic_collapse);
+            }
+        });
 
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
