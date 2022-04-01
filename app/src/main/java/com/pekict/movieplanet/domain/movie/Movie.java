@@ -6,24 +6,46 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.pekict.movieplanet.logic.FilterOptionsManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 @Entity(tableName = "popular_movie_table")
 public class Movie implements Parcelable {
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
     @PrimaryKey
     private final int id;
-    private final String original_title;
     private final String original_language;
+    private final String original_title;
+    private final String overview;
     private final String title;
     private final String backdrop_path;
     private final double popularity;
     private final int vote_count;
     private final double vote_average;
+    private List<Integer> genre_ids = new ArrayList<>();
 
-    public Movie(int id, String original_title, String original_language, String title, String backdrop_path, double popularity, int vote_count, double vote_average) {
+    public Movie(int id, String original_language, String original_title, String overview, String title, String backdrop_path, List<Integer> genre_ids, double popularity, int vote_count, double vote_average) {
         this.id = id;
-        this.original_title = original_title;
         this.original_language = original_language;
+        this.original_title = original_title;
+        this.overview = overview;
         this.title = title;
         this.backdrop_path = backdrop_path;
+        this.genre_ids = genre_ids;
         this.popularity = popularity;
         this.vote_count = vote_count;
         this.vote_average = vote_average;
@@ -31,10 +53,12 @@ public class Movie implements Parcelable {
 
     protected Movie(Parcel in) {
         id = in.readInt();
-        original_title = in.readString();
         original_language = in.readString();
+        original_title = in.readString();
+        overview = in.readString();
         title = in.readString();
         backdrop_path = in.readString();
+        in.readList(genre_ids, Integer.class.getClassLoader());
         popularity = in.readDouble();
         vote_count = in.readInt();
         vote_average = in.readDouble();
@@ -44,12 +68,16 @@ public class Movie implements Parcelable {
         return id;
     }
 
+    public String getOriginal_language() {
+        return original_language;
+    }
+
     public String getOriginal_title() {
         return original_title;
     }
 
-    public String getOriginal_language() {
-        return original_language;
+    public String getOverview() {
+        return overview;
     }
 
     public String getTitle() {
@@ -58,6 +86,10 @@ public class Movie implements Parcelable {
 
     public String getBackdrop_path() {
         return backdrop_path;
+    }
+
+    public List<Integer> getGenre_ids() {
+        return genre_ids;
     }
 
     // Will return the URL of the Movies image with a width of w500
@@ -82,17 +114,23 @@ public class Movie implements Parcelable {
         return vote_average;
     }
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
+    public boolean isMatchForFilters(Map<String, String> filterOptions) {
+        // Looping through the Movies Ids and checking for overlap
+        String ratingString = Objects.requireNonNull(filterOptions.get(FilterOptionsManager.RATING));
+        ratingString = ratingString.replace("+", "").replace(" Stars", "");
+        int rating = Integer.parseInt(ratingString);
 
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
+        for (Integer genreId : genre_ids) {
+            if (!filterOptions.containsKey(String.valueOf(genreId))) {
+                continue;
+            }
+
+            if (Objects.equals(filterOptions.get(String.valueOf(genreId)), "true")) {
+                return vote_average / 2 > rating;
+            }
         }
-    };
+        return false;
+    }
 
     @Override
     public int describeContents() {
@@ -102,10 +140,12 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
-        parcel.writeString(original_title);
         parcel.writeString(original_language);
+        parcel.writeString(original_title);
+        parcel.writeString(overview);
         parcel.writeString(title);
         parcel.writeString(backdrop_path);
+        parcel.writeList(genre_ids);
         parcel.writeDouble(popularity);
         parcel.writeInt(vote_count);
         parcel.writeDouble(vote_average);

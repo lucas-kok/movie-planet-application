@@ -22,11 +22,14 @@ public class MovieRepository {
 
     private static MutableLiveData<Movie[]> mMovies;
 
-    private final MovieDAO mMovieDAO;
+    private static MovieDAO mMovieDAO;
+    private static int mMoviePagesInDatabase;
 
     public MovieRepository(Application application) {
         mMovies = new MutableLiveData<>();
+
         mMovieDAO = MovieDatabase.getInstance(application).getMovieDAO();
+        mMoviePagesInDatabase = 1;
     }
 
     // Get instance of Singleton MovieRepository
@@ -49,7 +52,7 @@ public class MovieRepository {
     }
 
     // Function that saves the Movies to the database
-    public void savePopularMoviesToDatabase() {
+    public static void savePopularMoviesToDatabase() {
         new UpdatePopularMealsAsyncTask(mMovieDAO).execute(mMovies.getValue());
         Log.d(TAG_NAME, "Meals saved in Database");
     }
@@ -60,6 +63,22 @@ public class MovieRepository {
 
     public void setMovies(Movie[] movies) {
         mMovies.setValue(movies);
+    }
+
+    // Function that will return and merge two arrays into one
+    private static Movie[] mergeMovieArrays(Movie[] arrOne, Movie[] arrTwo) {
+        if (arrOne == null) return arrTwo;
+
+        Movie[] newArr = new Movie[arrOne.length + arrTwo.length];
+        for (int i = 0; i < arrOne.length; i++) {
+            newArr[i] = arrOne[i];
+        }
+
+        for (int i = 0; i < arrTwo.length; i++) {
+            newArr[i + arrOne.length] = arrTwo[i];
+        }
+
+        return newArr;
     }
 
     // AsyncTask Class that will get all Movies from the SQLite DataBase
@@ -115,7 +134,7 @@ public class MovieRepository {
 
                 APIService service = retrofit.create(APIService.class);
 
-                Call<MovieFetchResponse> call = service.getMovies();
+                Call<MovieFetchResponse> call = service.getMovies("movie/popular?api_key=c7cc756ca295eabae15bda786602c697&page=" + mPopularMoviePages);
                 Response<MovieFetchResponse> response = call.execute();
 
                 Log.d(TAG_NAME, "Executed call, response.code = " + response.code());
@@ -137,7 +156,14 @@ public class MovieRepository {
         @Override
         protected void onPostExecute(MovieFetchResponse result) {
             if (result != null && result.getResults() != null) {
-                mMovies.setValue(result.getResults());
+                Movie[] newMovies = mergeMovieArrays(mMovies.getValue(), result.getResults());
+
+                mMovies.setValue(newMovies);
+
+                // Only saving to the Database when it is in bound of the stated page(s) of Movies
+                if (mPopularMoviePages > mMoviePagesInDatabase) return;
+
+                savePopularMoviesToDatabase();
                 Log.d(TAG_NAME, "onPostExecute found : " + result.getResults().length + " Movies");
             } else {
                 Log.e(TAG_NAME, "No meals found!");

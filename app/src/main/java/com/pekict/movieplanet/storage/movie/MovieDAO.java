@@ -15,6 +15,6 @@ public interface MovieDAO {
     @Query("DELETE FROM popular_movie_table")
     void deleteAllPopularMovies();
 
-    @Query("SELECT * FROM popular_movie_table ORDER BY id ASC")
+    @Query("SELECT * FROM popular_movie_table ORDER BY popularity DESC")
     Movie[] getAllPopularMovies();
 }

@@ -2,6 +2,7 @@
     <!-- Global -->
     <string name="app_name">MoviePlanet</string>
     <string name="label_app_home">Home</string>
+    <string name="preference_file_key">sharedPreferences</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -13,14 +14,27 @@
     <!-- Main Menu -->
     <string name="label_menu_pages">Menu</string>
     <string name="label_menu_item_home">Home</string>
-
     <string name="label_menu_other">Other</string>
     <string name="label_menu_item_share">Share</string>
 
     <!-- Filter Menu -->
-    <string name="label_filter_option_1">Option 1</string>
-    <string name="label_filter_option_2">Option 2</string>
-    <string name="label_filter_option_3">Option 3</string>
+    <string name="label_menu_filter">Filter Menu</string>
+    <string name="label_filter_genre_action">Action</string>
+    <string name="label_filter_genre_horror">Horror</string>
+    <string name="label_filter_genre_comedy">Comedy</string>
+    <string name="label_filter_genre_thriller">Thriller</string>
+    <string name="label_filter_genre_scifi">Sci-fi</string>
+    <string name="label_filter_genre_drama">Drama</string>
+    <string name="label_filter_genre_romance">Romance</string>
+    <string name="label_filter_genre_documentary">Documentary</string>
+    <string-array name="label_filter_ratings">
+        <item>1+ Stars</item>
+        <item>2+ Stars</item>
+        <item>3+ Stars</item>
+        <item>4+ Stars</item>
+        <item>5 Stars</item>
+    </string-array>
+    <string name="label_btn_action_filter_movies">Filter</string>
 
     <!-- MainActivity -->
     <string name="label_iv_rv_movie_description">Movie Image</string>
@@ -33,6 +47,7 @@
     <string name="label_iv_mv_movie_description">Movie Image</string>
     <string name="label_tv_mv_title">Title: </string>
     <string name="label_tv_mv_original_language">Language: %1$s</string>
+    <string name="label_tv_mv_overview">Overview: </string>
     <string name="label_tv_mv_popularity">Popularity: %1$.2f</string>
     <string name="label_tv_mv_vote_count">Votes: %1$d</string>
     <string name="label_tv_mv_vote_average">Average Score: %1$.1f</string>

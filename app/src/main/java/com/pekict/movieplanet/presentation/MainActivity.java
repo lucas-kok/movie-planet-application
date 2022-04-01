@@ -1,21 +1,32 @@
 package com.pekict.movieplanet.presentation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -27,12 +38,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
+import com.pekict.movieplanet.logic.FilterOptionsManager;
+import com.pekict.movieplanet.logic.MovieFilter;
 import com.pekict.movieplanet.logic.MovieListAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG_NAME = MainActivity.class.getSimpleName();
-    private static final String MEALS = "MEALS";
+    public static final String MEALS = "MEALS";
+
     private static volatile MainActivity instance;
 
     private DrawerLayout mDrawer;
@@ -47,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MovieListAdapter mAdapter;
     private Button mLoadMoreButton;
 
+    private SharedPreferences mSharedPrefs;
+    private SharedPreferences.Editor mSharedPrefsEditor;
+    private FilterOptionsManager mFilterOptionsManager;
     private Bundle mSavedInstanceState;
 
     public static Context getContext() {
@@ -80,21 +101,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mMovieViewModel.getMovies().observe(this, movies -> {
-            displayMovies(movies);
-            mLoadMoreButton.setVisibility(View.VISIBLE);
+            displayMovies(filterMovies(mMovieViewModel.getMovies().getValue()));
 
-            // Only saving to the Database when Movies are fetched from the API and not the same Database
+            // Only showing the "Load More" Button when there is a network connection,
+            // without it will fetch all the movies stored in the SQLite Database
             if (isNetworkAvailable()) {
-                mMovieViewModel.savePopularMoviesToDatabase();
+                mLoadMoreButton.setVisibility(View.VISIBLE);
             }
         });
 
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //In landscape
-            mRecyclerViewColumns = 4;
+            //In landscape 3 elements wide
+            mRecyclerViewColumns = 3;
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //In portrait
+            //In portrait 2 elements wide
             mRecyclerViewColumns = 2;
         }
         mRecyclerViewVerticalSpacing = 100;
@@ -106,11 +127,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mLoadMoreButton = findViewById(R.id.btn_load_more);
         mLoadMoreButton.setOnClickListener(view -> {
             mMovieViewModel.loadMoreMovies(isNetworkAvailable());
-            // Todo: fetch new page
-            // Todo: display new Movies?
         });
 
+        mSharedPrefs = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        mSharedPrefsEditor = mSharedPrefs.edit();
         mSavedInstanceState = savedInstanceState;
+
+        mFilterOptionsManager = new FilterOptionsManager(mSharedPrefs, mSharedPrefsEditor, this);
+        mFilterOptionsManager.initFilterOptions();
 
         loadMovies();
     }
@@ -131,6 +155,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.d(TAG_NAME, "Meals fetched with ViewModel.");
     }
 
+    public Movie[] filterMovies(Movie[] movies) {
+        Map<String, String> filterOptions = mFilterOptionsManager.getFilterOptions();
+
+        Movie[] filteredMovies = MovieFilter.getFilteredMovies(filterOptions, Objects.requireNonNull(movies));
+        return filteredMovies;
+    }
+
     public void displayMovies(Movie[] movies) {
         mAdapter = new MovieListAdapter(this, movies, MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
@@ -146,12 +177,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    private void showFilterPopup() {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.menu_filter, null);
+
+        popupView.findViewById(R.id.btn_action_filter_movies).setOnClickListener(view -> {
+            mFilterOptionsManager.updateFilterOptions(popupView);
+            displayMovies(filterMovies(mMovieViewModel.getMovies().getValue()));
+        });
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
+        mFilterOptionsManager.setFilterMenuUI(popupView);
+    }
+
     // Function that's called when filter-menu is created
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_filter, menu);
+        getMenuInflater().inflate(R.menu.menu_bar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.btn_menu_filter) {
+            showFilterPopup();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // Function that's called when item in side-menu is clicked

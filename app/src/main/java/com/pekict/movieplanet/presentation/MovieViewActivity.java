@@ -52,11 +52,12 @@ public class MovieViewActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         ImageView movieImage = findViewById(R.id.iv_mv);
+        TextView titleText = findViewById(R.id.tv_mv_title);
+        TextView originalLanguageText = findViewById(R.id.tv_mv_original_language);
+        TextView overviewText = findViewById(R.id.tv_mv_overview);
         TextView popularityText = findViewById(R.id.tv_mv_popularity);
         TextView voteCountText = findViewById(R.id.tv_mv_vote_count);
         TextView voteAverageText = findViewById(R.id.tv_mv_vote_average);
-        TextView titleText = findViewById(R.id.tv_mv_title);
-        TextView originalLanguageText = findViewById(R.id.tv_mv_original_language);
 
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -80,6 +81,7 @@ public class MovieViewActivity extends AppCompatActivity {
             String imageURL = movie.getSmallImageURL();
             String movieTitle = movie.getTitle();
             String originalLanguage = movie.getOriginal_language();
+            String overview = movie.getOverview();
             double popularity = movie.getPopularity();
             int voteCount = movie.getVote_count();
             double voteAverage = movie.getVote_average();
@@ -90,6 +92,7 @@ public class MovieViewActivity extends AppCompatActivity {
             Picasso.get().load(imageURL).into(movieImage);
             titleText.setText(movieTitle);
             originalLanguageText.setText(getString(R.string.label_tv_mv_original_language, originalLanguage));
+            overviewText.setText(overview);
             popularityText.setText(getString(R.string.label_tv_mv_popularity, popularity));
             voteCountText.setText(getString(R.string.label_tv_mv_vote_count, voteCount));
             voteAverageText.setText(getString(R.string.label_tv_mv_vote_average, voteAverage));

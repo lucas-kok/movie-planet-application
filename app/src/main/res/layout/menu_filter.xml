@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF">
+
+    <CheckBox
+        android:id="@+id/filter_genre_action"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_action"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/filter_genre_comedy"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_comedy"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_action" />
+
+    <CheckBox
+        android:id="@+id/filter_genre_scifi"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_scifi"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_comedy" />
+
+    <CheckBox
+        android:id="@+id/filter_genre_horror"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_horror"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toEndOf="@+id/filter_genre_action"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/filter_genre_thriller"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_thriller"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toEndOf="@+id/filter_genre_comedy"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_horror" />
+
+    <CheckBox
+        android:id="@+id/filter_genre_drama"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_drama"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toEndOf="@+id/filter_genre_scifi"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_thriller" />
+
+    <CheckBox
+        android:id="@+id/filter_genre_documentary"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_documentary"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toEndOf="@+id/filter_genre_romance"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_drama" />
+
+    <CheckBox
+        android:id="@+id/filter_genre_romance"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:buttonTint="#60B363"
+        android:checked="true"
+        android:text="@string/label_filter_genre_romance"
+        android:textColor="#000000"
+        android:textColorHighlight="#4CAF50"
+        android:textColorLink="#4CAF50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_scifi" />
+
+    <Spinner
+        android:id="@+id/filter_rating"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:entries="@array/label_filter_ratings"
+        app:layout_constraintEnd_toEndOf="@+id/filter_genre_documentary"
+        app:layout_constraintStart_toStartOf="@+id/filter_genre_documentary"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_documentary" />
+
+    <Spinner
+        android:id="@+id/filter_language"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/filter_genre_documentary"
+        app:layout_constraintStart_toStartOf="@+id/filter_genre_romance"
+        app:layout_constraintTop_toBottomOf="@+id/filter_genre_romance"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/btn_action_filter_movies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_btn_action_filter_movies"
+        app:layout_constraintEnd_toEndOf="@+id/filter_rating"
+        app:layout_constraintStart_toStartOf="@+id/filter_language"
+        app:layout_constraintTop_toBottomOf="@+id/filter_language" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
