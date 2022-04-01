@@ -1,14 +1,7 @@
 package com.pekict.movieplanet.presentation;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,31 +9,52 @@ import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.review.Review;
-import com.pekict.movieplanet.logic.MovieListAdapter;
+import com.pekict.movieplanet.domain.trailer.Trailer;
 import com.pekict.movieplanet.logic.ReviewListAdapter;
+import com.pekict.movieplanet.logic.TrailerFilter;
 import com.pekict.movieplanet.presentation.viewmodels.ReviewViewModel;
+import com.pekict.movieplanet.presentation.viewmodels.TrailerViewModel;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
 public class MovieViewActivity extends AppCompatActivity {
     private static final String TAG_NAME = MovieViewActivity.class.getSimpleName();
+    private static final String VIDEOKEY = "VIDEOKEY";
     private static final String REVIEWS = "REVIEW";
 
+    private View mOverlayView;
+    private Button mTrailerButton;
+
     private ReviewViewModel mReviewViewModel;
+    private TrailerViewModel mTrailerViewModel;
     private Bundle mSavedInstanceState;
 
+    private String mVideoKey;
     private int mMovieId;
 
     private RecyclerView mRecyclerView;
@@ -54,14 +68,26 @@ public class MovieViewActivity extends AppCompatActivity {
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         mReviewViewModel.getReviews().observe(this, this::displayReviews);
 
+        mTrailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
+        mTrailerViewModel.getTrailers().observe(this, trailers -> {
+            if (getBestTrailer(trailers) == null) return;
+
+            mVideoKey = getBestTrailer(trailers).getKey();
+            showTrailerButton();
+        });
+
         mRecyclerView = findViewById(R.id.recyclerview_reviews);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         ActionBar actionBar = getSupportActionBar();
 
         LinearLayout movieViewLayout = findViewById(R.id.ll_mv);
+        mOverlayView = findViewById(R.id.overlay_view);
 
         ImageView movieImage = findViewById(R.id.iv_mv);
+        mTrailerButton = findViewById(R.id.btn_trailer);
+        mTrailerButton.setOnClickListener(view -> showTrailerPopup());
+
         TextView titleText = findViewById(R.id.tv_mv_title);
         TextView originalLanguageText = findViewById(R.id.tv_mv_original_language);
         TextView overviewText = findViewById(R.id.tv_mv_overview);
@@ -126,12 +152,109 @@ public class MovieViewActivity extends AppCompatActivity {
 
         mSavedInstanceState = savedInstanceState;
 
+        loadTrailers(mMovieId);
         loadReviews(mMovieId);
+    }
+
+    private void showTrailerButton() {
+        mTrailerButton.setVisibility(View.VISIBLE);
+    }
+
+    private void loadTrailers(int movieId) {
+        if (mSavedInstanceState != null) {
+            mVideoKey = mSavedInstanceState.getString(VIDEOKEY);
+            showTrailerButton();
+
+            Log.d(TAG_NAME, "Trailer fetched with savedInstance.");
+            return;
+        }
+
+        boolean hasInternet = isNetworkAvailable();
+        if (!hasInternet) return;
+
+        mTrailerViewModel.fetchTrailers(movieId);
+        Log.d(TAG_NAME, "Trailer fetched with ViewModel.");
+    }
+
+    private Trailer getBestTrailer(Trailer[] trailers) {
+        Log.d(TAG_NAME, "Best video key: " + TrailerFilter.getBestTrailer(trailers).getKey());
+        return TrailerFilter.getBestTrailer(trailers);
+    }
+
+    private void showTrailerPopup() {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.trailer, null);
+        YouTubePlayerView playerView = popupView.findViewById(R.id.youtube_player_view);
+        playerView.addYouTubePlayerListener(new YouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                youTubePlayer.cueVideo(mVideoKey, 0);
+            }
+
+            @Override
+            public void onStateChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlayerState playerState) {
+
+            }
+
+            @Override
+            public void onPlaybackQualityChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlaybackQuality playbackQuality) {
+
+            }
+
+            @Override
+            public void onPlaybackRateChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlaybackRate playbackRate) {
+
+            }
+
+            @Override
+            public void onError(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlayerError playerError) {
+                youTubePlayer.cueVideo(mVideoKey, 0);
+            }
+
+            @Override
+            public void onCurrentSecond(@NonNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoDuration(@NonNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoLoadedFraction(@NonNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoId(@NonNull YouTubePlayer youTubePlayer, @NonNull String s) {
+
+            }
+
+            @Override
+            public void onApiChange(@NonNull YouTubePlayer youTubePlayer) {
+
+            }
+        });
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow.setOnDismissListener(() -> mOverlayView.setVisibility(View.GONE));
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(mTrailerButton.getRootView(), Gravity.CENTER, 0, 0);
+        mOverlayView.setVisibility(View.VISIBLE);
     }
 
     public void loadReviews(int movieId) {
         if (mSavedInstanceState != null) {
-            displayReviews((Review[])mSavedInstanceState.getParcelableArray(REVIEWS));
+            displayReviews((Review[]) mSavedInstanceState.getParcelableArray(REVIEWS));
             Log.d(TAG_NAME, "Meals fetched with savedInstance.");
 
             return;
@@ -174,6 +297,7 @@ public class MovieViewActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelableArray(REVIEWS, mReviewViewModel.getReviews().getValue());
+        outState.putString(VIDEOKEY, mVideoKey);
         super.onSaveInstanceState(outState);
     }
 }
