@@ -2,6 +2,7 @@ package com.pekict.movieplanet.domain.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -9,12 +10,16 @@ import androidx.room.PrimaryKey;
 import com.pekict.movieplanet.logic.FilterOptionsManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Filter;
 
 @Entity(tableName = "popular_movie_table")
 public class Movie implements Parcelable {
+    private static final String TAG_NAME = Movie.class.getSimpleName();
+
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel in) {
@@ -116,20 +121,29 @@ public class Movie implements Parcelable {
 
     public boolean isMatchForFilters(Map<String, String> filterOptions) {
         // Looping through the Movies Ids and checking for overlap
-        String ratingString = Objects.requireNonNull(filterOptions.get(FilterOptionsManager.RATING));
-        ratingString = ratingString.replace("+", "").replace(" Stars", "");
-        int rating = Integer.parseInt(ratingString);
-
-        for (Integer genreId : genre_ids) {
-            if (!filterOptions.containsKey(String.valueOf(genreId))) {
-                continue;
-            }
-
-            if (Objects.equals(filterOptions.get(String.valueOf(genreId)), "true")) {
-                return vote_average / 2 > rating;
+        if (filterOptions.get(FilterOptionsManager.ALLGENRES).equals("false")) {
+            for (Integer genreId : genre_ids) {
+                if (!filterOptions.containsKey(String.valueOf(genreId))) {
+                    return false;
+                }
             }
         }
-        return false;
+
+        String languageString = Objects.requireNonNull(filterOptions.get(FilterOptionsManager.LANGUAGE));
+        if (!languageString.equals("All")) {
+            if (!original_language.equals(languageString)) {
+                return false;
+            }
+        }
+
+        String ratingString = Objects.requireNonNull(filterOptions.get(FilterOptionsManager.RATING));
+        if (ratingString.equals("All")) {
+            return true;
+        }
+
+        ratingString = ratingString.replace("+", "").replace(" Stars", "");
+        int rating = Integer.parseInt(ratingString);
+        return vote_average / 2 > rating;
     }
 
     @Override
@@ -151,29 +165,32 @@ public class Movie implements Parcelable {
         parcel.writeDouble(vote_average);
     }
 
+    // Function that returns a String containing the Movie Genres based on the Ids
     public String getFirstGenre(List<Integer> genre_ids) {
+        Map<Integer, String> genres = new HashMap<>();
+        genres.put(12, "Adventure, ");
+        genres.put(14, "Fantasy, ");
+        genres.put(16, "Animation, ");
+        genres.put(18, "Drama, ");
+        genres.put(27, "Horror, ");
+        genres.put(28, "Action, ");
+        genres.put(35, "Comedy, ");
+        genres.put(36, "History, ");
+        genres.put(37, "Western, ");
+        genres.put(53, "Thriller, ");
+        genres.put(80, "Crime, ");
+        genres.put(99, "Documentary");
+        genres.put(878, "Science Fiction, ");
+        genres.put(9648, "Mystery, ");
+        genres.put(10402, "Music, ");
+        genres.put(10749, "Romance, ");
+        genres.put(10751, "Family, ");
+        genres.put(10752, "War, ");
+        genres.put(10770, "TV Movie, ");
+
         StringBuilder genreString = new StringBuilder();
-        for (Integer id : genre_ids) {
-            if (id == 28) genreString.append("Action, ");
-            else if (id == 12) genreString.append("Adventure, ");
-            else if (id == 16) genreString.append("Animation, ");
-            else if (id == 35) genreString.append("Comedy, ");
-            else if (id == 80) genreString.append("Crime, ");
-            else if (id == 99) genreString.append("Documentary, ");
-            else if (id == 18) genreString.append("Drama, ");
-            else if (id == 10751) genreString.append("Family, ");
-            else if (id == 14) genreString.append("Fantasy, ");
-            else if (id == 36) genreString.append("History, ");
-            else if (id == 27) genreString.append("Horror, ");
-            else if (id == 10402) genreString.append("Music, ");
-            else if (id == 9648) genreString.append("Mystery, ");
-            else if (id == 10749) genreString.append("Romance, ");
-            else if (id == 878) genreString.append("Science Fiction, ");
-            else if (id == 10770) genreString.append("TV Movie, ");
-            else if (id == 53) genreString.append("Thriller, ");
-            else if (id == 10752) genreString.append("War, ");
-            else if (id == 37) genreString.append("Western, ");
-        }
+        for (Integer id : genre_ids) genreString.append(genres.get(id));
+
         return genreString.substring(0, genreString.length() - 2);
     }
 }

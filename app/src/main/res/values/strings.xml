@@ -28,11 +28,18 @@
     <string name="label_filter_genre_romance">Romance</string>
     <string name="label_filter_genre_documentary">Documentary</string>
     <string-array name="label_filter_ratings">
+        <item>All</item>
         <item>1+ Stars</item>
         <item>2+ Stars</item>
         <item>3+ Stars</item>
         <item>4+ Stars</item>
         <item>5 Stars</item>
+    </string-array>
+    <string-array name="label_filter_languages">
+        <item>All</item>
+        <item>en</item>
+        <item>ja</item>
+        <item>sv</item>
     </string-array>
     <string name="label_btn_action_filter_movies">Filter</string>
 
