@@ -119,11 +119,25 @@ public class Movie implements Parcelable {
         return vote_average;
     }
 
+    private boolean hasId(int id) {
+        for (Integer genreId : genre_ids) {
+            if (genreId == id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean isMatchForFilters(Map<String, String> filterOptions) {
         // Looping through the Movies Ids and checking for overlap
         if (filterOptions.get(FilterOptionsManager.ALLGENRES).equals("false")) {
-            for (Integer genreId : genre_ids) {
-                if (!filterOptions.containsKey(String.valueOf(genreId))) {
+            for (String key : filterOptions.keySet()) {
+                if (!filterOptions.get(key).equals("true")) {
+                    continue;
+                }
+
+                if (!hasId(Integer.parseInt(key))) {
                     return false;
                 }
             }
@@ -179,7 +193,7 @@ public class Movie implements Parcelable {
         genres.put(37, "Western, ");
         genres.put(53, "Thriller, ");
         genres.put(80, "Crime, ");
-        genres.put(99, "Documentary");
+        genres.put(99, "Documentary, ");
         genres.put(878, "Science Fiction, ");
         genres.put(9648, "Mystery, ");
         genres.put(10402, "Music, ");
