@@ -19,6 +19,11 @@
         <entry key="..\:/HDD/Documenten/OneDrive/Documenten/Programmeren/Codering/AndroidStudioProjects/MoviePlanet/app/src/main/res/menu/menu_bar.xml" value="0.264" />
         <entry key="..\:/HDD/Documenten/OneDrive/Documenten/Programmeren/Codering/AndroidStudioProjects/MoviePlanet/app/src/main/res/menu/menu_filter.xml" value="0.4" />
         <entry key="..\:/HDD/Documenten/OneDrive/Documenten/Programmeren/Codering/AndroidStudioProjects/MoviePlanet/app/src/main/res/menu/menu_main.xml" value="0.2453125" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/ic_favorite.xml" value="0.2265" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/ic_notwatched.xml" value="0.2265" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/ic_print.xml" value="0.2265" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/ic_unfavorite.xml" value="0.2265" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/ic_watched.xml" value="0.2265" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/activity_main.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/activity_movie_view.xml" value="0.1" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/app_bar_main.xml" value="0.25416666666666665" />
@@ -27,6 +32,8 @@
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/movie_slide_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/nav_header_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/review_item.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/menu/menu_bar.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/menu/menu_bar_detailpage.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
       </map>
     </option>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/btn_unfavorite"
+        android:icon="@drawable/ic_unfavorite"
+        android:orderInCategory="100"
+        android:title="Unfavorite"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/btn_watch"
+        android:icon="@drawable/ic_notwatched"
+        android:orderInCategory="90"
+        android:title="Watch"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/btn_share"
+        android:icon="@drawable/ic_share"
+        android:orderInCategory="80"
+        android:title="Share"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/btn_print"
+        android:icon="@drawable/ic_print"
+        android:orderInCategory="70"
+        android:title="Print"
+        app:showAsAction="always"></item>
+
+</menu>

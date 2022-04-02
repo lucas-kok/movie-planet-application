@@ -11,6 +11,7 @@ import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,11 @@ public class MovieViewActivity extends AppCompatActivity {
     private static final String TAG_NAME = MovieViewActivity.class.getSimpleName();
     private static final String VIDEOKEY = "VIDEOKEY";
     private static final String REVIEWS = "REVIEW";
+    private boolean isFavorite = false;
+    private boolean isWatched = false;
+    // TODO: Begin te implementeren dat deze ook gwn opgeslagen wordt
+    // TODO: Begin share button ook te laten werken
+    // TODO: Begin print button te laten werken
 
     private View mOverlayView;
     private Button mTrailerButton;
@@ -292,9 +298,27 @@ public class MovieViewActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if (id == R.id.btn_unfavorite) {
+            if(isFavorite){
+                isFavorite = false;
+                item.setIcon(R.drawable.ic_unfavorite);
+            } else {
+                isFavorite = true;
+                item.setIcon(R.drawable.ic_favorite);
+            }
+        } else if (id == R.id.btn_watch) {
+            if(isWatched){
+                isWatched = false;
+                item.setIcon(R.drawable.ic_notwatched);
+            } else {
+                isWatched = true;
+                item.setIcon(R.drawable.ic_watched);
+            }
         }
 
         return super.onOptionsItemSelected(item);
+
+
     }
 
     @Override
@@ -303,4 +327,24 @@ public class MovieViewActivity extends AppCompatActivity {
         outState.putString(VIDEOKEY, mVideoKey);
         super.onSaveInstanceState(outState);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bar_detailpage, menu);
+        MenuItem filterButton = menu.findItem(R.id.btn_unfavorite);
+        MenuItem watchedButton = menu.findItem(R.id.btn_watch);
+        if(isFavorite){
+            filterButton.setIcon(R.drawable.ic_favorite);
+        } else {
+            filterButton.setIcon(R.drawable.ic_unfavorite);
+        }
+
+        if(isWatched){
+            watchedButton.setIcon(R.drawable.ic_watched);
+        } else {
+            watchedButton.setIcon(R.drawable.ic_notwatched);
+        }
+        return true;
+    }
+
 }
