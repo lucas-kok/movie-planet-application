@@ -28,6 +28,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView mMovieImage;
         private final TextView mMovieTitleText;
+        private final TextView mMovieGenreText;
 
         final MovieListAdapter mAdapter;
 
@@ -36,6 +37,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
             mMovieImage = itemView.findViewById(R.id.iv_author_avatar);
             mMovieTitleText = itemView.findViewById(R.id.tv_review_author);
+            mMovieGenreText = itemView.findViewById(R.id.tv_review_genre);
 
             this.mAdapter = mAdapter;
         }
@@ -75,6 +77,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         // Setting the items UI elements to the Movies values
         Picasso.get().load(mCurrent.getSmallImageURL()).into(holder.mMovieImage);
         holder.mMovieTitleText.setText(mCurrent.getTitle());
+        holder.mMovieGenreText.setText(mCurrent.getFirstGenre(mCurrent.getGenre_ids()));
     }
 
     @Override

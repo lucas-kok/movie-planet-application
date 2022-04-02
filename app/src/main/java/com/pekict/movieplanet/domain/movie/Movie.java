@@ -150,4 +150,30 @@ public class Movie implements Parcelable {
         parcel.writeInt(vote_count);
         parcel.writeDouble(vote_average);
     }
+
+    public String getFirstGenre(List<Integer> genre_ids) {
+        StringBuilder genreString = new StringBuilder();
+        for (Integer id : genre_ids) {
+            if (id == 28) genreString.append("Action, ");
+            else if (id == 12) genreString.append("Adventure, ");
+            else if (id == 16) genreString.append("Animation, ");
+            else if (id == 35) genreString.append("Comedy, ");
+            else if (id == 80) genreString.append("Crime, ");
+            else if (id == 99) genreString.append("Documentary, ");
+            else if (id == 18) genreString.append("Drama, ");
+            else if (id == 10751) genreString.append("Family, ");
+            else if (id == 14) genreString.append("Fantasy, ");
+            else if (id == 36) genreString.append("History, ");
+            else if (id == 27) genreString.append("Horror, ");
+            else if (id == 10402) genreString.append("Music, ");
+            else if (id == 9648) genreString.append("Mystery, ");
+            else if (id == 10749) genreString.append("Romance, ");
+            else if (id == 878) genreString.append("Science Fiction, ");
+            else if (id == 10770) genreString.append("TV Movie, ");
+            else if (id == 53) genreString.append("Thriller, ");
+            else if (id == 10752) genreString.append("War, ");
+            else if (id == 37) genreString.append("Western, ");
+        }
+        return genreString.substring(0, genreString.length() - 2);
+    }
 }

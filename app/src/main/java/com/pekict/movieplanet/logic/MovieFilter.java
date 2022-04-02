@@ -18,20 +18,20 @@ public class MovieFilter {
     }
 
     public static Movie[] getFilteredMovies(Map<String, String> filterOptions, Movie[] movies) {
-        List<Movie> filteredMeals = new ArrayList<>();
+        List<Movie> filteredMovies = new ArrayList<>();
 
         for (Movie movie : movies) {
             if (movie.isMatchForFilters(filterOptions)) {
-                filteredMeals.add(movie);
+                filteredMovies.add(movie);
             }
         }
 
-        Movie[] result = new Movie[filteredMeals.size()];
-        for (int i = 0; i < filteredMeals.size(); i++) {
-            result[i] = filteredMeals.get(i);
+        Movie[] result = new Movie[filteredMovies.size()];
+        for (int i = 0; i < filteredMovies.size(); i++) {
+            result[i] = filteredMovies.get(i);
         }
 
-        Log.d(TAG_NAME, "Meals Filtered: " + filteredMeals.size());
+        Log.d(TAG_NAME, "Movies Filtered: " + filteredMovies.size());
         return result;
     }
 }
