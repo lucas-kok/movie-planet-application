@@ -94,6 +94,7 @@ public class MovieViewActivity extends AppCompatActivity {
         TextView popularityText = findViewById(R.id.tv_mv_popularity);
         TextView voteCountText = findViewById(R.id.tv_mv_vote_count);
         TextView voteAverageText = findViewById(R.id.tv_mv_vote_average);
+        TextView genreText = findViewById(R.id.tv_mv_genre);
 
         ImageButton expandReviewsButton = findViewById(R.id.btn_expand_reviews);
         expandReviewsButton.setOnClickListener(view -> {
@@ -137,6 +138,7 @@ public class MovieViewActivity extends AppCompatActivity {
             double popularity = movie.getPopularity();
             int voteCount = movie.getVote_count();
             double voteAverage = movie.getVote_average();
+            String genres = movie.getFirstGenre(movie.getGenre_ids());
 
             // Changing the UI elements to the Movies values
             actionBar.setSubtitle(movieTitle);
@@ -148,6 +150,7 @@ public class MovieViewActivity extends AppCompatActivity {
             popularityText.setText(getString(R.string.label_tv_mv_popularity, popularity));
             voteCountText.setText(getString(R.string.label_tv_mv_vote_count, voteCount));
             voteAverageText.setText(getString(R.string.label_tv_mv_vote_average, voteAverage));
+            genreText.setText(genres);
         }
 
         mSavedInstanceState = savedInstanceState;
