@@ -6,6 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_secondary"
     android:padding="0dp"
     tools:context="com.pekict.movieplanet.presentation.MainActivity"
     tools:openDrawer="start">
@@ -86,8 +87,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@color/color_secondary"
             android:contentDescription="@string/label_btn_fab_description"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_search_white"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
