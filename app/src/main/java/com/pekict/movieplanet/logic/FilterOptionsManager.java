@@ -24,6 +24,8 @@ public class FilterOptionsManager {
     public static final String DRAMA = "18";
     public static final String ROMANCE = "10749";
     public static final String DOCUMENTARY = "99";
+    public static final String ALLGENRES = "ALLGENRES";
+    public static final String LANGUAGE = "LANGUAGE";
     public static final String RATING = "RATING";
 
     private MainActivity mainActivity;
@@ -42,16 +44,25 @@ public class FilterOptionsManager {
         initFilterOptions();
     }
 
+    private boolean filterAllGenres() {
+        return mFilterOptions.get(ACTION).equals("false") && mFilterOptions.get(HORROR).equals("false")
+                && mFilterOptions.get(COMEDY).equals("false") && mFilterOptions.get(THRILLER).equals("false")
+                && mFilterOptions.get(SCIFI).equals("false") && mFilterOptions.get(DRAMA).equals("false")
+                && mFilterOptions.get(ROMANCE).equals("false") && mFilterOptions.get(DOCUMENTARY).equals("false");
+    }
+
     public void initFilterOptions() {
-        mFilterOptions.put(ACTION, mSharedPrefs.getString(ACTION, "true"));
-        mFilterOptions.put(HORROR, mSharedPrefs.getString(HORROR, "true"));
-        mFilterOptions.put(COMEDY, mSharedPrefs.getString(COMEDY, "true"));
-        mFilterOptions.put(THRILLER, mSharedPrefs.getString(THRILLER, "true"));
-        mFilterOptions.put(SCIFI, mSharedPrefs.getString(SCIFI, "true"));
-        mFilterOptions.put(DRAMA, mSharedPrefs.getString(DRAMA, "true"));
-        mFilterOptions.put(ROMANCE, mSharedPrefs.getString(ROMANCE, "true"));
-        mFilterOptions.put(DOCUMENTARY, mSharedPrefs.getString(DOCUMENTARY, "true"));
-        mFilterOptions.put(RATING, mSharedPrefs.getString(RATING, "5"));
+        mFilterOptions.put(ACTION, mSharedPrefs.getString(ACTION, "false"));
+        mFilterOptions.put(HORROR, mSharedPrefs.getString(HORROR, "false"));
+        mFilterOptions.put(COMEDY, mSharedPrefs.getString(COMEDY, "false"));
+        mFilterOptions.put(THRILLER, mSharedPrefs.getString(THRILLER, "false"));
+        mFilterOptions.put(SCIFI, mSharedPrefs.getString(SCIFI, "false"));
+        mFilterOptions.put(DRAMA, mSharedPrefs.getString(DRAMA, "false"));
+        mFilterOptions.put(ROMANCE, mSharedPrefs.getString(ROMANCE, "false"));
+        mFilterOptions.put(DOCUMENTARY, mSharedPrefs.getString(DOCUMENTARY, "false"));
+        mFilterOptions.put(ALLGENRES, mSharedPrefs.getString(ALLGENRES, "true"));
+        mFilterOptions.put(LANGUAGE, mSharedPrefs.getString(LANGUAGE, "All"));
+        mFilterOptions.put(RATING, mSharedPrefs.getString(RATING, "All"));
     }
 
     // Function that checks if object contains all keys to prevent NullPointerExceptions
@@ -59,7 +70,8 @@ public class FilterOptionsManager {
         return mFilterOptions.containsKey(ACTION) && mFilterOptions.containsKey(HORROR)
                 && mFilterOptions.containsKey(COMEDY) && mFilterOptions.containsKey(THRILLER)
                 && mFilterOptions.containsKey(SCIFI) && mFilterOptions.containsKey(DRAMA) && mFilterOptions.containsKey(ROMANCE)
-                && mFilterOptions.containsKey(DOCUMENTARY);
+                && mFilterOptions.containsKey(DOCUMENTARY) && mFilterOptions.containsKey(ALLGENRES)
+                && mFilterOptions.containsKey(LANGUAGE) && mFilterOptions.containsKey(RATING);
     }
 
     public Map<String, String> getFilterOptions() {
@@ -75,6 +87,7 @@ public class FilterOptionsManager {
         CheckBox dramaBox = filterView.findViewById(R.id.filter_genre_drama);
         CheckBox romanceBox = filterView.findViewById(R.id.filter_genre_romance);
         CheckBox documentaryBox = filterView.findViewById(R.id.filter_genre_documentary);
+        Spinner languageSpinner = filterView.findViewById(R.id.filter_language);
         Spinner ratingSpinner = filterView.findViewById(R.id.filter_rating);
 
         Log.d(TAG_NAME, ratingSpinner.getSelectedItem().toString());
@@ -87,6 +100,8 @@ public class FilterOptionsManager {
         mFilterOptions.put(DRAMA, String.valueOf(dramaBox.isChecked()));
         mFilterOptions.put(ROMANCE, String.valueOf(romanceBox.isChecked()));
         mFilterOptions.put(DOCUMENTARY, String.valueOf(documentaryBox.isChecked()));
+        mFilterOptions.put(ALLGENRES, String.valueOf(filterAllGenres()));
+        mFilterOptions.put(LANGUAGE, languageSpinner.getSelectedItem().toString());
         mFilterOptions.put(RATING, ratingSpinner.getSelectedItem().toString());
     }
 
@@ -114,6 +129,8 @@ public class FilterOptionsManager {
         mSharedPrefsEditor.putString(DRAMA, mFilterOptions.get(DRAMA));
         mSharedPrefsEditor.putString(ROMANCE, mFilterOptions.get(ROMANCE));
         mSharedPrefsEditor.putString(DOCUMENTARY, mFilterOptions.get(DOCUMENTARY));
+        mSharedPrefsEditor.putString(ALLGENRES, mFilterOptions.get(ALLGENRES));
+        mSharedPrefsEditor.putString(LANGUAGE, mFilterOptions.get(LANGUAGE));
         mSharedPrefsEditor.putString(RATING, mFilterOptions.get(RATING));
 
         mSharedPrefsEditor.apply();
@@ -130,6 +147,7 @@ public class FilterOptionsManager {
         CheckBox dramaBox = filterView.findViewById(R.id.filter_genre_drama);
         CheckBox romanceBox = filterView.findViewById(R.id.filter_genre_romance);
         CheckBox documentaryBox = filterView.findViewById(R.id.filter_genre_documentary);
+        Spinner languageSpinner = filterView.findViewById(R.id.filter_language);
         Spinner ratingSpinner = filterView.findViewById(R.id.filter_rating);
 
         actionBox.setChecked(Boolean.parseBoolean(mFilterOptions.get(ACTION)));
@@ -142,7 +160,12 @@ public class FilterOptionsManager {
         documentaryBox.setChecked(Boolean.parseBoolean(mFilterOptions.get(DOCUMENTARY)));
 
         // Setting the Spinners to the saved String position in the String-Arrays
-        ArrayAdapter myAdap = (ArrayAdapter) ratingSpinner.getAdapter();
+        ArrayAdapter myAdap = (ArrayAdapter) languageSpinner.getAdapter();
+        int languagePosition = myAdap.getPosition(mFilterOptions.get(LANGUAGE));
+        languageSpinner.setSelection(languagePosition);
+
+        // Setting the Spinners to the saved String position in the String-Arrays
+        myAdap = (ArrayAdapter) ratingSpinner.getAdapter();
         int spinnerPosition = myAdap.getPosition(mFilterOptions.get(RATING));
         ratingSpinner.setSelection(spinnerPosition);
     }

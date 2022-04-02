@@ -177,6 +177,8 @@ public class MovieViewActivity extends AppCompatActivity {
     }
 
     private Trailer getBestTrailer(Trailer[] trailers) {
+        if (TrailerFilter.getBestTrailer(trailers) == null) return null;
+
         Log.d(TAG_NAME, "Best video key: " + TrailerFilter.getBestTrailer(trailers).getKey());
         return TrailerFilter.getBestTrailer(trailers);
     }

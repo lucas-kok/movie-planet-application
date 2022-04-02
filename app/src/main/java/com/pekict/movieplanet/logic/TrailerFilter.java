@@ -10,7 +10,7 @@ public class TrailerFilter {
 
     // Function that will return the best matching Trailer for in the application
     public static Trailer getBestTrailer(Trailer[] trailers) {
-        if (trailers == null) return null;
+        if (trailers == null || trailers.length == 0) return null;
 
         for (Trailer trailer : trailers) {
             if (trailer.isMatchForApplication()) return trailer;

@@ -123,6 +123,7 @@
         android:id="@+id/filter_language"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:entries="@array/label_filter_languages"
         app:layout_constraintEnd_toStartOf="@+id/filter_genre_documentary"
         app:layout_constraintStart_toStartOf="@+id/filter_genre_romance"
         app:layout_constraintTop_toBottomOf="@+id/filter_genre_romance"
