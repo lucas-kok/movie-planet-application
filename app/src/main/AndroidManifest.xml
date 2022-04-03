@@ -14,6 +14,7 @@
         android:theme="@style/Theme.MoviePlanet">
         <activity
             android:name=".presentation.SearchActivity"
+            android:theme="@style/Theme.MoviePlanet.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".presentation.MovieViewActivity"

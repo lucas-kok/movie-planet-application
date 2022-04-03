@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().findItem(R.id.action_home).setChecked(true);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFilterOptionsManager.setFilterMenuUI(popupView);
     }
 
-    // Function that's called when filter-menu is created
+    // Function that's called when filter-menu is created?
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bar, menu);
@@ -209,8 +210,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Function that's called when item in side-menu is clicked
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.e(TAG_NAME, item.getItemId() + "Clicked op menu");
-
         switch (item.getItemId()) {
             case R.id.action_search:
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);

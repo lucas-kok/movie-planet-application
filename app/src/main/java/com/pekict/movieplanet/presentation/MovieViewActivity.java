@@ -152,8 +152,7 @@ public class MovieViewActivity extends AppCompatActivity {
             actionBar.setSubtitle(movieTitle);
 
             if (imageURL.equals("https://image.tmdb.org/t/p/w500null")) {
-                movieImage.setImageResource(R.mipmap.ic_launcher);
-                // Todo: Change to basic image
+                movieImage.setImageResource(R.drawable.placeholder);
             } else {
                 Picasso.get().load(imageURL).into(movieImage);
             }

@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.logic.Converters;
 
-@Database(entities = Movie.class, version = 3)
+@Database(entities = Movie.class, version = 4)
 @TypeConverters(Converters.class)
 public abstract class MovieDatabase extends RoomDatabase {
     private static MovieDatabase instance;

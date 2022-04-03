@@ -31,7 +31,9 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    private int databaseId;
+
     private final int id;
     private final String original_language;
     private final String original_title;
@@ -67,6 +69,10 @@ public class Movie implements Parcelable {
         popularity = in.readDouble();
         vote_count = in.readInt();
         vote_average = in.readDouble();
+    }
+
+    public int getDatabaseId(){
+        return databaseId;
     }
 
     public int getId() {
@@ -127,6 +133,10 @@ public class Movie implements Parcelable {
         }
 
         return false;
+    }
+
+    public void setDatabaseId(int databaseId) {
+        this.databaseId = databaseId;
     }
 
     public boolean isMatchForFilters(Map<String, String> filterOptions) {

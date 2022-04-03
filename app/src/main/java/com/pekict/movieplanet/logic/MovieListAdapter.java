@@ -84,9 +84,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
         holder.mMovieTitleText.setText(mCurrent.getTitle());
         holder.mMovieGenreText.setText(mCurrent.getGenres(mCurrent.getGenre_ids()));
-
-        if (mCurrent.getSmallImageURL() == null) return;
-
     }
 
     @Override
