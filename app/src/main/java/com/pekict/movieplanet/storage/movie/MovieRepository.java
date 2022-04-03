@@ -72,7 +72,9 @@ public class MovieRepository {
         new SearchMoviesAPIAsyncTask(query).execute();
     }
 
-    public void sortMovies(String query) { new SortMoviesAPIAsyncTask(query).execute();}
+    public void sortMovies(String query) {
+        new SortMoviesAPIAsyncTask(query).execute();
+    }
 
     public LiveData<Movie[]> getSearchedMovies() {
         return mSearchedMovies;
@@ -228,7 +230,7 @@ public class MovieRepository {
         }
     }
 
-    // AsyncTask Class that will fetch Movies from the API
+    // AsyncTask Class that will fetch Movies from the API based on the given sorting-query
     private static class SortMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
         private final String mQuery;
 
@@ -257,14 +259,13 @@ public class MovieRepository {
                 if (response.isSuccessful()) {
                     return response.body();
                 } else {
-                    Log.e(TAG_NAME, "Error while searching Movies");
+                    Log.e(TAG_NAME, "Error while sorting Movies");
                     return null;
                 }
             } catch (Exception e) {
                 Log.e(TAG_NAME, "Exception: " + e);
                 return null;
             }
-
         }
 
         @Override

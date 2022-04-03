@@ -5,15 +5,15 @@
     <item
         android:id="@+id/btn_menu_sort"
         android:icon="@drawable/ic_baseline_sort_by"
-        android:orderInCategory="100"
+        android:orderInCategory="0"
         android:title="@string/sort_menu"
-        app:showAsAction="always"></item>
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/btn_menu_filter"
         android:icon="@drawable/ic_filter"
-        android:orderInCategory="100"
+        android:orderInCategory="10"
         android:title="@string/label_menu_filter"
-        app:showAsAction="always"></item>
+        app:showAsAction="ifRoom" />
 
 </menu>

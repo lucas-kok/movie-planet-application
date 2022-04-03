@@ -58,5 +58,7 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
     // Function that will sort movies
-    public void sortMovies(String query) { mMovieRepository.sortMovies(query);}
+    public void sortMovies(String query) {
+        mMovieRepository.sortMovies(query);
+    }
 }
