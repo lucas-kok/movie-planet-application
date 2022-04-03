@@ -83,7 +83,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             Picasso.get().load(mCurrent.getSmallImageURL()).into(holder.mMovieImage);
         }
         holder.mMovieTitleText.setText(mCurrent.getTitle());
-        holder.mMovieGenreText.setText(mCurrent.getFirstGenre(mCurrent.getGenre_ids()));
+        holder.mMovieGenreText.setText(mCurrent.getGenres(mCurrent.getGenre_ids()));
     }
 
     @Override

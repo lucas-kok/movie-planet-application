@@ -7,6 +7,16 @@
     android:padding="20dp"
     tools:context=".presentation.SearchActivity">
 
+    <TextView
+        android:id="@+id/tv_search_no_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_tv_search_no_network"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <SearchView
         android:id="@+id/sv_search"
         android:layout_width="match_parent"
@@ -18,5 +28,7 @@
         android:id="@+id/recyclerview_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
