@@ -113,13 +113,24 @@
                 android:id="@+id/btn_expand_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_expand" />
+
+            <TextView
+                android:id="@+id/tv_mv_no_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_tv_mv_no_reviews"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="gone" >
+
+            </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

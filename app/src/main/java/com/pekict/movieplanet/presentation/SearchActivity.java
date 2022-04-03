@@ -30,6 +30,7 @@ public class SearchActivity extends AppCompatActivity {
     private MovieViewModel mMovieViewModel;
 
     private TextView mNoNetworkText;
+    private TextView mNoResultsText;
     private SearchView mSearchBar;
 
     private MovieListAdapter mAdapter;
@@ -47,6 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         mNoNetworkText = findViewById(R.id.tv_search_no_network);
+        mNoResultsText = findViewById(R.id.tv_search_no_results);
         mSearchBar = findViewById(R.id.sv_search);
 
         if(!isNetworkAvailable()) {
@@ -67,8 +69,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
-
         int recyclerViewColumns = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 3;
         int mRecyclerViewVerticalSpacing = 100;
 
@@ -82,6 +82,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void displayMovies(Movie[] movies) {
+        if (movies.length == 0) {
+            mNoResultsText.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        mNoResultsText.setVisibility(View.GONE);
+
         mAdapter = new MovieListAdapter(this, movies, MainActivity.getInstance());
         mRecyclerView.setAdapter(mAdapter);
     }

@@ -53,6 +53,8 @@ public class MovieViewActivity extends AppCompatActivity {
 
     private View mOverlayView;
     private Button mTrailerButton;
+    private ImageButton mExpandReviewsButton;
+    private TextView mNoReviewsText;
 
     private ReviewViewModel mReviewViewModel;
     private TrailerViewModel mTrailerViewModel;
@@ -70,7 +72,9 @@ public class MovieViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_view);
 
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
-        mReviewViewModel.getReviews().observe(this, this::displayReviews);
+        mReviewViewModel.getReviews().observe(this, reviews -> {
+            displayReviews(reviews);
+        });
 
         mTrailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
         mTrailerViewModel.getTrailers().observe(this, trailers -> {
@@ -98,21 +102,23 @@ public class MovieViewActivity extends AppCompatActivity {
         TextView voteAverageText = findViewById(R.id.tv_mv_vote_average);
         TextView genreText = findViewById(R.id.tv_mv_genre);
 
-        ImageButton expandReviewsButton = findViewById(R.id.btn_expand_reviews);
-        expandReviewsButton.setOnClickListener(view -> {
+        mExpandReviewsButton = findViewById(R.id.btn_expand_reviews);
+        mExpandReviewsButton.setOnClickListener(view -> {
             if (mRecyclerView.getVisibility() == View.VISIBLE) {
                 // TransitionManager will smooth out the showing/disappearing of the Reviews
                 TransitionManager.beginDelayedTransition(movieViewLayout,
                         new AutoTransition());
                 mRecyclerView.setVisibility(View.GONE);
-                expandReviewsButton.setImageResource(R.drawable.ic_expand);
+                mExpandReviewsButton.setImageResource(R.drawable.ic_expand);
             } else {
                 TransitionManager.beginDelayedTransition(movieViewLayout,
                         new AutoTransition());
                 mRecyclerView.setVisibility(View.VISIBLE);
-                expandReviewsButton.setImageResource(R.drawable.ic_collapse);
+                mExpandReviewsButton.setImageResource(R.drawable.ic_collapse);
             }
         });
+
+        mNoReviewsText = findViewById(R.id.tv_mv_no_reviews);
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -128,7 +134,6 @@ public class MovieViewActivity extends AppCompatActivity {
                 Log.e(TAG_NAME, "Meal is empty");
                 return;
             }
-
 
             Log.d(TAG_NAME, "Opening Movie: " + movie.getTitle());
 
@@ -280,8 +285,20 @@ public class MovieViewActivity extends AppCompatActivity {
         Log.d(TAG_NAME, "Meals fetched with ViewModel.");
     }
 
+    private void setUIHasReviews(boolean hasReviews) {
+        mExpandReviewsButton.setVisibility(hasReviews ? View.VISIBLE : View.GONE);
+        mNoReviewsText.setVisibility(hasReviews ? View.GONE : View.VISIBLE);
+    }
+
     public void displayReviews(Review[] reviews) {
         Log.d(TAG_NAME, "Reviews found: " + reviews.length);
+
+        if (reviews.length == 0) {
+            setUIHasReviews(false);
+            return;
+        }
+
+        setUIHasReviews(true);
         mAdapter = new ReviewListAdapter(this, reviews);
         mRecyclerView.setAdapter(mAdapter);
     }

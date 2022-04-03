@@ -172,7 +172,7 @@ public class MovieRepository {
                 savePopularMoviesToDatabase();
                 Log.d(TAG_NAME, "onPostExecute found : " + result.getResults().length + " Movies");
             } else {
-                Log.e(TAG_NAME, "No meals found!");
+                Log.e(TAG_NAME, "No Movies found!");
             }
         }
     }

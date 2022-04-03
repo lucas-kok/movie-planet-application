@@ -63,8 +63,10 @@
     <string name="label_tv_mv_review_author">Author: </string>
     <string name="label_tv_mv_review_created">Created at: %1$s</string>
     <string name="label_tv_mv_review_content">Content: </string>
+    <string name="label_tv_mv_no_reviews">No Reviews Available</string>
 
     <!-- SearchActivity -->
     <string name="label_tv_search_no_network">No Network Available!</string>
+    <string name="label_tv_search_no_results">No results found!</string>
 
 </resources>
