@@ -72,6 +72,8 @@ public class MovieRepository {
         new SearchMoviesAPIAsyncTask(query).execute();
     }
 
+    public void sortMovies(String query) { new SortMoviesAPIAsyncTask(query).execute();}
+
     public LiveData<Movie[]> getSearchedMovies() {
         return mSearchedMovies;
     }
@@ -220,6 +222,55 @@ public class MovieRepository {
         protected void onPostExecute(MovieFetchResponse result) {
             if (result != null && result.getResults() != null) {
                 mSearchedMovies.setValue(result.getResults());
+            } else {
+                Log.e(TAG_NAME, "No Movies found for Query: " + mQuery + "!");
+            }
+        }
+    }
+
+    // AsyncTask Class that will fetch Movies from the API
+    private static class SortMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
+        private final String mQuery;
+
+        public SortMoviesAPIAsyncTask(String query) {
+            mQuery = query;
+        }
+
+        @Override
+        protected MovieFetchResponse doInBackground(String... strings) {
+            try {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.themoviedb.org/3/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                APIService service = retrofit.create(APIService.class);
+
+                Uri queryUri = Uri.parse(mQuery);
+
+                Call<MovieFetchResponse> call = service.getMovies("discover/movie?api_key=c7cc756ca295eabae15bda786602c697&language=en-US&sort_by=" + queryUri + "&page=1");
+                Response<MovieFetchResponse> response = call.execute();
+
+                Log.d(TAG_NAME, "Executed call, response.code = " + response.code());
+                Log.d(TAG_NAME, response.toString());
+
+                if (response.isSuccessful()) {
+                    return response.body();
+                } else {
+                    Log.e(TAG_NAME, "Error while searching Movies");
+                    return null;
+                }
+            } catch (Exception e) {
+                Log.e(TAG_NAME, "Exception: " + e);
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(MovieFetchResponse result) {
+            if (result != null && result.getResults() != null) {
+                mMovies.setValue(result.getResults());
             } else {
                 Log.e(TAG_NAME, "No Movies found for Query: " + mQuery + "!");
             }

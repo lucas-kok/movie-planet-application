@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:padding="10dp">
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <RadioButton
+            android:id="@+id/sort_popularity_asc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="true"
+            android:text="@string/popularity_asc"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toStartOf="@id/radio_group"
+            app:layout_constraintTop_toBottomOf="@+id/sort_title_asc" />
+
+        <RadioButton
+            android:id="@+id/sort_popularity_desc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="false"
+            android:text="@string/popularity_desc"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toEndOf="@id/sort_popularity_asc"
+            app:layout_constraintTop_toBottomOf="@id/sort_title_desc" />
+
+        <RadioButton
+            android:id="@+id/sort_release_date_asc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="false"
+            android:text="@string/release_date_asc"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sort_rating_asc" />
+
+        <RadioButton
+            android:id="@+id/sort_release_date_desc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="false"
+            android:text="@string/release_date_desc"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toEndOf="@id/sort_release_date_asc"
+            app:layout_constraintTop_toBottomOf="@id/sort_rating_desc" />
+
+
+        <RadioButton
+            android:id="@+id/sort_title_asc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="false"
+            android:text="@string/title_a_z"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toStartOf="@id/radio_group"
+            app:layout_constraintTop_toTopOf="@id/radio_group" />
+
+        <RadioButton
+            android:id="@+id/sort_title_desc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="false"
+            android:text="@string/title_z_a"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toEndOf="@id/sort_title_asc"
+            app:layout_constraintTop_toTopOf="@id/radio_group" />
+
+        <RadioButton
+            android:id="@+id/sort_rating_asc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="false"
+            android:text="@string/rating_asc"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toStartOf="@id/radio_group"
+            app:layout_constraintTop_toBottomOf="@id/sort_popularity_asc" />
+
+        <RadioButton
+            android:id="@+id/sort_rating_desc"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_primary"
+            android:checked="false"
+            android:text="@string/rating_desc"
+            android:textColor="#000000"
+            android:textColorHighlight="#4CAF50"
+            android:textColorLink="#4CAF50"
+            app:layout_constraintStart_toEndOf="@id/sort_rating_asc"
+            app:layout_constraintTop_toBottomOf="@id/sort_popularity_desc" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_action_sort_movies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sort"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radio_group" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

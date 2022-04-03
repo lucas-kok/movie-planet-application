@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -209,6 +211,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sideMenu.findItem(R.id.action_share).setChecked(false);
     }
 
+    private void showSortPopup() {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.menu_sort, null);
+
+        popupView.findViewById(R.id.btn_action_sort_movies).setOnClickListener(view -> {
+            // Gets checked RadioButton from RadioGroup
+            RadioGroup radioGroup = (RadioGroup) popupView.findViewById(R.id.radio_group);
+            View radioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+            RadioButton r = (RadioButton) radioGroup.getChildAt(radioGroup.indexOfChild(radioButton));
+            String radioButtonText = r.getText().toString();
+
+            //Changes query for API request based on sort method
+            sortMovies(radioButtonText);
+        });
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
+    }
+
+    public void sortMovies(String text) {
+        String query = "";
+        switch (text) {
+            case "Title (A-Z)":
+                query = "original_title.asc";
+                break;
+            case "Title (Z-A)":
+                query = "original_title.desc";
+                break;
+            case "Popularity (ASC)":
+                query = "popularity.asc";
+                break;
+            case "Popularity (DESC)":
+                query = "popularity.desc";
+                break;
+            case "Rating (ASC)":
+                query = "vote_average.asc";
+                break;
+            case "Rating (DESC)":
+                query = "vote_average.desc";
+                break;
+            case "Release Date (ASC)":
+                query = "release_date.asc";
+                break;
+            case "Release Date (DESC)":
+                query = "release_date.desc";
+                break;
+        }
+        mMovieViewModel.sortMovies(query);
+    }
+
     // Function that's called when filter-menu is created?
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -220,6 +280,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.btn_menu_filter) {
             showFilterPopup();
+            return true;
+        } else if (item.getItemId() == R.id.btn_menu_sort) {
+            showSortPopup();
             return true;
         }
 

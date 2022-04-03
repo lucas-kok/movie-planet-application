@@ -72,4 +72,14 @@
     <!-- SearchActivity -->
     <string name="label_sv_search_hint">Search for a movie here!</string>
 
+    <string name="title_a_z">Title (A-Z)</string>
+    <string name="popularity_asc">Popularity (ASC)</string>
+    <string name="rating_asc">Rating (ASC)</string>
+    <string name="title_z_a">Title (Z-A)</string>
+    <string name="popularity_desc">Popularity (DESC)</string>
+    <string name="rating_desc">Rating (DESC)</string>
+    <string name="release_date_desc">Release Date (DESC)</string>
+    <string name="release_date_asc">Release Date (ASC)</string>
+    <string name="sort">Sort</string>
+    <string name="sort_menu">Sort Menu</string>
 </resources>
