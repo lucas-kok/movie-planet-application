@@ -76,6 +76,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mNoResultsText = findViewById(R.id.tv_search_no_results);
         mSearchBar = findViewById(R.id.sv_search);
 
+        // Hide the SearchView and show an error message when no network is available
         if(!isNetworkAvailable()) {
             mSearchBar.setVisibility(View.GONE);
             mNoNetworkText.setVisibility(View.VISIBLE);
@@ -109,10 +110,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private void displayMovies(Movie[] movies) {
         if (movies.length == 0) {
             mNoResultsText.setVisibility(View.VISIBLE);
-            return;
+        } else {
+            mNoResultsText.setVisibility(View.GONE);
         }
-
-        mNoResultsText.setVisibility(View.GONE);
 
         mAdapter = new MovieListAdapter(this, movies, MainActivity.getInstance());
         mRecyclerView.setAdapter(mAdapter);
