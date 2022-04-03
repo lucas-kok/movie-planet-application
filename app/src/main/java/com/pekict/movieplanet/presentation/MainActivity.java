@@ -204,9 +204,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.e(TAG_NAME, item.getItemId() + "Clicked op menu");
 
         switch (item.getItemId()) {
-            case R.id.action_home:
-                // Todo: Start Intent MainActivity if not already open
-                break;
             case R.id.action_search:
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);

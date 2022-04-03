@@ -78,12 +78,16 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
         // Setting the items UI elements to the Movies values
         if (mCurrent.getSmallImageURL().equals("https://image.tmdb.org/t/p/w500null")) {
-            Picasso.get().load("https://www.tube-culture.com/images/titles_cache/750x1031_movienophoto_2014_1000x1375.jpg").into(holder.mMovieImage);
+            holder.mMovieImage.setImageResource(R.mipmap.ic_launcher);
+            // Todo: Change to basic image
         } else {
             Picasso.get().load(mCurrent.getSmallImageURL()).into(holder.mMovieImage);
         }
         holder.mMovieTitleText.setText(mCurrent.getTitle());
         holder.mMovieGenreText.setText(mCurrent.getGenres(mCurrent.getGenre_ids()));
+
+        if (mCurrent.getSmallImageURL() == null) return;
+
     }
 
     @Override

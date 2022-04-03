@@ -146,7 +146,12 @@ public class MovieViewActivity extends AppCompatActivity {
             // Changing the UI elements to the Movies values
             actionBar.setSubtitle(movieTitle);
 
-            Picasso.get().load(imageURL).into(movieImage);
+            if (imageURL.equals("https://image.tmdb.org/t/p/w500null")) {
+                movieImage.setImageResource(R.mipmap.ic_launcher);
+                // Todo: Change to basic image
+            } else {
+                Picasso.get().load(imageURL).into(movieImage);
+            }
             titleText.setText(movieTitle);
             originalLanguageText.setText(getString(R.string.label_tv_mv_original_language, originalLanguage));
             overviewText.setText(overview);

@@ -75,10 +75,6 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerview_search);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, recyclerViewColumns));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
-
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void searchMovies(String query) {
