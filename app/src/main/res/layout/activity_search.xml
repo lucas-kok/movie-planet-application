@@ -5,12 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
+    android:background="@color/color_secondary"
     tools:context=".presentation.SearchActivity">
 
     <SearchView
         android:id="@+id/sv_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/searchHint"
+        >
 
     </SearchView>
 
