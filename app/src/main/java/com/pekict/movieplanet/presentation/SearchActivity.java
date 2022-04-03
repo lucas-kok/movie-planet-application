@@ -31,27 +31,29 @@ import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG_NAME = SearchActivity.class.getSimpleName();
-
-    private MovieViewModel mMovieViewModel;
+    public static final String MOVIES = "MOVIES";
 
     private DrawerLayout mDrawer;
 
+    private SearchView mSearchBar;
+    private RecyclerView mRecyclerView;
+    private MovieListAdapter mAdapter;
     private TextView mNoNetworkText;
     private TextView mNoResultsText;
-    private SearchView mSearchBar;
 
-    private MovieListAdapter mAdapter;
-    private RecyclerView mRecyclerView;
+    private MovieViewModel mMovieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // Initiating the Header
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setSubtitle(getResources().getString(R.string.label_app_home));
+        toolbar.setSubtitle(getResources().getString(R.string.label_menu_item_search));
         setSupportActionBar(toolbar);
 
+        // Initiating the side-menu
         mDrawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
@@ -63,22 +65,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-        mMovieViewModel.getSearchedMovies().observe(this, movies -> {
-            Log.d(TAG_NAME, "Movies found: " + movies.length);
-            displayMovies(movies);
-        });
-
-        mNoNetworkText = findViewById(R.id.tv_search_no_network);
-        mNoResultsText = findViewById(R.id.tv_filter_no_results);
+        // Listener to search movies when user submits a Query
         mSearchBar = findViewById(R.id.sv_search);
-
-        // Hide the SearchView and show an error message when no network is available
-        if(!isNetworkAvailable()) {
-            mSearchBar.setVisibility(View.GONE);
-            mNoNetworkText.setVisibility(View.VISIBLE);
-        }
-
         mSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -91,26 +79,45 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 return false;
             }
         });
+        mNoNetworkText = findViewById(R.id.tv_search_no_network);
+        mNoResultsText = findViewById(R.id.tv_filter_no_results);
 
+        // Number of columns in RecyclerView holding Movies based on the devices orientation
         int recyclerViewColumns = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 3;
         int mRecyclerViewVerticalSpacing = 100;
 
         mRecyclerView = findViewById(R.id.recyclerview_search);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, recyclerViewColumns));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
+
+        // Observing the MovieViewModels LiveData<Movies[]> for changes, then displaying the new Movies
+        mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        mMovieViewModel.getSearchedMovies().observe(this, this::displayMovies);
+
+        // Hide the SearchView and show an error message when no network is available
+        if(!isNetworkAvailable()) {
+            mSearchBar.setVisibility(View.GONE);
+            mNoNetworkText.setVisibility(View.VISIBLE);
+        }
+
+        // Displaying the Movies from the SavedInstance when present
+        if (savedInstanceState != null) {
+            displayMovies((Movie[])savedInstanceState.getParcelableArray(MOVIES));
+            Log.d(TAG_NAME, "Movies fetched with savedInstance.");
+        }
     }
 
+    // Function that will fetch Movies based on the given search-input
     private void searchMovies(String query) {
         mMovieViewModel.searchMovies(query);
     }
 
+    // Function that will display the given Movies in the RecyclerView
     private void displayMovies(Movie[] movies) {
-        if (movies.length == 0) {
-            mNoResultsText.setVisibility(View.VISIBLE);
-        } else {
-            mNoResultsText.setVisibility(View.GONE);
-        }
+        // Displaying a "No Results" TextView when there are no Movies
+        mNoResultsText.setVisibility(movies.length == 0 ? View.VISIBLE : View.GONE);
 
+        // Displaying the Movies to the RecyclerView using the MovieListAdapter
         mAdapter = new MovieListAdapter(this, movies, MainActivity.getInstance());
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -123,7 +130,13 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    // Function that activated the side-navigation Home item
+    // Function to start a Activity with the given Class
+    private void startActivity(Class activity) {
+        Intent intent = new Intent(getApplicationContext(), activity);
+        startActivity(intent);
+    }
+
+    // Function that activated the side-navigation Search item
     private void activateNavigationItem(NavigationView navigationView) {
         Menu sideMenu = navigationView.getMenu();
         sideMenu.findItem(R.id.action_home).setChecked(false);
@@ -132,20 +145,27 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         sideMenu.findItem(R.id.action_share).setChecked(false);
     }
 
-    // Function that's called when item in side-menu is clicked
+    // Function to handle clicks on the side-menu (menu > menu_main.xml)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                startActivity(MainActivity.class);
                 break;
-            case R.id.action_share:
-                // Todo: Share
+            case R.id.action_list:
+                // Todo: Open List Activity
                 break;
         }
 
+        // Closing the side-menu
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    // Function temporary to save the current fetched Movies
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelableArray(MOVIES, mMovieViewModel.getSearchedMovies().getValue());
+        super.onSaveInstanceState(outState);
     }
 }

@@ -44,7 +44,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG_NAME = MainActivity.class.getSimpleName();
-    public static final String MEALS = "MEALS";
+    public static final String MOVIES = "MOVIES";
     private static volatile MainActivity instance;
 
     private DrawerLayout mDrawer;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         instance = this;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setSubtitle(getResources().getString(R.string.label_app_home));
+        toolbar.setSubtitle(getResources().getString(R.string.label_menu_item_home));
         setSupportActionBar(toolbar);
 
         mDrawer = findViewById(R.id.drawer_layout);
@@ -108,8 +108,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFilterOptionsManager = new FilterOptionsManager(mSharedPrefs, mSharedPrefsEditor, this);
         mFilterOptionsManager.initFilterOptions();
 
+        // Observing the MovieViewModels LiveData<Movies[]> for changes
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mMovieViewModel.getMovies().observe(this, movies -> {
+            // Displaying the new Movies
             displayMovies(filterMovies(mMovieViewModel.getMovies().getValue()));
 
             // Only showing the "Load More" Button when there is a network connection,
@@ -119,10 +121,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        // Listener for the "Load More" Button to fetch an extra page of Movies
         mLoadMoreButton = findViewById(R.id.btn_load_more);
         mLoadMoreButton.setOnClickListener(view -> mMovieViewModel.loadMoreMovies(isNetworkAvailable()));
 
-        // FloatingButton will start the SearchActivity
+        // Listener for the FloatingButton to start the SearchActivity
         FloatingActionButton fab = findViewById(R.id.btn_fab);
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
@@ -134,9 +137,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Function to load the Movies depending on the Users situation
     public void loadMovies() {
+        // Displaying the Movies from the SavedInstance when present
         if (mSavedInstanceState != null) {
-            displayMovies((Movie[])mSavedInstanceState.getParcelableArray(MEALS));
-            Log.d(TAG_NAME, "Meals fetched with savedInstance.");
+            displayMovies((Movie[])mSavedInstanceState.getParcelableArray(MOVIES));
+            Log.d(TAG_NAME, "Movies fetched with savedInstance.");
 
             return;
         }
@@ -145,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.i(TAG_NAME, "User has internet is: " + hasInternet);
 
         mMovieViewModel.fetchMovies(hasInternet, 1);
-        Log.d(TAG_NAME, "Meals fetched with ViewModel.");
+        Log.d(TAG_NAME, "Movies fetched with ViewModel.");
     }
 
     // Function that will start fetching Movies based on the selected RadioButtons text
@@ -182,13 +186,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mMovieViewModel.sortMovies(query);
     }
 
+    // Function that will return the Movies matching the users filter options
     public Movie[] filterMovies(Movie[] movies) {
         Map<String, String> filterOptions = mFilterOptionsManager.getFilterOptions();
         return MovieFilter.getFilteredMovies(filterOptions, Objects.requireNonNull(movies));
     }
 
+    // Function that will display the given Movies in the RecyclerView
     public void displayMovies(Movie[] movies) {
-        // Displays a "No Results" TextView when there are no Movies
+        // Displaying a "No Results" TextView when there are no Movies
         mNoResultsText.setVisibility(movies.length == 0 ? View.VISIBLE : View.GONE);
 
         // Displaying the Movies to the RecyclerView using the MovieListAdapter
@@ -304,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.action_list:
-                // Todo: Open List Intent
+                // Todo: Open List Activity
                 break;
         }
 
@@ -316,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Function temporary to save the current fetched Movies
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArray(MEALS, mMovieViewModel.getMovies().getValue());
+        outState.putParcelableArray(MOVIES, mMovieViewModel.getMovies().getValue());
         super.onSaveInstanceState(outState);
     }
 }
