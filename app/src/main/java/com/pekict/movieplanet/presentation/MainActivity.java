@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
+        activateNavigationItem(navigationView);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -197,6 +198,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
         mFilterOptionsManager.setFilterMenuUI(popupView);
+    }
+
+    // Function that activated the side-navigation Home item
+    private void activateNavigationItem(NavigationView navigationView) {
+        Menu sideMenu = navigationView.getMenu();
+        sideMenu.findItem(R.id.action_home).setChecked(true);
+        sideMenu.findItem(R.id.action_search).setChecked(false);
+        sideMenu.findItem(R.id.action_list).setChecked(false);
+        sideMenu.findItem(R.id.action_share).setChecked(false);
     }
 
     // Function that's called when filter-menu is created?

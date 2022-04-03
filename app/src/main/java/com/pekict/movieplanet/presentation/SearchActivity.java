@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
@@ -55,7 +56,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().findItem(R.id.action_search).setChecked(true);
+        activateNavigationItem(navigationView);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -120,6 +121,15 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    // Function that activated the side-navigation Home item
+    private void activateNavigationItem(NavigationView navigationView) {
+        Menu sideMenu = navigationView.getMenu();
+        sideMenu.findItem(R.id.action_home).setChecked(false);
+        sideMenu.findItem(R.id.action_search).setChecked(true);
+        sideMenu.findItem(R.id.action_list).setChecked(false);
+        sideMenu.findItem(R.id.action_share).setChecked(false);
     }
 
     // Function that's called when item in side-menu is clicked
