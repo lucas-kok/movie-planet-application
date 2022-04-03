@@ -78,8 +78,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
         // Setting the items UI elements to the Movies values
         if (mCurrent.getSmallImageURL().equals("https://image.tmdb.org/t/p/w500null")) {
-            holder.mMovieImage.setImageResource(R.mipmap.ic_launcher);
-            // Todo: Change to basic image
+            holder.mMovieImage.setImageResource(R.drawable.placeholder);
         } else {
             Picasso.get().load(mCurrent.getSmallImageURL()).into(holder.mMovieImage);
         }
