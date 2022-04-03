@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FilterOptionsManager mFilterOptionsManager;
     private Bundle mSavedInstanceState;
 
+    private TextView mNoResultsText;
+
     public static Context getContext() {
         return instance.getApplicationContext();
     }
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(getResources().getString(R.string.label_app_home));
         setSupportActionBar(toolbar);
+
+        mNoResultsText = findViewById(R.id.tv_search_no_results);
 
         mDrawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -153,6 +157,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayMovies(Movie[] movies) {
+        if (movies.length == 0) {
+            mNoResultsText.setVisibility(View.VISIBLE);
+        } else {
+            mNoResultsText.setVisibility(View.GONE);
+        }
+
         mAdapter = new MovieListAdapter(this, movies, MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
