@@ -71,6 +71,7 @@
 
     <!-- SearchActivity -->
     <string name="label_sv_search_hint">Search for a movie here!</string>
+    <string name="genre_text">Genre:</string>
 
     <string name="title_a_z">Title (A-Z)</string>
     <string name="popularity_asc">Popularity (ASC)</string>

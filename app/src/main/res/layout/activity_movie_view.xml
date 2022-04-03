@@ -53,7 +53,7 @@
                 android:id="@+id/tv_mv_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Genre:"
+                android:text="@string/genre_text"
                 android:textSize="17sp" />
 
             <TextView
