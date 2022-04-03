@@ -1,6 +1,7 @@
 package com.pekict.movieplanet.storage.movie;
 
 import android.app.Application;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -21,12 +22,14 @@ public class MovieRepository {
     private static volatile MovieRepository instance;
 
     private static MutableLiveData<Movie[]> mMovies;
+    private static MutableLiveData<Movie[]> mSearchedMovies;
 
     private static MovieDAO mMovieDAO;
     private static int mMoviePagesInDatabase;
 
     public MovieRepository(Application application) {
         mMovies = new MutableLiveData<>();
+        mSearchedMovies = new MutableLiveData<>();
 
         mMovieDAO = MovieDatabase.getInstance(application).getMovieDAO();
         mMoviePagesInDatabase = 1;
@@ -54,7 +57,7 @@ public class MovieRepository {
     // Function that saves the Movies to the database
     public static void savePopularMoviesToDatabase() {
         new UpdatePopularMealsAsyncTask(mMovieDAO).execute(mMovies.getValue());
-        Log.d(TAG_NAME, "Meals saved in Database");
+        Log.d(TAG_NAME, "Movies saved in Database");
     }
 
     public LiveData<Movie[]> getMovies() {
@@ -65,18 +68,22 @@ public class MovieRepository {
         mMovies.setValue(movies);
     }
 
+    public void searchMovies(String query) {
+        new SearchMoviesAPIAsyncTask(query).execute();
+    }
+
+    public LiveData<Movie[]> getSearchedMovies() {
+        return mSearchedMovies;
+    }
+
     // Function that will return and merge two arrays into one
     private static Movie[] mergeMovieArrays(Movie[] arrOne, Movie[] arrTwo) {
         if (arrOne == null) return arrTwo;
 
         Movie[] newArr = new Movie[arrOne.length + arrTwo.length];
-        for (int i = 0; i < arrOne.length; i++) {
-            newArr[i] = arrOne[i];
-        }
+        System.arraycopy(arrOne, 0, newArr, 0, arrOne.length);
 
-        for (int i = 0; i < arrTwo.length; i++) {
-            newArr[i + arrOne.length] = arrTwo[i];
-        }
+        System.arraycopy(arrTwo, 0, newArr, arrOne.length, arrTwo.length);
 
         return newArr;
     }
@@ -117,12 +124,11 @@ public class MovieRepository {
 
     // AsyncTask Class that will fetch Movies from the API
     private static class FetchPopularMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
-        private int mPopularMoviePages;
+        private final int mPopularMoviePages;
 
         public FetchPopularMoviesAPIAsyncTask(int popularMoviePages) {
             mPopularMoviePages = popularMoviePages;
         }
-
 
         @Override
         protected MovieFetchResponse doInBackground(String... strings) {
@@ -167,6 +173,55 @@ public class MovieRepository {
                 Log.d(TAG_NAME, "onPostExecute found : " + result.getResults().length + " Movies");
             } else {
                 Log.e(TAG_NAME, "No meals found!");
+            }
+        }
+    }
+
+    // AsyncTask Class that will fetch Movies from the API
+    private static class SearchMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
+        private final String mQuery;
+
+        public SearchMoviesAPIAsyncTask(String query) {
+            mQuery = query;
+        }
+
+        @Override
+        protected MovieFetchResponse doInBackground(String... strings) {
+            try {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.themoviedb.org/3/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                APIService service = retrofit.create(APIService.class);
+
+                Uri queryUri = Uri.parse(mQuery);
+
+                Call<MovieFetchResponse> call = service.getMovies("search/movie?api_key=c7cc756ca295eabae15bda786602c697&language=en-US&page=1&include_adult=false&query=" + queryUri);
+                Response<MovieFetchResponse> response = call.execute();
+
+                Log.d(TAG_NAME, "Executed call, response.code = " + response.code());
+                Log.d(TAG_NAME, response.toString());
+
+                if (response.isSuccessful()) {
+                    return response.body();
+                } else {
+                    Log.e(TAG_NAME, "Error while searching Movies");
+                    return null;
+                }
+            } catch (Exception e) {
+                Log.e(TAG_NAME, "Exception: " + e);
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(MovieFetchResponse result) {
+            if (result != null && result.getResults() != null) {
+                mSearchedMovies.setValue(result.getResults());
+            } else {
+                Log.e(TAG_NAME, "No Movies found for Query: " + mQuery + "!");
             }
         }
     }

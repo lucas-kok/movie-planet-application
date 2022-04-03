@@ -1,7 +1,6 @@
 package com.pekict.movieplanet.presentation;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -85,8 +83,6 @@ public class MovieViewActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerview_reviews);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        ActionBar actionBar = getSupportActionBar();
-
         LinearLayout movieViewLayout = findViewById(R.id.ll_mv);
         mOverlayView = findViewById(R.id.overlay_view);
 
@@ -118,6 +114,7 @@ public class MovieViewActivity extends AppCompatActivity {
             }
         });
 
+        ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -301,7 +298,7 @@ public class MovieViewActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (id == R.id.btn_unfavorite) {
-            if(isFavorite){
+            if (isFavorite) {
                 isFavorite = false;
                 item.setIcon(R.drawable.ic_unfavorite);
             } else {
@@ -309,7 +306,7 @@ public class MovieViewActivity extends AppCompatActivity {
                 item.setIcon(R.drawable.ic_favorite);
             }
         } else if (id == R.id.btn_watch) {
-            if(isWatched){
+            if (isWatched) {
                 isWatched = false;
                 item.setIcon(R.drawable.ic_notwatched);
             } else {
@@ -319,8 +316,18 @@ public class MovieViewActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bar_detailpage, menu);
+        MenuItem favoriteButton = menu.findItem(R.id.btn_unfavorite);
+        MenuItem watchedButton = menu.findItem(R.id.btn_watch);
 
+        favoriteButton.setIcon(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_unfavorite);
+        watchedButton.setIcon(isWatched ? R.drawable.ic_watched : R.drawable.ic_notwatched);
+
+        return true;
     }
 
     @Override
@@ -329,24 +336,4 @@ public class MovieViewActivity extends AppCompatActivity {
         outState.putString(VIDEOKEY, mVideoKey);
         super.onSaveInstanceState(outState);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_bar_detailpage, menu);
-        MenuItem filterButton = menu.findItem(R.id.btn_unfavorite);
-        MenuItem watchedButton = menu.findItem(R.id.btn_watch);
-        if(isFavorite){
-            filterButton.setIcon(R.drawable.ic_favorite);
-        } else {
-            filterButton.setIcon(R.drawable.ic_unfavorite);
-        }
-
-        if(isWatched){
-            watchedButton.setIcon(R.drawable.ic_watched);
-        } else {
-            watchedButton.setIcon(R.drawable.ic_notwatched);
-        }
-        return true;
-    }
-
 }

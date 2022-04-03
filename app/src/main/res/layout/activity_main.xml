@@ -87,10 +87,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="@color/color_secondary"
+            android:backgroundTint="#FFFFFF"
+            android:backgroundTintMode="add"
+
             android:contentDescription="@string/label_btn_fab_description"
             android:src="@drawable/ic_search_white"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

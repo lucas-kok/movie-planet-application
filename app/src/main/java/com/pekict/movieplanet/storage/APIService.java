@@ -20,4 +20,7 @@ public interface APIService {
 
     @GET("videos?api_key=c7cc756ca295eabae15bda786602c697")
     Call<TrailerFetchResponse> getTrailers();
+
+    @GET()
+    Call<MovieFetchResponse> searchMovies(@Url String url);
 }

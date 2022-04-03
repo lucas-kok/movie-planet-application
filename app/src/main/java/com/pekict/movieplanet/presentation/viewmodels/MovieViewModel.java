@@ -14,24 +14,32 @@ public class MovieViewModel extends AndroidViewModel {
 
     private final MovieRepository mMovieRepository;
 
-    private LiveData<Movie[]> mMovies;
+    private LiveData<Movie[]> mPopularMovies;
+    private LiveData<Movie[]> mSearchedMovies;
+
     private int popularMoviePages;
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
         mMovieRepository = MovieRepository.getInstance(application);
 
-        mMovies = mMovieRepository.getMovies();
+        mPopularMovies = mMovieRepository.getMovies();
+        mSearchedMovies = mMovieRepository.getSearchedMovies();
+
         popularMoviePages = 1;
     }
 
     public LiveData<Movie[]> getMovies() {
-        return mMovies;
+        return mPopularMovies;
     }
 
     public void setMovies(Movie[] movies) {
         mMovieRepository.setMovies(movies);
-        mMovies = mMovieRepository.getMovies();
+        mPopularMovies = mMovieRepository.getMovies();
+    }
+
+    public LiveData<Movie[]> getSearchedMovies() {
+        return mSearchedMovies;
     }
 
     // Function to fetch the meals
@@ -44,8 +52,8 @@ public class MovieViewModel extends AndroidViewModel {
         fetchMovies(hasInternet, popularMoviePages);
     }
 
-    // Function that will save the current Movies to the SQLite Database
-    public void savePopularMoviesToDatabase() {
-        mMovieRepository.savePopularMoviesToDatabase();
+    // Function that will search movies based on the users Query
+    public void searchMovies(String query) {
+        mMovieRepository.searchMovies(query);
     }
 }

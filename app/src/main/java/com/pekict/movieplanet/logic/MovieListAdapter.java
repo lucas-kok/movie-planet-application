@@ -16,6 +16,7 @@ import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.presentation.MainActivity;
 import com.pekict.movieplanet.presentation.MovieViewActivity;
+import com.pekict.movieplanet.presentation.SearchActivity;
 import com.squareup.picasso.Picasso;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoviePlanet">
         <activity
+            android:name=".presentation.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.MovieViewActivity"
             android:exported="false" />
         <activity

@@ -1,6 +1,7 @@
 package com.pekict.movieplanet.presentation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
@@ -46,13 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static volatile MainActivity instance;
 
     private DrawerLayout mDrawer;
-    private TextView mMenuUserNameText;
-    private TextView mMenuUserEmailText;
 
     private MovieViewModel mMovieViewModel;
 
-    private int mRecyclerViewColumns;
-    private int mRecyclerViewVerticalSpacing;
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
     private Button mLoadMoreButton;
@@ -64,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static Context getContext() {
         return instance.getApplicationContext();
+    }
+
+    public static MainActivity getInstance() {
+        return instance;
     }
 
     @Override
@@ -82,10 +83,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
-        View headerView = navigationView.getHeaderView(0);
-        mMenuUserNameText = headerView.findViewById(R.id.tv_menu_user_name);
-        mMenuUserEmailText = headerView.findViewById(R.id.tv_menu_user_email);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(toggle);
@@ -102,19 +99,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //In landscape 3 elements wide
-            mRecyclerViewColumns = 3;
-        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //In portrait 2 elements wide
-            mRecyclerViewColumns = 2;
-        }
-        mRecyclerViewVerticalSpacing = 100;
+        int recyclerViewColumns = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 3;
+        int recyclerViewVerticalSpacing = 100;
 
         mRecyclerView = findViewById(R.id.recyclerview_popular_movies);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, mRecyclerViewColumns));
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, recyclerViewColumns));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(recyclerViewVerticalSpacing));
 
         mLoadMoreButton = findViewById(R.id.btn_load_more);
         mLoadMoreButton.setOnClickListener(view -> {
@@ -216,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.action_home:
                 // Todo: Start Intent MainActivity if not already open
+                break;
+            case R.id.action_search:
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.action_share:
                 // Todo: Share
