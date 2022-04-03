@@ -75,14 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         instance = this;
 
-        FloatingActionButton fab = findViewById(R.id.btn_fab);
-        fab.setOnClickListener(
-                view -> {
-                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                    startActivity(intent);
-                }
-        );
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(getResources().getString(R.string.label_app_home));
         setSupportActionBar(toolbar);
@@ -119,6 +111,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mLoadMoreButton.setOnClickListener(view -> {
             mMovieViewModel.loadMoreMovies(isNetworkAvailable());
         });
+
+        FloatingActionButton fab = findViewById(R.id.btn_fab);
+        fab.setOnClickListener(view -> {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    startActivity(intent);
+                }
+        );
 
         mSharedPrefs = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         mSharedPrefsEditor = mSharedPrefs.edit();

@@ -41,6 +41,7 @@ public class TrailerRepository {
 
     // Function that will start fetching the Trailers
     public void fetchTrailers(int movieId) {
+        mTrailers.setValue(null);
         new FetchTrailersAPIAsyncTask(movieId).execute();
         Log.d(TAG_NAME, "Retrieving Movies from API");
     }

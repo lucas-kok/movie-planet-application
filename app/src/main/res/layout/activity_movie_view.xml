@@ -37,7 +37,8 @@
                 android:id="@+id/btn_trailer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Trailer" />
+                android:text="Trailer"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_mv_title"
