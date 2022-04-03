@@ -1,16 +1,13 @@
 package com.pekict.movieplanet.presentation;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -20,7 +17,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
@@ -73,7 +69,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         });
 
         mNoNetworkText = findViewById(R.id.tv_search_no_network);
-        mNoResultsText = findViewById(R.id.tv_search_no_results);
+        mNoResultsText = findViewById(R.id.tv_filter_no_results);
         mSearchBar = findViewById(R.id.sv_search);
 
         // Hide the SearchView and show an error message when no network is available

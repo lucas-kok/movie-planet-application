@@ -11,6 +11,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Errors -->
+    <string name="label_tv_error_no_network">No Network Available!</string>
+    <string name="label_tv_error_no_results">No results found!</string>
+
     <!-- Main Menu -->
     <string name="label_menu_pages">Pages</string>
     <string name="label_menu_item_home">Home</string>
@@ -67,7 +71,5 @@
 
     <!-- SearchActivity -->
     <string name="label_sv_search_hint">Search for a movie here!</string>
-    <string name="label_tv_search_no_network">No Network Available!</string>
-    <string name="label_tv_search_no_results">No results found!</string>
 
 </resources>

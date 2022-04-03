@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setSubtitle(getResources().getString(R.string.label_app_home));
         setSupportActionBar(toolbar);
 
-        mNoResultsText = findViewById(R.id.tv_search_no_results);
+        mNoResultsText = findViewById(R.id.tv_filter_no_results);
 
         mDrawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
