@@ -261,13 +261,11 @@ public class MovieViewActivity extends AppCompatActivity {
         // create the popup window
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
 
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
         popupWindow.setOnDismissListener(() -> mOverlayView.setVisibility(View.GONE));
 
         // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(mTrailerButton.getRootView(), Gravity.CENTER, 0, 0);
         mOverlayView.setVisibility(View.VISIBLE);
     }
@@ -322,21 +320,11 @@ public class MovieViewActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (id == R.id.btn_unfavorite) {
-            if (isFavorite) {
-                isFavorite = false;
-                item.setIcon(R.drawable.ic_unfavorite);
-            } else {
-                isFavorite = true;
-                item.setIcon(R.drawable.ic_favorite);
-            }
+            item.setIcon(isFavorite ? R.drawable.ic_unfavorite : R.drawable.ic_favorite);
+            isFavorite = !isFavorite;
         } else if (id == R.id.btn_watch) {
-            if (isWatched) {
-                isWatched = false;
-                item.setIcon(R.drawable.ic_notwatched);
-            } else {
-                isWatched = true;
-                item.setIcon(R.drawable.ic_watched);
-            }
+            item.setIcon(isWatched ? R.drawable.ic_notwatched : R.drawable.ic_watched);
+            isWatched = !isWatched;
         } else if (id == R.id.btn_share) {
             shareMovie();
         }
@@ -366,7 +354,6 @@ public class MovieViewActivity extends AppCompatActivity {
     public void shareMovie(){
         String url = "http://movieplanet.moviedetails.com/" + mMovie.getId();
 
-        Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, "Check out this movie called " + mMovie.getTitle() + ", on " + url);
         intent.putExtra(Intent.EXTRA_STREAM, mMovie.getSmallImageURL());
