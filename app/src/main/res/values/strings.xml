@@ -21,6 +21,19 @@
     <string name="label_menu_other">Other</string>
     <string name="label_menu_item_share">Share</string>
 
+    <!-- Sorting Menu -->
+    <string name="sort">Sort</string>
+    <string name="sort_menu">Sort Menu</string>
+
+    <string name="label_sort_title_asc">Title (A-Z)</string>
+    <string name="title_sort_title_desc">Title (Z-A)</string>
+    <string name="label_sort_popularity_asc">Popularity (ASC)</string>
+    <string name="label_sort_popularity_desc">Popularity (DESC)</string>
+    <string name="label_sort_rating_asc">Rating (ASC)</string>
+    <string name="label_sort_rating_desc">Rating (DESC)</string>
+    <string name="label_sort_release_date_desc">Release Date (DESC)</string>
+    <string name="label_sort_release_date_asc">Release Date (ASC)</string>
+
     <!-- Filter Menu -->
     <string name="label_menu_filter">Filter Menu</string>
     <string name="label_filter_genre_action">Action</string>
@@ -72,15 +85,4 @@
     <!-- SearchActivity -->
     <string name="label_sv_search_hint">Search for a movie here!</string>
     <string name="genre_text">Genre:</string>
-
-    <string name="title_a_z">Title (A-Z)</string>
-    <string name="popularity_asc">Popularity (ASC)</string>
-    <string name="rating_asc">Rating (ASC)</string>
-    <string name="title_z_a">Title (Z-A)</string>
-    <string name="popularity_desc">Popularity (DESC)</string>
-    <string name="rating_desc">Rating (DESC)</string>
-    <string name="release_date_desc">Release Date (DESC)</string>
-    <string name="release_date_asc">Release Date (ASC)</string>
-    <string name="sort">Sort</string>
-    <string name="sort_menu">Sort Menu</string>
 </resources>
