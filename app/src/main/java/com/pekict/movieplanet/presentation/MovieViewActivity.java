@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -27,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.review.Review;
@@ -50,6 +52,7 @@ public class MovieViewActivity extends AppCompatActivity {
     // TODO: Begin te implementeren dat deze ook gwn opgeslagen wordt
     // TODO: Begin share button ook te laten werken
     // TODO: Begin print button te laten werken
+    private Movie mMovie;
 
     private View mOverlayView;
     private Button mTrailerButton;
@@ -128,25 +131,25 @@ public class MovieViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             Bundle bundle = intent.getParcelableExtra("bundle");
-            Movie movie = bundle.getParcelable("movieObj");
+            mMovie = bundle.getParcelable("movieObj");
 
-            if (movie == null) {
+            if (mMovie == null) {
                 Log.e(TAG_NAME, "Meal is empty");
                 return;
             }
 
-            Log.d(TAG_NAME, "Opening Movie: " + movie.getTitle());
+            Log.d(TAG_NAME, "Opening Movie: " + mMovie.getTitle());
 
             // Getting the Movies values
-            mMovieId = movie.getId();
-            String imageURL = movie.getSmallImageURL();
-            String movieTitle = movie.getTitle();
-            String originalLanguage = movie.getOriginal_language();
-            String overview = movie.getOverview();
-            double popularity = movie.getPopularity();
-            int voteCount = movie.getVote_count();
-            double voteAverage = movie.getVote_average();
-            String genres = movie.getGenres(movie.getGenre_ids());
+            mMovieId = mMovie.getId();
+            String imageURL = mMovie.getSmallImageURL();
+            String movieTitle = mMovie.getTitle();
+            String originalLanguage = mMovie.getOriginal_language();
+            String overview = mMovie.getOverview();
+            double popularity = mMovie.getPopularity();
+            int voteCount = mMovie.getVote_count();
+            double voteAverage = mMovie.getVote_average();
+            String genres = mMovie.getGenres(mMovie.getGenre_ids());
 
             // Changing the UI elements to the Movies values
             actionBar.setSubtitle(movieTitle);
@@ -334,6 +337,8 @@ public class MovieViewActivity extends AppCompatActivity {
                 isWatched = true;
                 item.setIcon(R.drawable.ic_watched);
             }
+        } else if (id == R.id.btn_share) {
+            shareMovie();
         }
 
         return super.onOptionsItemSelected(item);
@@ -356,5 +361,22 @@ public class MovieViewActivity extends AppCompatActivity {
         outState.putParcelableArray(REVIEWS, mReviewViewModel.getReviews().getValue());
         outState.putString(VIDEOKEY, mVideoKey);
         super.onSaveInstanceState(outState);
+    }
+
+    public void shareMovie(){
+        String url = "http://movieplanet.moviedetails.com/" + mMovie.getId();
+
+        Uri webpage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Check out this movie called " + mMovie.getTitle() + ", on " + url);
+        intent.putExtra(Intent.EXTRA_STREAM, mMovie.getSmallImageURL());
+        intent.setType("text/plain");
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            Intent shareIntent = Intent.createChooser(intent, null);
+            startActivity(shareIntent);
+        } else {
+            Log.d("ImplicitIntents", "Can't handle this shit!");
+        }
     }
 }
