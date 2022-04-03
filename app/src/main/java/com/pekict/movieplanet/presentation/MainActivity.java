@@ -29,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
@@ -73,6 +74,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         instance = this;
+
+        FloatingActionButton fab = findViewById(R.id.btn_fab);
+        fab.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    startActivity(intent);
+                }
+        );
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(getResources().getString(R.string.label_app_home));
