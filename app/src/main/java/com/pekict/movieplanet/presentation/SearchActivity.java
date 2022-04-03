@@ -8,12 +8,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
@@ -25,6 +29,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private MovieViewModel mMovieViewModel;
 
+    private TextView mNoNetworkText;
     private SearchView mSearchBar;
 
     private MovieListAdapter mAdapter;
@@ -41,7 +46,14 @@ public class SearchActivity extends AppCompatActivity {
             displayMovies(movies);
         });
 
+        mNoNetworkText = findViewById(R.id.tv_search_no_network);
         mSearchBar = findViewById(R.id.sv_search);
+
+        if(!isNetworkAvailable()) {
+            mSearchBar.setVisibility(View.GONE);
+            mNoNetworkText.setVisibility(View.VISIBLE);
+        }
+
         mSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -76,6 +88,14 @@ public class SearchActivity extends AppCompatActivity {
     private void displayMovies(Movie[] movies) {
         mAdapter = new MovieListAdapter(this, movies, MainActivity.getInstance());
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    // Function that returns if the user has a internet-connection
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

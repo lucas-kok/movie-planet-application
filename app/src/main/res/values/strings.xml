@@ -50,7 +50,7 @@
     <string name="label_btn_fab_description">Floating Action Button</string>
     <string name="label_toast_meals_found">Movies found!</string>
 
-    <!-- Movie detail page -->
+    <!-- MovieViewActivity -->
     <string name="label_iv_mv_movie_description">Movie Image</string>
     <string name="label_tv_mv_title">Title: </string>
     <string name="label_tv_mv_original_language">Language: %1$s</string>
@@ -63,5 +63,8 @@
     <string name="label_tv_mv_review_author">Author: </string>
     <string name="label_tv_mv_review_created">Created at: %1$s</string>
     <string name="label_tv_mv_review_content">Content: </string>
+
+    <!-- SearchActivity -->
+    <string name="label_tv_search_no_network">No Network Available!</string>
 
 </resources>

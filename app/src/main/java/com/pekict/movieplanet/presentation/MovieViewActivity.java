@@ -141,7 +141,7 @@ public class MovieViewActivity extends AppCompatActivity {
             double popularity = movie.getPopularity();
             int voteCount = movie.getVote_count();
             double voteAverage = movie.getVote_average();
-            String genres = movie.getFirstGenre(movie.getGenre_ids());
+            String genres = movie.getGenres(movie.getGenre_ids());
 
             // Changing the UI elements to the Movies values
             actionBar.setSubtitle(movieTitle);
