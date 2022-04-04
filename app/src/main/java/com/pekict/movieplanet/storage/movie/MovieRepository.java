@@ -44,9 +44,9 @@ public class MovieRepository {
     }
 
     // Function that will start fetching the Movies based on if the user has internet
-    public void fetchMovies(boolean hasInternet, int popularMoviePages) {
+    public void fetchMovies(boolean hasInternet, String query, int popularMoviePages) {
         if (hasInternet) {
-            new FetchPopularMoviesAPIAsyncTask(popularMoviePages).execute();
+            new FetchMoviesAPIAsyncTask(query).execute();
             Log.d(TAG_NAME, "Retrieving Movies from API");
         } else {
             new GetPopularMealsAsyncTask(mMovieDAO).execute();
@@ -70,10 +70,6 @@ public class MovieRepository {
 
     public void searchMovies(String query) {
         new SearchMoviesAPIAsyncTask(query).execute();
-    }
-
-    public void sortMovies(String query) {
-        new SortMoviesAPIAsyncTask(query).execute();
     }
 
     public LiveData<Movie[]> getSearchedMovies() {
@@ -127,61 +123,6 @@ public class MovieRepository {
     }
 
     // AsyncTask Class that will fetch Movies from the API
-    private static class FetchPopularMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
-        private final int mPopularMoviePages;
-
-        public FetchPopularMoviesAPIAsyncTask(int popularMoviePages) {
-            mPopularMoviePages = popularMoviePages;
-        }
-
-        @Override
-        protected MovieFetchResponse doInBackground(String... strings) {
-            try {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://api.themoviedb.org/3/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                APIService service = retrofit.create(APIService.class);
-
-                Call<MovieFetchResponse> call = service.getMovies("movie/popular?api_key=c7cc756ca295eabae15bda786602c697&page=" + mPopularMoviePages);
-                Response<MovieFetchResponse> response = call.execute();
-
-                Log.d(TAG_NAME, "Executed call, response.code = " + response.code());
-                Log.d(TAG_NAME, response.toString());
-
-                if (response.isSuccessful()) {
-                    return response.body();
-                } else {
-                    Log.e(TAG_NAME, "Error while loading meals");
-                    return null;
-                }
-            } catch (Exception e) {
-                Log.e(TAG_NAME, "Exception: " + e);
-                return null;
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(MovieFetchResponse result) {
-            if (result != null && result.getResults() != null) {
-                Movie[] newMovies = mergeMovieArrays(mMovies.getValue(), result.getResults());
-
-                mMovies.setValue(newMovies);
-
-                // Only saving to the Database when it is in bound of the stated page(s) of Movies
-                if (mPopularMoviePages > mMoviePagesInDatabase) return;
-
-                savePopularMoviesToDatabase();
-                Log.d(TAG_NAME, "onPostExecute found : " + result.getResults().length + " Movies");
-            } else {
-                Log.e(TAG_NAME, "No Movies found!");
-            }
-        }
-    }
-
-    // AsyncTask Class that will fetch Movies from the API
     private static class SearchMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
         private final String mQuery;
 
@@ -231,10 +172,10 @@ public class MovieRepository {
     }
 
     // AsyncTask Class that will fetch Movies from the API based on the given sorting-query
-    private static class SortMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
+    private static class FetchMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
         private final String mQuery;
 
-        public SortMoviesAPIAsyncTask(String query) {
+        public FetchMoviesAPIAsyncTask(String query) {
             mQuery = query;
         }
 

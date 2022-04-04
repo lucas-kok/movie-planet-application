@@ -43,22 +43,17 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
     // Function to fetch the meals
-    public void fetchMovies(boolean hasInternet, int popularMoviePages) {
-        mMovieRepository.fetchMovies(hasInternet, popularMoviePages);
+    public void fetchMovies(boolean hasInternet, String query, int popularMoviePages) {
+        mMovieRepository.fetchMovies(hasInternet, query, popularMoviePages);
     }
 
-    public void loadMoreMovies(boolean hasInternet) {
+    public void loadMoreMovies(boolean hasInternet, String query) {
         popularMoviePages++;
-        fetchMovies(hasInternet, popularMoviePages);
+        fetchMovies(hasInternet, query, popularMoviePages);
     }
 
     // Function that will search movies based on the users Query
     public void searchMovies(String query) {
         mMovieRepository.searchMovies(query);
-    }
-
-    // Function that will sort movies
-    public void sortMovies(String query) {
-        mMovieRepository.sortMovies(query);
     }
 }

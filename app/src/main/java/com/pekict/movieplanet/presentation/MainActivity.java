@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Listener for the "Load More" Button to fetch an extra page of Movies
         mLoadMoreButton = findViewById(R.id.btn_load_more);
-        mLoadMoreButton.setOnClickListener(view -> mMovieViewModel.loadMoreMovies(isNetworkAvailable()));
+        mLoadMoreButton.setOnClickListener(view -> mMovieViewModel.loadMoreMovies(isNetworkAvailable(), mFilterOptionsManager.getQuery()));
 
         // Listener for the FloatingButton to start the SearchActivity
         FloatingActionButton fab = findViewById(R.id.btn_fab);
@@ -158,42 +158,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean hasInternet = isNetworkAvailable();
         Log.i(TAG_NAME, "User has internet is: " + hasInternet);
 
-        mMovieViewModel.fetchMovies(hasInternet, 1);
+        mMovieViewModel.fetchMovies(hasInternet, mFilterOptionsManager.getQuery(), 1);
         Log.d(TAG_NAME, "Movies fetched with ViewModel.");
     }
 
     // Function that will start fetching Movies based on the selected RadioButtons text
     public void sortMovies(String text) {
-        String query = "";
+        boolean hasInternet = isNetworkAvailable();
+        String query = mFilterOptionsManager.getQueryFromRadioText(text);
 
-        switch (text) {
-            case "Title (A-Z)":
-                query = "original_title.asc";
-                break;
-            case "Title (Z-A)":
-                query = "original_title.desc";
-                break;
-            case "Popularity (ASC)":
-                query = "popularity.asc";
-                break;
-            case "Popularity (DESC)":
-                query = "popularity.desc";
-                break;
-            case "Rating (ASC)":
-                query = "vote_average.asc";
-                break;
-            case "Rating (DESC)":
-                query = "vote_average.desc";
-                break;
-            case "Release Date (ASC)":
-                query = "release_date.asc";
-                break;
-            case "Release Date (DESC)":
-                query = "release_date.desc";
-                break;
-        }
-
-        mMovieViewModel.sortMovies(query);
+        mMovieViewModel.fetchMovies(hasInternet, query, 1);
     }
 
     // Function that will return the Movies matching the users filter options
@@ -244,12 +218,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Showing the PopupWindow
         popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
+        mFilterOptionsManager.setSortMenuUI(popupView);
 
         // Listener for the "Sort" Button
         popupView.findViewById(R.id.btn_action_sort_movies).setOnClickListener(view -> {
-            // Retrieves what RadioButton is clicked and starts fetching matching Movies
-            String radioButtonText = getActiveRadioButtonString(popupView);
-            sortMovies(radioButtonText);
+            // Retrieving the text of the selected RadioButton
+            String radioButtonString = getActiveRadioButtonString(popupView);
+
+            // Updating the users filters and filtering + displaying fetched movies
+            mFilterOptionsManager.updateSortOptions(popupView);
+            sortMovies(radioButtonString);
 
             // Closing the PopupWindow
             popupWindow.dismiss();
@@ -269,6 +247,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Showing the PopupWindow
         popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
+
+        // Setting the UI values to the users filter options
         mFilterOptionsManager.setFilterMenuUI(popupView);
 
         popupView.findViewById(R.id.btn_action_filter_movies).setOnClickListener(view -> {
