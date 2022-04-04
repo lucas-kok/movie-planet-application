@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.movie.MovieFetchResponse;
@@ -34,7 +35,7 @@ public class MovieRepository {
         mSharedMovie = new MutableLiveData<>();
 
         mMovieDAO = MovieDatabase.getInstance(application).getMovieDAO();
-        mMoviePagesInDatabase = 1;
+        mMoviePagesInDatabase = 4;
     }
 
     // Get instance of Singleton MovieRepository
@@ -51,7 +52,7 @@ public class MovieRepository {
             new FetchMoviesAPIAsyncTask(query, moviePage).execute();
             Log.d(TAG_NAME, "Retrieving Movies from API");
         } else {
-            new GetPopularMealsAsyncTask(mMovieDAO).execute();
+            new GetMoviesAsyncTask(mMovieDAO, query).execute();
             Log.d(TAG_NAME, "Retrieving Movies from Database");
         }
     }
@@ -61,8 +62,8 @@ public class MovieRepository {
     }
 
     // Function that saves the Movies to the database
-    public static void savePopularMoviesToDatabase() {
-        new UpdatePopularMealsAsyncTask(mMovieDAO).execute(mMovies.getValue());
+    public static void saveMoviesToDatabase() {
+        new UpdateMoviesAsyncTask(mMovieDAO).execute(mMovies.getValue());
         Log.d(TAG_NAME, "Movies saved in Database");
     }
 
@@ -103,16 +104,20 @@ public class MovieRepository {
     }
 
     // AsyncTask Class that will get all Movies from the SQLite DataBase
-    private static class GetPopularMealsAsyncTask extends AsyncTask<Void, Void, Movie[]> {
+    private static class GetMoviesAsyncTask extends AsyncTask<Void, Void, Movie[]> {
         private final MovieDAO mMovieDAO;
+        private final String mQuery;
 
-        private GetPopularMealsAsyncTask(MovieDAO movieDAO) {
+        private GetMoviesAsyncTask(MovieDAO movieDAO, String query) {
             mMovieDAO = movieDAO;
+            mQuery = query;
         }
 
         @Override
         protected Movie[] doInBackground(Void... voids) {
-            return mMovieDAO.getAllPopularMovies();
+            String[] queryPieces = mQuery.split("\\.");
+
+            return mMovieDAO.getAllPopularMovies(queryPieces[0], queryPieces[1]);
         }
 
         protected void onPostExecute(Movie[] result) {
@@ -121,10 +126,10 @@ public class MovieRepository {
     }
 
     // AsyncTask Class that updates all Movies from the SQLite DataBase
-    private static class UpdatePopularMealsAsyncTask extends AsyncTask<Movie[], Void, Void> {
+    private static class UpdateMoviesAsyncTask extends AsyncTask<Movie[], Void, Void> {
         private final MovieDAO mMovieDAO;
 
-        private UpdatePopularMealsAsyncTask(MovieDAO movieDAO) {
+        private UpdateMoviesAsyncTask(MovieDAO movieDAO) {
             mMovieDAO = movieDAO;
         }
 
@@ -235,6 +240,10 @@ public class MovieRepository {
                 } else {
                     mMovies.setValue(mergeMovieArrays(mMovies.getValue(), newMovies));;
                 }
+
+                if (mMoviePage < mMoviePagesInDatabase) { return; }
+
+                saveMoviesToDatabase();
             } else {
                 Log.e(TAG_NAME, "No Movies found for Query: " + mQuery + "!");
             }
