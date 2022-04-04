@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static volatile MainActivity instance;
 
     private DrawerLayout mDrawer;
+    private NavigationView mNavigationView;
 
     private TextView mNoResultsText;
     private RecyclerView mRecyclerView;
@@ -81,10 +82,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         mDrawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.bringToFront();
-        navigationView.setNavigationItemSelectedListener(this);
-        activateNavigationItem(navigationView);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.bringToFront();
+        mNavigationView.setNavigationItemSelectedListener(this);
+        setNavigationItemChecked();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -133,6 +134,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         loadMovies();
+    }
+
+    // Function that's called when the activity resumes
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Updating the side-menus items, without this other buttons would be selected as well
+        setNavigationItemChecked();
     }
 
     // Function to load the Movies depending on the Users situation
@@ -214,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Function that returns the text of the selected sorting RadioButton
     private String getActiveRadioButtonString(View view) {
-        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
+        RadioGroup radioGroup = view.findViewById(R.id.radio_group);
         View radioButtonView = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
         RadioButton radioButton = (RadioButton) radioGroup.getChildAt(radioGroup.indexOfChild(radioButtonView));
 
@@ -272,8 +282,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // Function that activated the side-navigation Home item
-    private void activateNavigationItem(NavigationView navigationView) {
-        Menu sideMenu = navigationView.getMenu();
+    private void setNavigationItemChecked() {
+        if (mNavigationView == null) return;
+
+        Menu sideMenu = mNavigationView.getMenu();
         sideMenu.findItem(R.id.action_home).setChecked(true);
         sideMenu.findItem(R.id.action_search).setChecked(false);
         sideMenu.findItem(R.id.action_list).setChecked(false);

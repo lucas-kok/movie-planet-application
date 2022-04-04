@@ -34,6 +34,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     public static final String MOVIES = "MOVIES";
 
     private DrawerLayout mDrawer;
+    private NavigationView mNavigationView;
 
     private SearchView mSearchBar;
     private RecyclerView mRecyclerView;
@@ -55,10 +56,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         // Initiating the side-menu
         mDrawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.bringToFront();
-        navigationView.setNavigationItemSelectedListener(this);
-        activateNavigationItem(navigationView);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.bringToFront();
+        mNavigationView.setNavigationItemSelectedListener(this);
+        setNavigationItemChecked();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -107,6 +108,15 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
+    // Function that's called when the activity resumes
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Updating the side-menus items, without this other buttons would be selected as well
+        setNavigationItemChecked();
+    }
+
     // Function that will fetch Movies based on the given search-input
     private void searchMovies(String query) {
         mMovieViewModel.searchMovies(query);
@@ -137,8 +147,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     }
 
     // Function that activated the side-navigation Search item
-    private void activateNavigationItem(NavigationView navigationView) {
-        Menu sideMenu = navigationView.getMenu();
+    private void setNavigationItemChecked() {
+        if (mNavigationView == null) return;
+
+        Menu sideMenu = mNavigationView.getMenu();
         sideMenu.findItem(R.id.action_home).setChecked(false);
         sideMenu.findItem(R.id.action_search).setChecked(true);
         sideMenu.findItem(R.id.action_list).setChecked(false);
