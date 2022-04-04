@@ -23,6 +23,7 @@ public class MovieRepository {
 
     private static MutableLiveData<Movie[]> mMovies;
     private static MutableLiveData<Movie[]> mSearchedMovies;
+    private static MutableLiveData<Movie> mSharedMovie;
 
     private static MovieDAO mMovieDAO;
     private static int mMoviePagesInDatabase;
@@ -30,6 +31,7 @@ public class MovieRepository {
     public MovieRepository(Application application) {
         mMovies = new MutableLiveData<>();
         mSearchedMovies = new MutableLiveData<>();
+        mSharedMovie = new MutableLiveData<>();
 
         mMovieDAO = MovieDatabase.getInstance(application).getMovieDAO();
         mMoviePagesInDatabase = 1;
@@ -54,6 +56,10 @@ public class MovieRepository {
         }
     }
 
+    public void fetchMovieById(int movieId) {
+        new FetchMovieByIdAPIAsyncTask(movieId).execute();
+    }
+
     // Function that saves the Movies to the database
     public static void savePopularMoviesToDatabase() {
         new UpdatePopularMealsAsyncTask(mMovieDAO).execute(mMovies.getValue());
@@ -66,6 +72,10 @@ public class MovieRepository {
 
     public LiveData<Movie[]> getSearchedMovies() {
         return mSearchedMovies;
+    }
+
+    public LiveData<Movie> getSharedMovie() {
+        return mSharedMovie;
     }
 
     public void setMovies(Movie[] movies) {
@@ -227,6 +237,52 @@ public class MovieRepository {
                 }
             } else {
                 Log.e(TAG_NAME, "No Movies found for Query: " + mQuery + "!");
+            }
+        }
+    }
+
+    // AsyncTask Class that will fetch Movies from the API based on the given Movie Id
+    private static class FetchMovieByIdAPIAsyncTask extends AsyncTask<String, Void, Movie> {
+        private final int mMovieId;
+
+        public FetchMovieByIdAPIAsyncTask(int id) {
+            mMovieId = id;
+        }
+
+        @Override
+        protected Movie doInBackground(String... strings) {
+            try {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.themoviedb.org/3/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                APIService service = retrofit.create(APIService.class);
+
+                Call<Movie> call = service.getMovieById("movie/" + mMovieId + "?api_key=c7cc756ca295eabae15bda786602c697&language=en-US&page=1");
+                Response<Movie> response = call.execute();
+
+                Log.d(TAG_NAME, "Executed call, response.code = " + response.code());
+                Log.d(TAG_NAME, response.toString());
+
+                if (response.isSuccessful()) {
+                    return response.body();
+                } else {
+                    Log.e(TAG_NAME, "Error while sorting Movies");
+                    return null;
+                }
+            } catch (Exception e) {
+                Log.e(TAG_NAME, "Exception: " + e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Movie result) {
+            if (result != null) {
+                mSharedMovie.setValue(result);
+            } else {
+                Log.e(TAG_NAME, "No Movies found for id: " + mMovieId + "!");
             }
         }
     }

@@ -204,6 +204,12 @@ public class Movie implements Parcelable {
 
     // Function that returns a String containing the Movie Genres based on the Ids
     public String getGenresAsString() {
+        StringBuilder genreString = new StringBuilder();
+
+        if (genre_ids == null) {
+            return "";
+        }
+
         Map<Integer, String> genres = new HashMap<>();
         genres.put(12, "Adventure, ");
         genres.put(14, "Fantasy, ");
@@ -225,7 +231,6 @@ public class Movie implements Parcelable {
         genres.put(10752, "War, ");
         genres.put(10770, "TV Movie, ");
 
-        StringBuilder genreString = new StringBuilder();
         for (Integer id : genre_ids) genreString.append(genres.get(id));
 
         return genre_ids.size() == 0 ? "" : genreString.substring(0, genreString.length() - 2);

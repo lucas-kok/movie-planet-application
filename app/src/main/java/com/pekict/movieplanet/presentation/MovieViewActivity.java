@@ -3,9 +3,9 @@ package com.pekict.movieplanet.presentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Rating;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,6 +37,7 @@ import com.pekict.movieplanet.domain.review.Review;
 import com.pekict.movieplanet.domain.trailer.Trailer;
 import com.pekict.movieplanet.logic.ReviewListAdapter;
 import com.pekict.movieplanet.logic.TrailerFilter;
+import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 import com.pekict.movieplanet.presentation.viewmodels.ReviewViewModel;
 import com.pekict.movieplanet.presentation.viewmodels.TrailerViewModel;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
@@ -53,16 +55,29 @@ public class MovieViewActivity extends AppCompatActivity {
     // TODO: Begin te implementeren dat deze ook gwn opgeslagen wordt
     // TODO: Begin share button ook te laten werken
     // TODO: Begin print button te laten werken
+
+    private ActionBar mActionBar;
+
+    private TextView mTitleText;
+    private TextView mReleaseDateText;
+    private TextView mGenreText;
+    private TextView mOriginalLanguageText;
+    private TextView mOverviewText;
+    private TextView mPopularityText;
+    private TextView mVoteCountText;
+    private TextView mVoteAverageText;
+    private RatingBar mRatingBar;
+
     private Movie mMovie;
 
     private View mOverlayView;
     private Button mTrailerButton;
     private ImageButton mExpandReviewsButton;
     private TextView mNoReviewsText;
-    private float amountOfStars;
 
     private SharedPreferences mPreferences;
 
+    private MovieViewModel mMovieViewModel;
     private ReviewViewModel mReviewViewModel;
     private TrailerViewModel mTrailerViewModel;
     private Bundle mSavedInstanceState;
@@ -78,10 +93,14 @@ public class MovieViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_view);
 
-        mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
-        mReviewViewModel.getReviews().observe(this, reviews -> {
-            displayReviews(reviews);
+        mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        mMovieViewModel.getSharedMovie().observe(this, movie ->  {
+            mMovie = movie;
+            displayMovieInformation();
         });
+
+        mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+        mReviewViewModel.getReviews().observe(this, reviews -> displayReviews(reviews));
 
         mTrailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
         mTrailerViewModel.getTrailers().observe(this, trailers -> {
@@ -91,26 +110,24 @@ public class MovieViewActivity extends AppCompatActivity {
             showTrailerButton();
         });
 
-        mRecyclerView = findViewById(R.id.recyclerview_reviews);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mActionBar = getSupportActionBar();
+        assert mActionBar != null;
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
-        LinearLayout movieViewLayout = findViewById(R.id.ll_mv);
-        mOverlayView = findViewById(R.id.overlay_view);
-
-        ImageView movieImage = findViewById(R.id.iv_mv);
         mTrailerButton = findViewById(R.id.btn_trailer);
         mTrailerButton.setOnClickListener(view -> showTrailerPopup());
 
-        TextView titleText = findViewById(R.id.tv_mv_title);
-        TextView releaseDateText = findViewById(R.id.tv_mv_release_date);
-        TextView genreText = findViewById(R.id.tv_mv_genres);
-        TextView originalLanguageText = findViewById(R.id.tv_mv_original_language);
-        TextView overviewText = findViewById(R.id.tv_mv_overview);
-        TextView popularityText = findViewById(R.id.tv_mv_popularity);
-        TextView voteCountText = findViewById(R.id.tv_mv_vote_count);
-        TextView voteAverageText = findViewById(R.id.tv_mv_vote_average);
-        RatingBar ratingBar = findViewById(R.id.tv_mv_ratingbar_details);
+        mTitleText = findViewById(R.id.tv_mv_title);
+        mReleaseDateText = findViewById(R.id.tv_mv_release_date);
+        mGenreText = findViewById(R.id.tv_mv_genres);
+        mOriginalLanguageText = findViewById(R.id.tv_mv_original_language);
+        mOverviewText = findViewById(R.id.tv_mv_overview);
+        mPopularityText = findViewById(R.id.tv_mv_popularity);
+        mVoteCountText = findViewById(R.id.tv_mv_vote_count);
+        mVoteAverageText = findViewById(R.id.tv_mv_vote_average);
+        mRatingBar = findViewById(R.id.tv_mv_ratingbar_details);
 
+        ViewGroup movieViewLayout = findViewById(R.id.ll_mv);
         mExpandReviewsButton = findViewById(R.id.btn_expand_reviews);
         mExpandReviewsButton.setOnClickListener(view -> {
             if (mRecyclerView.getVisibility() == View.VISIBLE) {
@@ -127,72 +144,82 @@ public class MovieViewActivity extends AppCompatActivity {
             }
         });
 
+        mRecyclerView = findViewById(R.id.recyclerview_reviews);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        mOverlayView = findViewById(R.id.overlay_view);
         mNoReviewsText = findViewById(R.id.tv_mv_no_reviews);
 
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        mPreferences = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        mSavedInstanceState = savedInstanceState;
 
         // Loading in the meal the user clicked
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             Bundle bundle = intent.getParcelableExtra("bundle");
-            mMovie = bundle.getParcelable("movieObj");
+
+            if (bundle != null) {
+                mMovie = bundle.getParcelable("movieObj");
+            }
 
             if (mMovie == null) {
+                Uri uri = intent.getData();
+
+                if (uri == null) { return; }
+
+                int id = Integer.parseInt(uri.toString().replace("http://movieplanet.moviedetails.com/", ""));
                 Log.e(TAG_NAME, "Meal is empty");
+                mMovieViewModel.fetchMovieById(id);
                 return;
             }
 
             Log.d(TAG_NAME, "Opening Movie: " + mMovie.getTitle());
-
-            // Getting the Movies values
             mMovieId = mMovie.getId();
-            String imageURL = mMovie.getSmallImageURL();
-            String title = mMovie.getTitle();
-            String releaseDate = mMovie.getRelease_date();
-            String originalLanguage = mMovie.getOriginal_language();
-            String overview = mMovie.getOverview();
-            double popularity = mMovie.getPopularity();
-            int voteCount = mMovie.getVote_count();
-            double voteAverage = mMovie.getVote_average();
-            String genresString = mMovie.getGenresAsString();
+            displayMovieInformation();
 
-            // Changing the UI elements to the Movies values
-            actionBar.setSubtitle(title);
-
-            if (imageURL.equals("https://image.tmdb.org/t/p/w500null")) {
-                movieImage.setImageResource(R.drawable.placeholder);
-            } else {
-                Picasso.get().load(imageURL).into(movieImage);
-            }
-            titleText.setText(title);
-            releaseDateText.setText(releaseDate);
-            genreText.setText(genresString);
-            originalLanguageText.setText(getString(R.string.label_tv_mv_original_language, originalLanguage));
-            overviewText.setText(overview);
-            popularityText.setText(getString(R.string.label_tv_mv_popularity, popularity));
-            voteCountText.setText(getString(R.string.label_tv_mv_vote_count, voteCount));
-            voteAverageText.setText(getString(R.string.label_tv_mv_vote_average, voteAverage));
         }
-
-        mPreferences = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        this.amountOfStars = mPreferences.getFloat(String.valueOf(mMovieId), 0);
-        Log.d(TAG_NAME, String.valueOf(this.amountOfStars));
-
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                saveStarPreferences(ratingBar, String.valueOf(mMovieId));
-            }
-        });
-
-        ratingBar.setRating(this.amountOfStars);
-
-        mSavedInstanceState = savedInstanceState;
 
         loadTrailers(mMovieId);
         loadReviews(mMovieId);
+    }
+
+    private void displayMovieInformation() {
+        ImageView movieImage = findViewById(R.id.iv_mv);
+
+        String imageURL = mMovie.getSmallImageURL();
+        String title = mMovie.getTitle();
+        String releaseDate = mMovie.getRelease_date();
+        String originalLanguage = mMovie.getOriginal_language();
+        String overview = mMovie.getOverview();
+        double popularity = mMovie.getPopularity();
+        int voteCount = mMovie.getVote_count();
+        double voteAverage = mMovie.getVote_average();
+        String genresString = mMovie.getGenresAsString();
+
+        // Changing the UI elements to the Movies values
+        mActionBar.setSubtitle(title);
+
+        if (imageURL.equals("https://image.tmdb.org/t/p/w500null")) {
+            movieImage.setImageResource(R.drawable.placeholder);
+        } else {
+            Picasso.get().load(imageURL).into(movieImage);
+        }
+        mTitleText.setText(title);
+        mReleaseDateText.setText(releaseDate);
+        mGenreText.setText(genresString);
+        if (genresString.isEmpty()) {
+            mGenreText.setVisibility(View.GONE);
+        }
+        mOriginalLanguageText.setText(getString(R.string.label_tv_mv_original_language, originalLanguage));
+        mOverviewText.setText(overview);
+        mPopularityText.setText(getString(R.string.label_tv_mv_popularity, popularity));
+        mVoteCountText.setText(getString(R.string.label_tv_mv_vote_count, voteCount));
+        mVoteAverageText.setText(getString(R.string.label_tv_mv_vote_average, voteAverage));
+
+        float amountOfStars = mPreferences.getFloat(String.valueOf(mMovieId), 0);
+
+        mRatingBar.setOnRatingBarChangeListener((ratingBar1, v, b) -> saveStarPreferences(ratingBar1, String.valueOf(mMovieId)));
+        mRatingBar.setRating(amountOfStars);
     }
 
     private void showTrailerButton() {
@@ -372,7 +399,7 @@ public class MovieViewActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    public void shareMovie(){
+    public void shareMovie() {
         String url = "http://movieplanet.moviedetails.com/" + mMovie.getId();
 
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -388,12 +415,12 @@ public class MovieViewActivity extends AppCompatActivity {
         }
     }
 
-    // Saves amount of stars from the ratingbar to the sharedpreferences
-    public void saveStarPreferences(RatingBar ratingBar, String movieId){
-        this.amountOfStars = ratingBar.getRating();
+    // Saves amount of stars from the ratingbar to the SharedPreferences
+    public void saveStarPreferences(RatingBar ratingBar, String movieId) {
+        float amountOfStars = ratingBar.getRating();
         SharedPreferences.Editor mSharedPrefsEditor = mPreferences.edit();
-        mSharedPrefsEditor.putFloat(movieId,this.amountOfStars);
+        mSharedPrefsEditor.putFloat(movieId, amountOfStars);
         mSharedPrefsEditor.apply();
-        Log.d(TAG_NAME, "Saved amount of stars to SharedPreferences: " + this.amountOfStars);
+        Log.d(TAG_NAME, "Saved amount of stars to SharedPreferences: " + amountOfStars);
     }
 }

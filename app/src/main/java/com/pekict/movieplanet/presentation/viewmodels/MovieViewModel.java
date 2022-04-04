@@ -16,6 +16,7 @@ public class MovieViewModel extends AndroidViewModel {
 
     private LiveData<Movie[]> mPopularMovies;
     private LiveData<Movie[]> mSearchedMovies;
+    private LiveData<Movie> mSharedMovie;
 
     private int popularMoviePages;
 
@@ -25,6 +26,7 @@ public class MovieViewModel extends AndroidViewModel {
 
         mPopularMovies = mMovieRepository.getMovies();
         mSearchedMovies = mMovieRepository.getSearchedMovies();
+        mSharedMovie = mMovieRepository.getSharedMovie();
 
         popularMoviePages = 1;
     }
@@ -33,18 +35,26 @@ public class MovieViewModel extends AndroidViewModel {
         return mPopularMovies;
     }
 
+    public LiveData<Movie[]> getSearchedMovies() {
+        return mSearchedMovies;
+    }
+
+    public LiveData<Movie> getSharedMovie() {
+        return mSharedMovie;
+    }
+
     public void setMovies(Movie[] movies) {
         mMovieRepository.setMovies(movies);
         mPopularMovies = mMovieRepository.getMovies();
     }
 
-    public LiveData<Movie[]> getSearchedMovies() {
-        return mSearchedMovies;
-    }
-
     // Function to fetch the meals
     public void fetchMovies(boolean hasInternet, String query, int popularMoviePages) {
         mMovieRepository.fetchMovies(hasInternet, query, popularMoviePages);
+    }
+
+    public void fetchMovieById(int movieId) {
+        mMovieRepository.fetchMovieById(movieId);
     }
 
     public void loadMoreMovies(boolean hasInternet, String query) {

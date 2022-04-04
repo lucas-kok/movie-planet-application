@@ -1,5 +1,6 @@
 package com.pekict.movieplanet.storage;
 
+import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.movie.MovieFetchResponse;
 import com.pekict.movieplanet.domain.review.ReviewFetchResponse;
 import com.pekict.movieplanet.domain.trailer.TrailerFetchResponse;
@@ -21,6 +22,6 @@ public interface APIService {
     @GET("videos?api_key=c7cc756ca295eabae15bda786602c697")
     Call<TrailerFetchResponse> getTrailers();
 
-    @GET()
-    Call<MovieFetchResponse> searchMovies(@Url String url);
+    @GET
+    Call<Movie> getMovieById(@Url String url);
 }
