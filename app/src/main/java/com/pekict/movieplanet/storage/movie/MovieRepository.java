@@ -238,7 +238,7 @@ public class MovieRepository {
                 if (mMovies.getValue() == null) {
                     mMovies.setValue(newMovies);
                 } else {
-                    mMovies.setValue(mergeMovieArrays(mMovies.getValue(), newMovies));;
+                    mMovies.setValue(mergeMovieArrays(mMovies.getValue(), newMovies));
                 }
 
                 if (mMoviePage < mMoviePagesInDatabase) { return; }
