@@ -3,6 +3,8 @@ package com.pekict.movieplanet.presentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -28,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.print.PrintHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -375,6 +378,8 @@ public class MovieViewActivity extends AppCompatActivity {
             isWatched = !isWatched;
         } else if (id == R.id.btn_share) {
             shareMovie();
+        } else if (id == R.id.btn_print) {
+            doPhotoPrint();
         }
 
         return super.onOptionsItemSelected(item);
@@ -422,5 +427,16 @@ public class MovieViewActivity extends AppCompatActivity {
         mSharedPrefsEditor.putFloat(movieId, amountOfStars);
         mSharedPrefsEditor.apply();
         Log.d(TAG_NAME, "Saved amount of stars to SharedPreferences: " + amountOfStars);
+    }
+
+    private void doPhotoPrint() {
+        View v = findViewById(R.id.layoutdetail);
+        Bitmap bmp = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmp);
+        v.draw(c);
+
+        PrintHelper photoPrinter = new PrintHelper(this);
+        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+        photoPrinter.printBitmap("layoutdetail.png", bmp);
     }
 }
