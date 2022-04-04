@@ -2,6 +2,8 @@ package com.pekict.movieplanet.presentation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.Rating;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +59,9 @@ public class MovieViewActivity extends AppCompatActivity {
     private Button mTrailerButton;
     private ImageButton mExpandReviewsButton;
     private TextView mNoReviewsText;
+    private float amountOfStars;
+
+    private SharedPreferences mPreferences;
 
     private ReviewViewModel mReviewViewModel;
     private TrailerViewModel mTrailerViewModel;
@@ -103,6 +109,7 @@ public class MovieViewActivity extends AppCompatActivity {
         TextView popularityText = findViewById(R.id.tv_mv_popularity);
         TextView voteCountText = findViewById(R.id.tv_mv_vote_count);
         TextView voteAverageText = findViewById(R.id.tv_mv_vote_average);
+        RatingBar ratingBar = findViewById(R.id.tv_mv_ratingbar_details);
 
         mExpandReviewsButton = findViewById(R.id.btn_expand_reviews);
         mExpandReviewsButton.setOnClickListener(view -> {
@@ -168,6 +175,19 @@ public class MovieViewActivity extends AppCompatActivity {
             voteCountText.setText(getString(R.string.label_tv_mv_vote_count, voteCount));
             voteAverageText.setText(getString(R.string.label_tv_mv_vote_average, voteAverage));
         }
+
+        mPreferences = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        this.amountOfStars = mPreferences.getFloat(String.valueOf(mMovieId), 0);
+        Log.d(TAG_NAME, String.valueOf(this.amountOfStars));
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                saveStarPreferences(ratingBar, String.valueOf(mMovieId));
+            }
+        });
+
+        ratingBar.setRating(this.amountOfStars);
 
         mSavedInstanceState = savedInstanceState;
 
@@ -366,5 +386,14 @@ public class MovieViewActivity extends AppCompatActivity {
         } else {
             Log.d("ImplicitIntents", "Can't handle this shit!");
         }
+    }
+
+    // Saves amount of stars from the ratingbar to the sharedpreferences
+    public void saveStarPreferences(RatingBar ratingBar, String movieId){
+        this.amountOfStars = ratingBar.getRating();
+        SharedPreferences.Editor mSharedPrefsEditor = mPreferences.edit();
+        mSharedPrefsEditor.putFloat(movieId,this.amountOfStars);
+        mSharedPrefsEditor.apply();
+        Log.d(TAG_NAME, "Saved amount of stars to SharedPreferences: " + this.amountOfStars);
     }
 }
