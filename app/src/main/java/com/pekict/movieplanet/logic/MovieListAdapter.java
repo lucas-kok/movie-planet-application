@@ -3,7 +3,6 @@ package com.pekict.movieplanet.logic;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.presentation.MainActivity;
 import com.pekict.movieplanet.presentation.MovieViewActivity;
-import com.pekict.movieplanet.presentation.SearchActivity;
 import com.squareup.picasso.Picasso;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {
@@ -26,24 +24,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private final Movie[] movies;
     private final LayoutInflater mInflater;
     private final MainActivity mainActivity;
-
-    static class MovieViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView mMovieImage;
-        private final TextView mMovieTitleText;
-        private final TextView mMovieGenreText;
-
-        final MovieListAdapter mAdapter;
-
-        public MovieViewHolder(View itemView, MovieListAdapter mAdapter) {
-            super(itemView);
-
-            mMovieImage = itemView.findViewById(R.id.iv_author_avatar);
-            mMovieTitleText = itemView.findViewById(R.id.tv_review_author);
-            mMovieGenreText = itemView.findViewById(R.id.tv_review_genre);
-
-            this.mAdapter = mAdapter;
-        }
-    }
 
     public MovieListAdapter(Context context, Movie[] movies, MainActivity mainActivity) {
         mInflater = LayoutInflater.from(context);
@@ -63,31 +43,63 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         Movie mCurrent = movies[position];
 
-        // onClickListener to open the MovieViewActivity passing the clicked Movie with it
+        // Listener to open the MovieViewActivity passing the clicked Movie with it
         holder.mMovieImage.setOnClickListener(view -> {
             // Todo: Create detail activity
-            Intent intent = new Intent(mainActivity, MovieViewActivity.class);
-
             Bundle bundle = new Bundle();
             bundle.putParcelable("movieObj", mCurrent);
 
+            Intent intent = new Intent(mainActivity, MovieViewActivity.class);
             intent.putExtra("bundle", bundle);
 
             mainActivity.startActivity(intent);
         });
 
+        // Declaring the needed Movie information
+        String backdropPath = mCurrent.getSmallImageURL();
+        String releaseYear = mCurrent.getReleaseYear();
+        String title = mCurrent.getTitle();
+        String genres = mCurrent.getGenresAsString();
+
         // Setting the items UI elements to the Movies values
-        if (mCurrent.getSmallImageURL().equals("https://image.tmdb.org/t/p/w500null")) {
+
+        // Displaying a placeholder Image when the Movie doesn't contain a valid image Url
+        if (backdropPath.equals("https://image.tmdb.org/t/p/w500null")) {
             holder.mMovieImage.setImageResource(R.drawable.placeholder);
         } else {
             Picasso.get().load(mCurrent.getSmallImageURL()).into(holder.mMovieImage);
         }
-        holder.mMovieTitleText.setText(mCurrent.getTitle());
-        holder.mMovieGenreText.setText(mCurrent.getGenres(mCurrent.getGenre_ids()));
+        // Removing the releaseYearText when the Movie doesn't contain a release date, otherwise displaying the year
+        if (releaseYear == null) {
+            holder.mMovieReleaseYearText.setVisibility(View.GONE);
+        } else {
+            holder.mMovieReleaseYearText.setText(releaseYear);
+        }
+        holder.mMovieTitleText.setText(title);
+        holder.mMovieGenreText.setText(genres);
     }
 
     @Override
     public int getItemCount() {
         return movies.length;
+    }
+
+    static class MovieViewHolder extends RecyclerView.ViewHolder {
+        final MovieListAdapter mAdapter;
+        private final ImageView mMovieImage;
+        private final TextView mMovieReleaseYearText;
+        private final TextView mMovieTitleText;
+        private final TextView mMovieGenreText;
+
+        public MovieViewHolder(View itemView, MovieListAdapter mAdapter) {
+            super(itemView);
+
+            mMovieImage = itemView.findViewById(R.id.iv_rv_movie_image);
+            mMovieReleaseYearText = itemView.findViewById(R.id.tv_rv_release_year);
+            mMovieTitleText = itemView.findViewById(R.id.tv_rv_movie_title);
+            mMovieGenreText = itemView.findViewById(R.id.tv_rv_movie_genres);
+
+            this.mAdapter = mAdapter;
+        }
     }
 }

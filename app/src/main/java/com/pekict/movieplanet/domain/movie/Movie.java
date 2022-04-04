@@ -38,6 +38,7 @@ public class Movie implements Parcelable {
     private final String original_language;
     private final String original_title;
     private final String overview;
+    private final String release_date;
     private final String title;
     private final String backdrop_path;
     private final double popularity;
@@ -45,11 +46,13 @@ public class Movie implements Parcelable {
     private final double vote_average;
     private List<Integer> genre_ids = new ArrayList<>();
 
-    public Movie(int id, String original_language, String original_title, String overview, String title, String backdrop_path, List<Integer> genre_ids, double popularity, int vote_count, double vote_average) {
+    public Movie(int id, String original_language, String original_title, String overview, String release_date,
+                 String title, String backdrop_path, List<Integer> genre_ids, double popularity, int vote_count, double vote_average) {
         this.id = id;
         this.original_language = original_language;
         this.original_title = original_title;
         this.overview = overview;
+        this.release_date = release_date;
         this.title = title;
         this.backdrop_path = backdrop_path;
         this.genre_ids = genre_ids;
@@ -63,6 +66,7 @@ public class Movie implements Parcelable {
         original_language = in.readString();
         original_title = in.readString();
         overview = in.readString();
+        release_date = in.readString();
         title = in.readString();
         backdrop_path = in.readString();
         in.readList(genre_ids, Integer.class.getClassLoader());
@@ -89,6 +93,14 @@ public class Movie implements Parcelable {
 
     public String getOverview() {
         return overview;
+    }
+
+    public String getRelease_date() {
+        return release_date;
+    }
+
+    public String getReleaseYear() {
+        return !release_date.isEmpty() ? release_date.substring(0, 4) : null;
     }
 
     public String getTitle() {
@@ -181,6 +193,7 @@ public class Movie implements Parcelable {
         parcel.writeString(original_language);
         parcel.writeString(original_title);
         parcel.writeString(overview);
+        parcel.writeString(release_date);
         parcel.writeString(title);
         parcel.writeString(backdrop_path);
         parcel.writeList(genre_ids);
@@ -190,7 +203,7 @@ public class Movie implements Parcelable {
     }
 
     // Function that returns a String containing the Movie Genres based on the Ids
-    public String getGenres(List<Integer> genre_ids) {
+    public String getGenresAsString() {
         Map<Integer, String> genres = new HashMap<>();
         genres.put(12, "Adventure, ");
         genres.put(14, "Fantasy, ");
