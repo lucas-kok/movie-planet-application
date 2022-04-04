@@ -50,10 +50,17 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_mv_genre"
+                android:id="@+id/tv_mv_release_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_tv_mv_release_date"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_mv_genres"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/genre_text"
+                android:text="@string/label_tv_mv_genres"
                 android:textSize="17sp" />
 
             <TextView

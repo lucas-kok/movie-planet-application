@@ -64,6 +64,8 @@
     <!-- MainActivity -->
     <string name="label_iv_rv_movie_description">Movie Image</string>
     <string name="label_tv_rv_movie_title">Title: </string>
+    <string name="label_tv_rv_movie_genres">Genres: </string>
+    <string name="label_tv_rv_movie_release_year">Release Year: </string>
     <string name="label_btn_load_more">Load More</string>
     <string name="label_btn_fab_description">Floating Action Button</string>
     <string name="label_toast_meals_found">Movies found!</string>
@@ -71,6 +73,8 @@
     <!-- MovieViewActivity -->
     <string name="label_iv_mv_movie_description">Movie Image</string>
     <string name="label_tv_mv_title">Title: </string>
+    <string name="label_tv_mv_release_date">Release Date: </string>
+    <string name="label_tv_mv_genres">Genres: </string>
     <string name="label_tv_mv_original_language">Language: %1$s</string>
     <string name="label_tv_mv_overview">Overview: </string>
     <string name="label_tv_mv_popularity">Popularity: %1$.2f</string>
@@ -85,5 +89,4 @@
 
     <!-- SearchActivity -->
     <string name="label_sv_search_hint">Search for a movie here!</string>
-    <string name="genre_text">Genre:</string>
 </resources>

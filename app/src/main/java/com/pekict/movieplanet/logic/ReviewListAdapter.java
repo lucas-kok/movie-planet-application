@@ -32,8 +32,8 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Re
         public ReviewViewHolder(View itemView, ReviewListAdapter mAdapter) {
             super(itemView);
 
-            mAuthorAvatarImage = itemView.findViewById(R.id.iv_author_avatar);
-            mReviewAuthorText = itemView.findViewById(R.id.tv_review_author);
+            mAuthorAvatarImage = itemView.findViewById(R.id.iv_rv_movie_image);
+            mReviewAuthorText = itemView.findViewById(R.id.tv_rv_movie_title);
             mReviewCreatedText = itemView.findViewById(R.id.tv_review_created);
             mReviewContentText = itemView.findViewById(R.id.tv_review_content);
 

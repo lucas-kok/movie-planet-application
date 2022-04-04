@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -28,7 +27,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.review.Review;
@@ -98,12 +96,13 @@ public class MovieViewActivity extends AppCompatActivity {
         mTrailerButton.setOnClickListener(view -> showTrailerPopup());
 
         TextView titleText = findViewById(R.id.tv_mv_title);
+        TextView releaseDateText = findViewById(R.id.tv_mv_release_date);
+        TextView genreText = findViewById(R.id.tv_mv_genres);
         TextView originalLanguageText = findViewById(R.id.tv_mv_original_language);
         TextView overviewText = findViewById(R.id.tv_mv_overview);
         TextView popularityText = findViewById(R.id.tv_mv_popularity);
         TextView voteCountText = findViewById(R.id.tv_mv_vote_count);
         TextView voteAverageText = findViewById(R.id.tv_mv_vote_average);
-        TextView genreText = findViewById(R.id.tv_mv_genre);
 
         mExpandReviewsButton = findViewById(R.id.btn_expand_reviews);
         mExpandReviewsButton.setOnClickListener(view -> {
@@ -143,29 +142,31 @@ public class MovieViewActivity extends AppCompatActivity {
             // Getting the Movies values
             mMovieId = mMovie.getId();
             String imageURL = mMovie.getSmallImageURL();
-            String movieTitle = mMovie.getTitle();
+            String title = mMovie.getTitle();
+            String releaseDate = mMovie.getRelease_date();
             String originalLanguage = mMovie.getOriginal_language();
             String overview = mMovie.getOverview();
             double popularity = mMovie.getPopularity();
             int voteCount = mMovie.getVote_count();
             double voteAverage = mMovie.getVote_average();
-            String genres = mMovie.getGenres(mMovie.getGenre_ids());
+            String genresString = mMovie.getGenresAsString();
 
             // Changing the UI elements to the Movies values
-            actionBar.setSubtitle(movieTitle);
+            actionBar.setSubtitle(title);
 
             if (imageURL.equals("https://image.tmdb.org/t/p/w500null")) {
                 movieImage.setImageResource(R.drawable.placeholder);
             } else {
                 Picasso.get().load(imageURL).into(movieImage);
             }
-            titleText.setText(movieTitle);
+            titleText.setText(title);
+            releaseDateText.setText(releaseDate);
+            genreText.setText(genresString);
             originalLanguageText.setText(getString(R.string.label_tv_mv_original_language, originalLanguage));
             overviewText.setText(overview);
             popularityText.setText(getString(R.string.label_tv_mv_popularity, popularity));
             voteCountText.setText(getString(R.string.label_tv_mv_vote_count, voteCount));
             voteAverageText.setText(getString(R.string.label_tv_mv_vote_average, voteAverage));
-            genreText.setText(genres);
         }
 
         mSavedInstanceState = savedInstanceState;
