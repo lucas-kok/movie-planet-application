@@ -112,6 +112,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Observing the MovieViewModels LiveData<Movies[]> for changes
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mMovieViewModel.getMovies().observe(this, movies -> {
+            // Preventing displaying an Array declared as null when the Movies are cleared
+            if (movies == null) { return; }
+
             // Displaying the new Movies
             displayMovies(filterMovies(mMovieViewModel.getMovies().getValue()));
 
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // Function that will start fetching Movies based on the selected RadioButtons text
-    public void sortMovies(String text) {
+    public void fetchMovies(String text) {
         boolean hasInternet = isNetworkAvailable();
         String query = mFilterOptionsManager.getQueryFromRadioText(text);
 
@@ -222,12 +225,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Listener for the "Sort" Button
         popupView.findViewById(R.id.btn_action_sort_movies).setOnClickListener(view -> {
+
+            mMovieViewModel.clearMovies();
+
             // Retrieving the text of the selected RadioButton
             String radioButtonString = getActiveRadioButtonString(popupView);
 
             // Updating the users filters and filtering + displaying fetched movies
             mFilterOptionsManager.updateSortOptions(popupView);
-            sortMovies(radioButtonString);
+            fetchMovies(radioButtonString);
 
             // Closing the PopupWindow
             popupWindow.dismiss();

@@ -122,7 +122,6 @@ public class FilterOptionsManager {
         RadioButton radioButton = (RadioButton) radioGroup.getChildAt(radioGroup.indexOfChild(radioButtonView));
 
         mFilterOptions.put(SORT, radioButton.getText().toString());
-        Log.d(TAG_NAME, mFilterOptions.get(SORT));
     }
 
     public void setFilterOptions(View filterView) {
@@ -136,8 +135,6 @@ public class FilterOptionsManager {
         CheckBox documentaryBox = filterView.findViewById(R.id.filter_genre_documentary);
         Spinner languageSpinner = filterView.findViewById(R.id.filter_language);
         Spinner ratingSpinner = filterView.findViewById(R.id.filter_rating);
-
-        Log.d(TAG_NAME, ratingSpinner.getSelectedItem().toString());
 
         mFilterOptions.put(ACTION, String.valueOf(actionBox.isChecked()));
         mFilterOptions.put(HORROR, String.valueOf(horrorBox.isChecked()));
@@ -177,7 +174,6 @@ public class FilterOptionsManager {
         if (mSharedPrefsEditor == null) { return; }
         if (!filterOptionsExists()) { return; }
 
-        Log.d(TAG_NAME, mFilterOptions.get(ACTION));
         mSharedPrefsEditor.putString(ACTION, mFilterOptions.get(ACTION));
         mSharedPrefsEditor.putString(HORROR, mFilterOptions.get(HORROR));
         mSharedPrefsEditor.putString(COMEDY, mFilterOptions.get(COMEDY));
@@ -198,7 +194,6 @@ public class FilterOptionsManager {
     public void setSortMenuUI(View sortView) {
         RadioGroup radioGroup = sortView.findViewById(R.id.radio_group);
         String sortOptionString = mFilterOptions.get(SORT);
-        Log.d(TAG_NAME, sortOptionString);
 
         for (int index = 0; index < radioGroup.getChildCount(); index++) {
             RadioButton radioButton = (RadioButton) radioGroup.getChildAt(index);

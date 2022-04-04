@@ -44,9 +44,9 @@ public class MovieRepository {
     }
 
     // Function that will start fetching the Movies based on if the user has internet
-    public void fetchMovies(boolean hasInternet, String query, int popularMoviePages) {
+    public void fetchMovies(boolean hasInternet, String query, int moviePage) {
         if (hasInternet) {
-            new FetchMoviesAPIAsyncTask(query).execute();
+            new FetchMoviesAPIAsyncTask(query, moviePage).execute();
             Log.d(TAG_NAME, "Retrieving Movies from API");
         } else {
             new GetPopularMealsAsyncTask(mMovieDAO).execute();
@@ -64,6 +64,10 @@ public class MovieRepository {
         return mMovies;
     }
 
+    public LiveData<Movie[]> getSearchedMovies() {
+        return mSearchedMovies;
+    }
+
     public void setMovies(Movie[] movies) {
         mMovies.setValue(movies);
     }
@@ -72,8 +76,8 @@ public class MovieRepository {
         new SearchMoviesAPIAsyncTask(query).execute();
     }
 
-    public LiveData<Movie[]> getSearchedMovies() {
-        return mSearchedMovies;
+    public void clearMovies() {
+        mMovies.setValue(null);
     }
 
     // Function that will return and merge two arrays into one
@@ -174,8 +178,10 @@ public class MovieRepository {
     // AsyncTask Class that will fetch Movies from the API based on the given sorting-query
     private static class FetchMoviesAPIAsyncTask extends AsyncTask<String, Void, MovieFetchResponse> {
         private final String mQuery;
+        private final int mMoviePage;
 
-        public FetchMoviesAPIAsyncTask(String query) {
+        public FetchMoviesAPIAsyncTask(String query, int moviePage) {
+            mMoviePage = moviePage;
             mQuery = query;
         }
 
@@ -191,7 +197,7 @@ public class MovieRepository {
 
                 Uri queryUri = Uri.parse(mQuery);
 
-                Call<MovieFetchResponse> call = service.getMovies("discover/movie?api_key=c7cc756ca295eabae15bda786602c697&language=en-US&sort_by=" + queryUri + "&page=1");
+                Call<MovieFetchResponse> call = service.getMovies("discover/movie?api_key=c7cc756ca295eabae15bda786602c697&language=en-US&sort_by=" + queryUri + "&page=" + mMoviePage);
                 Response<MovieFetchResponse> response = call.execute();
 
                 Log.d(TAG_NAME, "Executed call, response.code = " + response.code());
@@ -212,7 +218,13 @@ public class MovieRepository {
         @Override
         protected void onPostExecute(MovieFetchResponse result) {
             if (result != null && result.getResults() != null) {
-                mMovies.setValue(result.getResults());
+                Movie[] newMovies = result.getResults();
+
+                if (mMovies.getValue() == null) {
+                    mMovies.setValue(newMovies);
+                } else {
+                    mMovies.setValue(mergeMovieArrays(mMovies.getValue(), newMovies));;
+                }
             } else {
                 Log.e(TAG_NAME, "No Movies found for Query: " + mQuery + "!");
             }

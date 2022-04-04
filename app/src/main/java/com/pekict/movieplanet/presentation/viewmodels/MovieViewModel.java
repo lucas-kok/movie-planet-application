@@ -56,4 +56,8 @@ public class MovieViewModel extends AndroidViewModel {
     public void searchMovies(String query) {
         mMovieRepository.searchMovies(query);
     }
+
+    public void clearMovies() {
+        mMovieRepository.clearMovies();
+    }
 }
