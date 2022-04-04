@@ -100,7 +100,7 @@ public class Movie implements Parcelable {
     }
 
     public String getReleaseYear() {
-        return release_date.substring(0, 4);
+        return !release_date.isEmpty() ? release_date.substring(0, 4) : null;
     }
 
     public String getTitle() {

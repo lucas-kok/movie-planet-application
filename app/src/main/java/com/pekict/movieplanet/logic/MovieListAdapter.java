@@ -25,26 +25,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private final LayoutInflater mInflater;
     private final MainActivity mainActivity;
 
-    static class MovieViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView mMovieImage;
-        private final TextView mMovieReleaseYearText;
-        private final TextView mMovieTitleText;
-        private final TextView mMovieGenreText;
-
-        final MovieListAdapter mAdapter;
-
-        public MovieViewHolder(View itemView, MovieListAdapter mAdapter) {
-            super(itemView);
-
-            mMovieImage = itemView.findViewById(R.id.iv_rv_movie_image);
-            mMovieReleaseYearText = itemView.findViewById(R.id.tv_rv_release_year);
-            mMovieTitleText = itemView.findViewById(R.id.tv_rv_movie_title);
-            mMovieGenreText = itemView.findViewById(R.id.tv_rv_movie_genres);
-
-            this.mAdapter = mAdapter;
-        }
-    }
-
     public MovieListAdapter(Context context, Movie[] movies, MainActivity mainActivity) {
         mInflater = LayoutInflater.from(context);
         this.movies = movies;
@@ -82,12 +62,19 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         String genres = mCurrent.getGenresAsString();
 
         // Setting the items UI elements to the Movies values
+
+        // Displaying a placeholder Image when the Movie doesn't contain a valid image Url
         if (backdropPath.equals("https://image.tmdb.org/t/p/w500null")) {
             holder.mMovieImage.setImageResource(R.drawable.placeholder);
         } else {
             Picasso.get().load(mCurrent.getSmallImageURL()).into(holder.mMovieImage);
         }
-        holder.mMovieReleaseYearText.setText(releaseYear);
+        // Removing the releaseYearText when the Movie doesn't contain a release date, otherwise displaying the year
+        if (releaseYear == null) {
+            holder.mMovieReleaseYearText.setVisibility(View.GONE);
+        } else {
+            holder.mMovieReleaseYearText.setText(releaseYear);
+        }
         holder.mMovieTitleText.setText(title);
         holder.mMovieGenreText.setText(genres);
     }
@@ -95,5 +82,24 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @Override
     public int getItemCount() {
         return movies.length;
+    }
+
+    static class MovieViewHolder extends RecyclerView.ViewHolder {
+        final MovieListAdapter mAdapter;
+        private final ImageView mMovieImage;
+        private final TextView mMovieReleaseYearText;
+        private final TextView mMovieTitleText;
+        private final TextView mMovieGenreText;
+
+        public MovieViewHolder(View itemView, MovieListAdapter mAdapter) {
+            super(itemView);
+
+            mMovieImage = itemView.findViewById(R.id.iv_rv_movie_image);
+            mMovieReleaseYearText = itemView.findViewById(R.id.tv_rv_release_year);
+            mMovieTitleText = itemView.findViewById(R.id.tv_rv_movie_title);
+            mMovieGenreText = itemView.findViewById(R.id.tv_rv_movie_genres);
+
+            this.mAdapter = mAdapter;
+        }
     }
 }
