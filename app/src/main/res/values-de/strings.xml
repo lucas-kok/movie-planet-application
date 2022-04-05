@@ -1,0 +1,104 @@
+<resources>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">MoviePlanet</string>
+    <string name="nav_header_subtitle">Die beste Film-App da draußen!</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Errors -->
+    <string name="label_tv_error_no_network">Kein Netzwerk verfügbar!</string>
+    <string name="label_tv_error_no_results">Keine Ergebnisse gefunden!</string>
+    <string name="label_tv_error_no_lists">Es wurde noch keine Liste erstellt!</string>
+    <string name="label_tv_error_name_list_empty">Geben Sie einen Namen ein!</string>
+    <string name="label_tv_error_already_in_list">Dieser Film ist bereits in dieser Liste!</string>
+
+    <!-- Good Messages -->
+    <string name="label_tv_info_movie_added_to_list">Film wurde erfolgreich hinzugefügt!</string>
+
+    <!-- Main Menu -->
+    <string name="label_menu_pages">Seiten</string>
+    <string name="label_menu_item_home">Home</string>
+    <string name="label_menu_item_search">Suche</string>
+    <string name="label_menu_item_lists">Listen</string>
+
+    <!-- Sorting Menu -->
+    <string name="sort">Sortieren</string>
+    <string name="sort_menu">Sort Menu</string>
+
+    <string name="label_sort_title_asc">Titel (A-Z)</string>
+    <string name="title_sort_title_desc">Titel (Z-A)</string>
+    <string name="label_sort_popularity_asc">Popularität (NIEDRIG)</string>
+    <string name="label_sort_popularity_desc">Popularität (HOCH)</string>
+    <string name="label_sort_rating_asc">Beurteilung (NIEDRIG)</string>
+    <string name="label_sort_rating_desc">Beurteilung (HOCH)</string>
+    <string name="label_sort_release_date_desc">Veröffentlichungsdatum (NEU)</string>
+    <string name="label_sort_release_date_asc">Veröffentlichungsdatum (ALT)</string>
+
+    <!-- Filter Menu -->
+    <string name="label_menu_filter">Filter Menu</string>
+    <string name="label_filter_genre_action">Aktion</string>
+    <string name="label_filter_genre_horror">Grusel</string>
+    <string name="label_filter_genre_comedy">Komödie</string>
+    <string name="label_filter_genre_thriller">Thriller</string>
+    <string name="label_filter_genre_scifi">Sci-fi</string>
+    <string name="label_filter_genre_drama">Theater</string>
+    <string name="label_filter_genre_romance">Romantik</string>
+    <string name="label_filter_genre_documentary">Dokumentarfilm</string>
+    <string-array name="label_filter_ratings">
+        <item>Alles</item>
+        <item>1+ Sterne</item>
+        <item>2+ Sterne</item>
+        <item>3+ Sterne</item>
+        <item>4+ Sterne</item>
+        <item>5 Sterne</item>
+    </string-array>
+    <string-array name="label_filter_languages">
+        <item>Alles</item>
+        <item>en</item>
+        <item>ja</item>
+        <item>sv</item>
+    </string-array>
+    <string name="label_btn_action_filter_movies">Filter</string>
+
+    <!-- MainActivity -->
+    <string name="label_iv_rv_movie_description">Movie Image</string>
+    <string name="label_tv_rv_movie_title">Titel: </string>
+    <string name="label_tv_rv_movie_genres">Genres: </string>
+    <string name="label_tv_rv_movie_release_year">Erschien in: </string>
+    <string name="label_btn_rv_movie_delete_description">Delete Movie Button</string>
+    <string name="label_btn_load_more">Mehr laden</string>
+    <string name="label_btn_fab_description">Floating Action Button</string>
+    <string name="label_toast_meals_found">Filme gefunden!</string>
+
+    <!-- MovieViewActivity -->
+    <string name="label_iv_mv_movie_description">Movie Image</string>
+    <string name="label_tv_mv_title">Titel: </string>
+    <string name="label_btn_mv_add_to_list">Zur Liste hinzufügen</string>
+    <string name="label_tv_mv_release_date">Veröffentlichungsdatum: </string>
+    <string name="label_tv_mv_genres">Genres: </string>
+    <string name="label_tv_mv_original_language">Taal: %1$s</string>
+    <string name="label_tv_mv_overview">Beschreibung: </string>
+    <string name="label_tv_mv_popularity">Popularität: %1$.2f</string>
+    <string name="label_tv_mv_vote_count">Stimmen: %1$d</string>
+    <string name="label_tv_mv_vote_average">Durchschnittliche Punktzahl: %1$.1f</string>
+
+    <string name="label_tv_mv_reviews">Bewertungen</string>
+    <string name="label_tv_mv_review_author">Autor: </string>
+    <string name="label_tv_mv_review_created">Gemacht auf: %1$s</string>
+    <string name="label_tv_mv_review_content">Inhalt: </string>
+    <string name="label_tv_mv_no_reviews">Keine Bewertungen vorhanden</string>
+
+    <!-- SearchActivity -->
+    <string name="label_sv_search_hint">Suchen Sie hier nach einem Film!</string>
+
+    <!-- ListsActivity -->
+    <string name="label_tv_rv_movie_list_name">Listennamen:</string>
+    <string name="label_btn_movie_list_delete_description">Liste löschen</string>
+
+    <string name="label_tv_add_list_name">Name:</string>
+    <string name="label_et_add_list_name_input">Geben Sie hier den Namen ein</string>
+    <string name="label_btn_add_list">Liste machen</string>
+
+</resources>
