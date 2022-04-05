@@ -4,6 +4,7 @@ import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pekict.movieplanet.domain.movie.Movie;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -27,15 +28,24 @@ public class Converters {
     }
 
     @TypeConverter
-    public static List<String> fromStringToStringList(String value) {
-        Type listType = new TypeToken<List<String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+    public String fromMovieList(List<Movie> movies) {
+        if (movies == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Movie>>() {}.getType();
+        String json = gson.toJson(movies, type);
+        return json;
     }
 
     @TypeConverter
-    public static String fromStringListToString(List<String> list) {
+    public List<Movie> toMovieList(String input) {
+        if (input == null) {
+            return (null);
+        }
         Gson gson = new Gson();
-        String json = gson.toJson(list);
-        return json;
+        Type type = new TypeToken<List<Movie>>() {}.getType();
+        List<Movie> countryLangList = gson.fromJson(input, type);
+        return countryLangList;
     }
 }

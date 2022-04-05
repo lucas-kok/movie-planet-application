@@ -92,15 +92,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        mNoResultsText = findViewById(R.id.tv_filter_no_results);
+        mNoResultsText = findViewById(R.id.tv_no_lists_activity);
 
         // Number of columns in RecyclerView holding Movies based on the devices orientation
         int recyclerViewColumns = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 3;
         int recyclerViewVerticalSpacing = 100;
 
-        mRecyclerView = findViewById(R.id.recyclerview_popular_movies);
+        mRecyclerView = findViewById(R.id.recyclerview_movie_lists);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, recyclerViewColumns));
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(recyclerViewVerticalSpacing));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(recyclerViewVerticalSpacing, false));
 
         mSharedPrefs = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         mSharedPrefsEditor = mSharedPrefs.edit();
@@ -191,23 +191,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.d(TAG_NAME, movies.length + " " + getResources().getString(R.string.label_toast_meals_found));
     }
 
-    // Function that returns if the user has a internet-connection
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    // Function that returns the text of the selected sorting RadioButton
-    private String getActiveRadioButtonString(View view) {
-        RadioGroup radioGroup = view.findViewById(R.id.radio_group);
-        View radioButtonView = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-        RadioButton radioButton = (RadioButton) radioGroup.getChildAt(radioGroup.indexOfChild(radioButtonView));
-
-        return radioButton.getText().toString();
-    }
-
     // Function that creates and shows a PopupView containing the menu_sort.xml (layout > menu_sort.xml)
     private void showSortPopup() {
         // Inflating the layout of the PopupWindow
@@ -267,6 +250,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    // Function to start a Activity with the given Class
+    private void startActivity(Class activity) {
+        Intent intent = new Intent(getApplicationContext(), activity);
+        startActivity(intent);
+    }
+
+    // Function that returns if the user has a internet-connection
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    // Function that returns the text of the selected sorting RadioButton
+    private String getActiveRadioButtonString(View view) {
+        RadioGroup radioGroup = view.findViewById(R.id.radio_group);
+        View radioButtonView = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+        RadioButton radioButton = (RadioButton) radioGroup.getChildAt(radioGroup.indexOfChild(radioButtonView));
+
+        return radioButton.getText().toString();
+    }
+
     // Function that activated the side-navigation Home item
     private void setNavigationItemChecked() {
         if (mNavigationView == null) return;
@@ -304,11 +310,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
+                startActivity(SearchActivity.class);
                 break;
             case R.id.action_list:
-                // Todo: Open List Activity
+                startActivity(ListsActivity.class);
                 break;
         }
 

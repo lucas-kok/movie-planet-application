@@ -13,6 +13,11 @@
     <!-- Errors -->
     <string name="label_tv_error_no_network">No Network Available!</string>
     <string name="label_tv_error_no_results">No results found!</string>
+    <string name="label_tv_error_no_lists">No List created yet!</string>
+    <string name="label_tv_error_already_in_list">This movie is already in the list!</string>
+
+    <!-- Good Messages -->
+    <string name="label_tv_info_movie_added_to_list">Movie succesfully added to list</string>
 
     <!-- Main Menu -->
     <string name="label_menu_pages">Pages</string>
@@ -66,6 +71,7 @@
     <string name="label_tv_rv_movie_title">Title: </string>
     <string name="label_tv_rv_movie_genres">Genres: </string>
     <string name="label_tv_rv_movie_release_year">Release Year: </string>
+    <string name="label_btn_rv_movie_delete_description">Delete Movie Button</string>
     <string name="label_btn_load_more">Load More</string>
     <string name="label_btn_fab_description">Floating Action Button</string>
     <string name="label_toast_meals_found">Movies found!</string>
@@ -73,6 +79,7 @@
     <!-- MovieViewActivity -->
     <string name="label_iv_mv_movie_description">Movie Image</string>
     <string name="label_tv_mv_title">Title: </string>
+    <string name="label_btn_mv_add_to_list">Add to List</string>
     <string name="label_tv_mv_release_date">Release Date: </string>
     <string name="label_tv_mv_genres">Genres: </string>
     <string name="label_tv_mv_original_language">Language: %1$s</string>
@@ -89,4 +96,13 @@
 
     <!-- SearchActivity -->
     <string name="label_sv_search_hint">Search for a movie here!</string>
+
+    <!-- ListsActivity -->
+    <string name="label_tv_rv_movie_list_name">List Name:</string>
+    <string name="label_btn_movie_list_delete_description">Delete List</string>
+
+    <string name="label_tv_add_list_name">Name:</string>
+    <string name="label_et_add_list_name_input">Enter the name here</string>
+    <string name="label_btn_add_list">Add List</string>
+
 </resources>

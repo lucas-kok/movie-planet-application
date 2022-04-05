@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
-                    android:text="@string/label_tv_error_no_results"
+                    android:text="@string/label_tv_error_no_lists"
                     android:textSize="28sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -73,20 +73,11 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_movie_lists"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
                     android:foregroundGravity="center|right|center_horizontal">
 
                 </androidx.recyclerview.widget.RecyclerView>
-
-                <Button
-                    android:id="@+id/btn_load_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="40dp"
-                    android:text="@string/label_btn_load_more"
-                    android:visibility="invisible" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -99,14 +90,22 @@
             android:layout_margin="@dimen/fab_margin"
             android:backgroundTint="@color/color_primary"
             android:backgroundTintMode="add"
-            app:borderWidth="0dp"
-            app:tint="@android:color/white"
-
             android:contentDescription="@string/label_btn_fab_description"
-            android:src="@drawable/ic_search_white"
+            android:src="@drawable/ic_add"
+
+            app:borderWidth="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@android:color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <view
+        android:id="@+id/lists_ov"
+        class="androidx.appcompat.widget.ActionMenuView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#743C3C3C"
+        android:visibility="gone" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

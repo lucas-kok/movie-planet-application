@@ -17,6 +17,10 @@
             android:theme="@style/Theme.MoviePlanet.NoActionBar"
             android:exported="false" />
         <activity
+            android:name=".presentation.ListsActivity"
+            android:theme="@style/Theme.MoviePlanet.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".presentation.MovieViewActivity"
             android:exported="true" >
             <intent-filter>

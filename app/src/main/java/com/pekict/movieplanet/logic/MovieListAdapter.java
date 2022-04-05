@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
+import com.pekict.movieplanet.domain.movie.MovieList;
 import com.pekict.movieplanet.presentation.MainActivity;
 import com.pekict.movieplanet.presentation.MovieViewActivity;
 import com.squareup.picasso.Picasso;
@@ -28,7 +30,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public MovieListAdapter(Context context, Movie[] movies, MainActivity mainActivity) {
         mInflater = LayoutInflater.from(context);
         this.movies = movies;
-
         this.mainActivity = mainActivity;
     }
 
@@ -75,6 +76,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         } else {
             holder.mMovieReleaseYearText.setText(releaseYear);
         }
+
+
         holder.mMovieTitleText.setText(title);
         holder.mMovieGenreText.setText(genres);
     }

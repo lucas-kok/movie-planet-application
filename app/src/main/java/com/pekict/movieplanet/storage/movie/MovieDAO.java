@@ -12,10 +12,10 @@ public interface MovieDAO {
     @Insert
     void savePopularMovies(Movie[] movies);
 
-    @Query("DELETE FROM popular_movie_table")
+    @Query("DELETE FROM movies_table")
     void deleteAllPopularMovies();
 
-    @Query("SELECT * FROM popular_movie_table ORDER BY " +
+    @Query("SELECT * FROM movies_table ORDER BY " +
             "CASE WHEN :order = 'title' AND :sorting = 'asc' THEN title END ASC," +
             "CASE WHEN :order = 'title' AND :sorting = 'desc'  THEN title END DESC," +
             "CASE WHEN :order = 'popularity' AND :sorting = 'asc'  THEN popularity END ASC," +

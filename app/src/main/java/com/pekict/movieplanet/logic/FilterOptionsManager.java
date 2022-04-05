@@ -50,6 +50,8 @@ public class FilterOptionsManager {
 
     // Function that returns a Query based on the given input
     public String getQueryFromRadioText(String input) {
+        // This variable will be used when sorting on rating to ensure the quality of the Movies
+        int minimumOfVotes = 50;
         String query = "";
 
         switch (input) {
@@ -66,10 +68,10 @@ public class FilterOptionsManager {
                 query = "popularity.desc";
                 break;
             case "Rating (ASC)":
-                query = "vote_average.asc";
+                query = "vote_average.asc&vote_count.gte=" + minimumOfVotes;
                 break;
             case "Rating (DESC)":
-                query = "vote_average.desc";
+                query = "vote_average.desc&vote_count.gte=" + minimumOfVotes;
                 break;
             case "Release Date (ASC)":
                 query = "release_date.asc";

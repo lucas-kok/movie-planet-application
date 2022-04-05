@@ -81,7 +81,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             }
         });
         mNoNetworkText = findViewById(R.id.tv_search_no_network);
-        mNoResultsText = findViewById(R.id.tv_filter_no_results);
+        mNoResultsText = findViewById(R.id.tv_no_lists_activity);
 
         // Number of columns in RecyclerView holding Movies based on the devices orientation
         int recyclerViewColumns = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 3;
@@ -89,7 +89,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         mRecyclerView = findViewById(R.id.recyclerview_search);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, recyclerViewColumns));
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(mRecyclerViewVerticalSpacing, false));
 
         // Observing the MovieViewModels LiveData<Movies[]> for changes, then displaying the new Movies
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
@@ -165,7 +165,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 startActivity(MainActivity.class);
                 break;
             case R.id.action_list:
-                // Todo: Open List Activity
+                startActivity(ListsActivity.class);
                 break;
         }
 

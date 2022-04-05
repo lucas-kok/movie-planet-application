@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Filter;
 
-@Entity(tableName = "popular_movie_table")
+@Entity(tableName = "movies_table")
 public class Movie implements Parcelable {
     private static final String TAG_NAME = Movie.class.getSimpleName();
 
@@ -36,7 +36,6 @@ public class Movie implements Parcelable {
 
     private final int id;
     private final String original_language;
-    private final String original_title;
     private final String overview;
     private final String release_date;
     private final String title;
@@ -46,11 +45,10 @@ public class Movie implements Parcelable {
     private final double vote_average;
     private List<Integer> genre_ids = new ArrayList<>();
 
-    public Movie(int id, String original_language, String original_title, String overview, String release_date,
+    public Movie(int id, String original_language, String overview, String release_date,
                  String title, String backdrop_path, List<Integer> genre_ids, double popularity, int vote_count, double vote_average) {
         this.id = id;
         this.original_language = original_language;
-        this.original_title = original_title;
         this.overview = overview;
         this.release_date = release_date;
         this.title = title;
@@ -64,7 +62,6 @@ public class Movie implements Parcelable {
     protected Movie(Parcel in) {
         id = in.readInt();
         original_language = in.readString();
-        original_title = in.readString();
         overview = in.readString();
         release_date = in.readString();
         title = in.readString();
@@ -87,10 +84,6 @@ public class Movie implements Parcelable {
         return original_language;
     }
 
-    public String getOriginal_title() {
-        return original_title;
-    }
-
     public String getOverview() {
         return overview;
     }
@@ -100,6 +93,7 @@ public class Movie implements Parcelable {
     }
 
     public String getReleaseYear() {
+        if (release_date == null) { return null; }
         return !release_date.isEmpty() ? release_date.substring(0, 4) : null;
     }
 
@@ -191,7 +185,6 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(original_language);
-        parcel.writeString(original_title);
         parcel.writeString(overview);
         parcel.writeString(release_date);
         parcel.writeString(title);

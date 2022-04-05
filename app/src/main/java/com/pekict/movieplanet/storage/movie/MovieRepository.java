@@ -241,7 +241,7 @@ public class MovieRepository {
                     mMovies.setValue(mergeMovieArrays(mMovies.getValue(), newMovies));
                 }
 
-                if (mMoviePage < mMoviePagesInDatabase) { return; }
+                if (mMoviePage > mMoviePagesInDatabase) { return; }
 
                 saveMoviesToDatabase();
             } else {

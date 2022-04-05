@@ -8,9 +8,13 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.pekict.movieplanet.domain.movie.Movie;
+import com.pekict.movieplanet.domain.movie.MovieList;
 import com.pekict.movieplanet.logic.Converters;
 
-@Database(entities = Movie.class, version = 8)
+@Database(entities = {
+        Movie.class,
+        MovieList.class
+}, version = 13)
 @TypeConverters(Converters.class)
 public abstract class MovieDatabase extends RoomDatabase {
     private static MovieDatabase instance;
@@ -28,4 +32,6 @@ public abstract class MovieDatabase extends RoomDatabase {
     }
 
     public abstract MovieDAO getMovieDAO();
+
+    public abstract MovieListDAO getMovieListDAO();
 }
