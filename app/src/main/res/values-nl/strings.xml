@@ -1,0 +1,104 @@
+<resources>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">MoviePlanet</string>
+    <string name="nav_header_subtitle">De beste film-app die er bestaat!</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Errors -->
+    <string name="label_tv_error_no_network">Geen netwerk beschikbaar!</string>
+    <string name="label_tv_error_no_results">Geen resultaten gevonden!</string>
+    <string name="label_tv_error_no_lists">Er is nog geen lijst aangemaakt!</string>
+    <string name="label_tv_error_name_list_empty">Vul een naam in!</string>
+    <string name="label_tv_error_already_in_list">Deze film staat al in deze lijst!</string>
+
+    <!-- Good Messages -->
+    <string name="label_tv_info_movie_added_to_list">Film is succesvol toegevoegd!</string>
+
+    <!-- Main Menu -->
+    <string name="label_menu_pages">Pagina\'s</string>
+    <string name="label_menu_item_home">Home</string>
+    <string name="label_menu_item_search">Zoeken</string>
+    <string name="label_menu_item_lists">Lijsten</string>
+
+    <!-- Sorting Menu -->
+    <string name="sort">Sorteren</string>
+    <string name="sort_menu">Sort Menu</string>
+
+    <string name="label_sort_title_asc">Titel (A-Z)</string>
+    <string name="title_sort_title_desc">Titel (Z-A)</string>
+    <string name="label_sort_popularity_asc">Populariteit (LAAG)</string>
+    <string name="label_sort_popularity_desc">Populariteit (HOOG)</string>
+    <string name="label_sort_rating_asc">Beoordeling (LAAG)</string>
+    <string name="label_sort_rating_desc">Beoordeling (HOOG)</string>
+    <string name="label_sort_release_date_desc">Verschijningsdatum (NIEUW)</string>
+    <string name="label_sort_release_date_asc">Verschijningsdatum (OUD)</string>
+
+    <!-- Filter Menu -->
+    <string name="label_menu_filter">Filter Menu</string>
+    <string name="label_filter_genre_action">Actie</string>
+    <string name="label_filter_genre_horror">Horror</string>
+    <string name="label_filter_genre_comedy">Komedie</string>
+    <string name="label_filter_genre_thriller">Thriller</string>
+    <string name="label_filter_genre_scifi">Sci-fi</string>
+    <string name="label_filter_genre_drama">Drama</string>
+    <string name="label_filter_genre_romance">Romantiek</string>
+    <string name="label_filter_genre_documentary">Documentaire</string>
+    <string-array name="label_filter_ratings">
+        <item>Alles</item>
+        <item>1+ Sterren</item>
+        <item>2+ Sterren</item>
+        <item>3+ Sterren</item>
+        <item>4+ Sterren</item>
+        <item>5 Sterren</item>
+    </string-array>
+    <string-array name="label_filter_languages">
+        <item>Alles</item>
+        <item>en</item>
+        <item>ja</item>
+        <item>sv</item>
+    </string-array>
+    <string name="label_btn_action_filter_movies">Filter</string>
+
+    <!-- MainActivity -->
+    <string name="label_iv_rv_movie_description">Movie Image</string>
+    <string name="label_tv_rv_movie_title">Titel: </string>
+    <string name="label_tv_rv_movie_genres">Genres: </string>
+    <string name="label_tv_rv_movie_release_year">Verschenen in: </string>
+    <string name="label_btn_rv_movie_delete_description">Delete Movie Button</string>
+    <string name="label_btn_load_more">Laad Meer</string>
+    <string name="label_btn_fab_description">Floating Action Button</string>
+    <string name="label_toast_meals_found">Films gevonden!</string>
+
+    <!-- MovieViewActivity -->
+    <string name="label_iv_mv_movie_description">Movie Image</string>
+    <string name="label_tv_mv_title">Titel: </string>
+    <string name="label_btn_mv_add_to_list">Voeg toe aan lijst</string>
+    <string name="label_tv_mv_release_date">Verschijningsdatum: </string>
+    <string name="label_tv_mv_genres">Genres: </string>
+    <string name="label_tv_mv_original_language">Taal: %1$s</string>
+    <string name="label_tv_mv_overview">Beschrijving: </string>
+    <string name="label_tv_mv_popularity">Populariteit: %1$.2f</string>
+    <string name="label_tv_mv_vote_count">Stemmen: %1$d</string>
+    <string name="label_tv_mv_vote_average">Gemiddelde Score: %1$.1f</string>
+
+    <string name="label_tv_mv_reviews">Reviews</string>
+    <string name="label_tv_mv_review_author">Auteur: </string>
+    <string name="label_tv_mv_review_created">Gemaakt op: %1$s</string>
+    <string name="label_tv_mv_review_content">Inhoud: </string>
+    <string name="label_tv_mv_no_reviews">Geen Reviews Beschikbaar</string>
+
+    <!-- SearchActivity -->
+    <string name="label_sv_search_hint">Zoek hier naar een film!</string>
+
+    <!-- ListsActivity -->
+    <string name="label_tv_rv_movie_list_name">Lijst Naam:</string>
+    <string name="label_btn_movie_list_delete_description">Verwijder Lijst</string>
+
+    <string name="label_tv_add_list_name">Naam:</string>
+    <string name="label_et_add_list_name_input">Voer hier de naam in</string>
+    <string name="label_btn_add_list">Maak Lijst</string>
+
+</resources>
