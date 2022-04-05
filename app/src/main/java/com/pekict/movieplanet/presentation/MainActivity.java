@@ -281,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sideMenu.findItem(R.id.action_home).setChecked(true);
         sideMenu.findItem(R.id.action_search).setChecked(false);
         sideMenu.findItem(R.id.action_list).setChecked(false);
-        sideMenu.findItem(R.id.action_share).setChecked(false);
     }
 
     // Function that creates the header containing menu_bar.xml (menu > menu_bar.xml)

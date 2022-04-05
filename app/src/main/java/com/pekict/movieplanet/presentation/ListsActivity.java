@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -218,6 +219,14 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         EditText listNameInput = popupView.findViewById(R.id.et_add_list_name_input);
         Button addListButton = popupView.findViewById(R.id.btn_add_list);
         addListButton.setOnClickListener(event -> {
+            String newListTitle = listNameInput.getText().toString();
+
+            // Showing an error Toast when the new List has no name
+            if (newListTitle.isEmpty()) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.label_tv_error_name_list_empty), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             addNewList(listNameInput.getText().toString());
             popupWindow.dismiss();
         });
@@ -241,7 +250,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         sideMenu.findItem(R.id.action_home).setChecked(false);
         sideMenu.findItem(R.id.action_search).setChecked(false);
         sideMenu.findItem(R.id.action_list).setChecked(true);
-        sideMenu.findItem(R.id.action_share).setChecked(false);
     }
 
     // Function that creates the header containing menu_bar.xml (menu > menu_bar.xml)

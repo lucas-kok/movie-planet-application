@@ -47,17 +47,4 @@ So, we are leaving the template code in. -->
             </group>
         </menu>
     </item>
-
-    <item android:title="@string/label_menu_other"
-        android:orderInCategory="100">
-        <menu>
-            <item
-                android:id="@+id/action_share"
-                android:icon="@drawable/ic_share"
-                android:orderInCategory="10"
-                android:title="@string/label_menu_item_share"
-                app:showAsAction="never" />
-        </menu>
-    </item>
-
 </menu>

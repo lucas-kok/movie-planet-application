@@ -154,7 +154,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         sideMenu.findItem(R.id.action_home).setChecked(false);
         sideMenu.findItem(R.id.action_search).setChecked(true);
         sideMenu.findItem(R.id.action_list).setChecked(false);
-        sideMenu.findItem(R.id.action_share).setChecked(false);
     }
 
     // Function to handle clicks on the side-menu (menu > menu_main.xml)

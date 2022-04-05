@@ -14,6 +14,7 @@
     <string name="label_tv_error_no_network">No Network Available!</string>
     <string name="label_tv_error_no_results">No results found!</string>
     <string name="label_tv_error_no_lists">No List created yet!</string>
+    <string name="label_tv_error_name_list_empty">Please enter a name!</string>
     <string name="label_tv_error_already_in_list">This movie is already in the list!</string>
 
     <!-- Good Messages -->
@@ -24,8 +25,6 @@
     <string name="label_menu_item_home">Home</string>
     <string name="label_menu_item_search">Search</string>
     <string name="label_menu_item_lists">Lists</string>
-    <string name="label_menu_other">Other</string>
-    <string name="label_menu_item_share">Share</string>
 
     <!-- Sorting Menu -->
     <string name="sort">Sort</string>
