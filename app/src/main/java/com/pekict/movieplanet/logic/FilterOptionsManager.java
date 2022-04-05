@@ -1,5 +1,6 @@
 package com.pekict.movieplanet.logic;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
@@ -34,12 +35,13 @@ public class FilterOptionsManager {
     private SharedPreferences mSharedPrefs;
     private SharedPreferences.Editor mSharedPrefsEditor;
     private Map<String, String> mFilterOptions;
+    private Context mContext;
 
-    public FilterOptionsManager(SharedPreferences sharedPrefs, SharedPreferences.Editor sharedPrefsEditor, MainActivity mainActivity) {
-
+    public FilterOptionsManager(SharedPreferences sharedPrefs, SharedPreferences.Editor sharedPrefsEditor, Context context) {
         mSharedPrefs = sharedPrefs;
         mSharedPrefsEditor = sharedPrefsEditor;
         mFilterOptions = new HashMap<>();
+        mContext = context;
 
         initFilterOptions();
     }
@@ -54,31 +56,22 @@ public class FilterOptionsManager {
         int minimumOfVotes = 50;
         String query = "";
 
-        switch (input) {
-            case "Title (A-Z)":
-                query = "original_title.asc";
-                break;
-            case "Title (Z-A)":
-                query = "original_title.desc";
-                break;
-            case "Popularity (ASC)":
-                query = "popularity.asc";
-                break;
-            case "Popularity (DESC)":
-                query = "popularity.desc";
-                break;
-            case "Rating (ASC)":
-                query = "vote_average.asc&vote_count.gte=" + minimumOfVotes;
-                break;
-            case "Rating (DESC)":
-                query = "vote_average.desc&vote_count.gte=" + minimumOfVotes;
-                break;
-            case "Release Date (ASC)":
-                query = "release_date.asc";
-                break;
-            case "Release Date (DESC)":
-                query = "release_date.desc";
-                break;
+        if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "original_title.asc";
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "original_title.desc";
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "popularity.asc";
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "popularity.desc";
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "vote_average.asc&vote_count.gte=" + minimumOfVotes;
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "vote_average.desc&vote_count.gte=" + minimumOfVotes;
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "release_date.asc";
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+            query = "release_date.desc";
         }
 
         return query;
