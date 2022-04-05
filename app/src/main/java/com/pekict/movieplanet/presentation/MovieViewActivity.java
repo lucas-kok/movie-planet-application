@@ -418,7 +418,7 @@ public class MovieViewActivity extends AppCompatActivity {
         }
 
         // Creating the PopupWindow
-        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
