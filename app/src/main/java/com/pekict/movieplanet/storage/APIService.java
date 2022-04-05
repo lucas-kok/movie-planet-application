@@ -4,6 +4,7 @@ import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.movie.MovieFetchResponse;
 import com.pekict.movieplanet.domain.review.ReviewFetchResponse;
 import com.pekict.movieplanet.domain.trailer.TrailerFetchResponse;
+import com.pekict.movieplanet.domain.tvshow.TVshowFetchResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,4 +25,7 @@ public interface APIService {
 
     @GET
     Call<Movie> getMovieById(@Url String url);
+
+    @GET
+    Call<TVshowFetchResponse> getTVshows(@Url String url);
 }

@@ -51,13 +51,21 @@
 
         <SearchView
             android:id="@+id/sv_search"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
             android:queryHint="@string/label_sv_search_hint"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cb_search"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/sv_search"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="TV Shows"/>
 
         <TextView
             android:id="@+id/tv_search_no_network"

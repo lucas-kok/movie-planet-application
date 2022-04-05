@@ -20,18 +20,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
+import com.pekict.movieplanet.domain.tvshow.TVshow;
 import com.pekict.movieplanet.logic.adapters.MovieListAdapter;
+import com.pekict.movieplanet.logic.adapters.TVshowListAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
+import com.pekict.movieplanet.presentation.viewmodels.TVshowViewModel;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG_NAME = SearchActivity.class.getSimpleName();
     public static final String MOVIES = "MOVIES";
+    public static final String TVSHOWS = "TVSHOWS";
+    public static final String ISSELECTED = "ISSELECTED";
 
     private DrawerLayout mDrawer;
     private NavigationView mNavigationView;
@@ -39,10 +45,13 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private SearchView mSearchBar;
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
+    private TVshowListAdapter mTVAdapter;
     private TextView mNoNetworkText;
     private TextView mNoResultsText;
+    private CheckBox mSearchCheckBox;
 
     private MovieViewModel mMovieViewModel;
+    private TVshowViewModel mTVshowViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +75,16 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Listener to search movies when user submits a Query
+        // Listener to search movies or tv shows when user submits a Query
         mSearchBar = findViewById(R.id.sv_search);
         mSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchMovies(query);
+                if (mSearchCheckBox.isChecked()) {
+                    searchTVShows(query);
+                } else {
+                    searchMovies(query);
+                }
                 return false;
             }
 
@@ -82,6 +95,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         });
         mNoNetworkText = findViewById(R.id.tv_search_no_network);
         mNoResultsText = findViewById(R.id.tv_no_lists_activity);
+        mSearchCheckBox = findViewById(R.id.cb_search);
 
         // Number of columns in RecyclerView holding Movies based on the devices orientation
         int recyclerViewColumns = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 3;
@@ -95,6 +109,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mMovieViewModel.getSearchedMovies().observe(this, this::displayMovies);
 
+        /// Observing the TVshowsViewModels LiveData<TVshows[]> for changes, then displaying the new TVshows
+        mTVshowViewModel = ViewModelProviders.of(this).get(TVshowViewModel.class);
+        mTVshowViewModel.getTVshows().observe(this, this::displayTVshows);
+
         // Hide the SearchView and show an error message when no network is available
         if(!isNetworkAvailable()) {
             mSearchBar.setVisibility(View.GONE);
@@ -103,8 +121,15 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         // Displaying the Movies from the SavedInstance when present
         if (savedInstanceState != null) {
-            displayMovies((Movie[])savedInstanceState.getParcelableArray(MOVIES));
-            Log.d(TAG_NAME, "Movies fetched with savedInstance.");
+            boolean isSelected = savedInstanceState.getBoolean(ISSELECTED);
+            if (!isSelected) {
+                displayMovies((Movie[]) savedInstanceState.getParcelableArray(MOVIES));
+                Log.d(TAG_NAME, "Movies fetched with savedInstance.");
+            } else {
+                displayTVshows((TVshow[]) savedInstanceState.getParcelableArray(TVSHOWS));
+                mSearchCheckBox.setChecked(true);
+                Log.d(TAG_NAME, "TV Shows fetched with savedInstance.");
+            }
         }
     }
 
@@ -122,6 +147,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mMovieViewModel.searchMovies(query);
     }
 
+    private void searchTVShows(String query) { mTVshowViewModel.fetchTVshows(query);}
+
     // Function that will display the given Movies in the RecyclerView
     private void displayMovies(Movie[] movies) {
         // Displaying a "No Results" TextView when there are no Movies
@@ -130,6 +157,15 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         // Displaying the Movies to the RecyclerView using the MovieListAdapter
         mAdapter = new MovieListAdapter(this, movies, MainActivity.getInstance());
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void displayTVshows(TVshow[] tvShows) {
+        // Displaying a "No Results" TextView when there are no TV Shows
+        mNoResultsText.setVisibility(tvShows.length == 0 ? View.VISIBLE : View.GONE);
+
+        // Displaying the TV Shows to the RecyclerView using the MovieListAdapter
+        mTVAdapter = new TVshowListAdapter(this, tvShows, MainActivity.getInstance());
+        mRecyclerView.setAdapter(mTVAdapter);
     }
 
     // Function that returns if the user has a internet-connection
@@ -173,10 +209,16 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
-    // Function temporary to save the current fetched Movies
+    // Function temporary to save the current fetched Movies or TV Shows
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArray(MOVIES, mMovieViewModel.getSearchedMovies().getValue());
+        boolean isSelected = mSearchCheckBox.isChecked();
+        outState.putBoolean(ISSELECTED, isSelected);
+        if (!isSelected) {
+            outState.putParcelableArray(MOVIES, mMovieViewModel.getSearchedMovies().getValue());
+        } else {
+            outState.putParcelableArray(TVSHOWS, mTVshowViewModel.getTVshows().getValue());
+        }
         super.onSaveInstanceState(outState);
     }
 }
