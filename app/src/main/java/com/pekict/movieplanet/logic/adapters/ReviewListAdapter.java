@@ -1,4 +1,4 @@
-package com.pekict.movieplanet.logic;
+package com.pekict.movieplanet.logic.adapters;
 
 import android.content.Context;
 import android.util.Log;

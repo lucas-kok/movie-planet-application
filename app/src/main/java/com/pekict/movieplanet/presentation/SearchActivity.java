@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
-import com.pekict.movieplanet.logic.MovieListAdapter;
+import com.pekict.movieplanet.logic.adapters.MovieListAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

@@ -1,16 +1,10 @@
-package com.pekict.movieplanet.logic;
+package com.pekict.movieplanet.logic.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,9 +23,6 @@ import com.pekict.movieplanet.presentation.MainActivity;
 import com.pekict.movieplanet.presentation.MovieViewActivity;
 import com.pekict.movieplanet.presentation.SpaceItemDecoration;
 import com.pekict.movieplanet.presentation.viewmodels.MovieListViewModel;
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.MovieViewHolder> {
     private static final String TAG_NAME = ListsAdapter.class.getSimpleName();
@@ -67,6 +57,18 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.MovieViewHol
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieList mCurrent = mMovieLists[position];
 
+        holder.mMovieListTitleText.setText(mCurrent.getTitle());
+        holder.mMovieListDeleteButton.setOnClickListener(view -> holder.mMovieListViewModel.deleteList(mCurrent));
+
+        // Displaying the Movies to the RecyclerView using the MovieListAdapter
+        if (!mIsFromMovieViewActivity) {
+            Context context = ListsActivity.getContext() != null ? ListsActivity.getContext() : MovieViewActivity.getContext();
+            MovieListAdapter mAdapter = new MovieListAdapter(context, mCurrent.getMoviesAsArray(), MainActivity.getInstance());
+            holder.mMoviesRecyclerView.setAdapter(mAdapter);
+
+            return;
+        }
+
         holder.mMovieListCard.setOnClickListener(event -> {
             Context context = ListsActivity.getContext() != null ? ListsActivity.getContext() : MovieViewActivity.getContext();
             if (!mCurrent.addMovie(mViewingMovie)) {
@@ -83,19 +85,9 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.MovieViewHol
 
             mPopupWindow.dismiss();
         });
-        holder.mMovieListTitleText.setText(mCurrent.getTitle());
-        if (mIsFromMovieViewActivity) {
-            holder.mMovieListDeleteButton.setVisibility(View.INVISIBLE);
-            holder.mMoviesRecyclerView.setVisibility(View.GONE);
-        }
-        holder.mMovieListDeleteButton.setOnClickListener(view -> holder.mMovieListViewModel.deleteList(mCurrent));
 
-        // Displaying the Movies to the RecyclerView using the MovieListAdapter
-        if (!mIsFromMovieViewActivity) {
-            Context context = ListsActivity.getContext() != null ? ListsActivity.getContext() : MovieViewActivity.getContext();
-            MovieListAdapter mAdapter = new MovieListAdapter(context, mCurrent.getMoviesAsArray(), MainActivity.getInstance());
-            holder.mMoviesRecyclerView.setAdapter(mAdapter);
-        }
+        holder.mMovieListDeleteButton.setVisibility(View.INVISIBLE);
+        holder.mMoviesRecyclerView.setVisibility(View.GONE);
     }
 
     @Override

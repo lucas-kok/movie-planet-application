@@ -42,10 +42,10 @@ import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 import java.util.Map;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG_NAME = MainActivity.class.getSimpleName();
+public class MovieListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG_NAME = MovieListActivity.class.getSimpleName();
     public static final String MOVIES = "MOVIES";
-    private static volatile MainActivity instance;
+    private static volatile MovieListActivity instance;
 
     private DrawerLayout mDrawer;
     private NavigationView mNavigationView;
@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView mNoResultsText;
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
-    private Button mLoadMoreButton;
 
     private MovieViewModel mMovieViewModel;
 
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return instance.getApplicationContext();
     }
 
-    public static MainActivity getInstance() {
+    public static MovieListActivity getInstance() {
         return instance;
     }
 
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mSharedPrefsEditor = mSharedPrefs.edit();
         mSavedInstanceState = savedInstanceState;
 
-        mFilterOptionsManager = new FilterOptionsManager(mSharedPrefs, mSharedPrefsEditor, this);
+        mFilterOptionsManager = new FilterOptionsManager(mSharedPrefs, mSharedPrefsEditor, MainActivity.getInstance());
         mFilterOptionsManager.initFilterOptions();
 
         // Observing the MovieViewModels LiveData<Movies[]> for changes
@@ -117,17 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             // Displaying the new Movies
             displayMovies(filterMovies(mMovieViewModel.getMovies().getValue()));
-
-            // Only showing the "Load More" Button when there is a network connection,
-            // without it will fetch all the movies stored in the SQLite Database
-            if (isNetworkAvailable()) {
-                mLoadMoreButton.setVisibility(View.VISIBLE);
-            }
         });
-
-        // Listener for the "Load More" Button to fetch an extra page of Movies
-        mLoadMoreButton = findViewById(R.id.btn_load_more);
-        mLoadMoreButton.setOnClickListener(view -> mMovieViewModel.loadMoreMovies(isNetworkAvailable(), mFilterOptionsManager.getQuery()));
 
         // Listener for the FloatingButton to start the SearchActivity
         FloatingActionButton fab = findViewById(R.id.btn_fab);
@@ -185,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNoResultsText.setVisibility(movies.length == 0 ? View.VISIBLE : View.GONE);
 
         // Displaying the Movies to the RecyclerView using the MovieListAdapter
-        mAdapter = new MovieListAdapter(this, movies, MainActivity.this);
+        mAdapter = new MovieListAdapter(this, movies, MainActivity.getInstance());
         mRecyclerView.setAdapter(mAdapter);
 
         Log.d(TAG_NAME, movies.length + " " + getResources().getString(R.string.label_toast_meals_found));
@@ -203,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
         // Showing the PopupWindow
-        popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
         mFilterOptionsManager.setSortMenuUI(popupView);
 
         // Listener for the "Sort" Button
@@ -235,8 +223,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
         // Showing the PopupWindow
-        popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
-
         // Setting the UI values to the users filter options
         mFilterOptionsManager.setFilterMenuUI(popupView);
 

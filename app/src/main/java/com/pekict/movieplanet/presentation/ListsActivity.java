@@ -32,7 +32,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.MovieList;
-import com.pekict.movieplanet.logic.ListsAdapter;
+import com.pekict.movieplanet.logic.adapters.ListsAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieListViewModel;
 
 import java.util.ArrayList;
