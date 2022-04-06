@@ -210,7 +210,7 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         View listsOverlayView = findViewById(R.id.lists_ov);
 
         // create the popup window
-        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
