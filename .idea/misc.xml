@@ -33,10 +33,14 @@
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/ic_unfavorite.xml" value="0.2265" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/ic_watched.xml" value="0.2265" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/drawable/side_nav_bar.xml" value="0.2265" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/activity_lists.xml" value="0.11197916666666667" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/activity_movie_list_view.xml" value="0.11197916666666667" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/activity_movie_view.xml" value="0.264" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/activity_search.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/app_bar_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/choose_list.xml" value="0.11197916666666667" />
+        <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/list_item.xml" value="0.2" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/menu_filter.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/movie_item.xml" value="0.264" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/layout/movie_slide_item.xml" value="0.25416666666666665" />
@@ -45,12 +49,7 @@
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/menu/menu_bar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/menu/menu_bar_detailpage.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/chevy/Desktop/PRSM/MoviePlanet/app/src/main/res/menu/menu_main.xml" value="0.6" />
-        <entry key="..\:/Users/lucas/AndroidStudioProjects/MoviePlanet/app/src/main/res/layout/activity_lists.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/lucas/AndroidStudioProjects/MoviePlanet/app/src/main/res/layout/activity_movie_list_view.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/lucas/AndroidStudioProjects/MoviePlanet/app/src/main/res/layout/list_item.xml" value="0.21302083333333333" />
         <entry key="..\:/Users/lucas/AndroidStudioProjects/MoviePlanet/app/src/main/res/layout/menu_sort.xml" value="0.35778985507246375" />
-        <entry key="..\:/Users/lucas/AndroidStudioProjects/MoviePlanet/app/src/main/res/layout/movie_item.xml" value="0.21302083333333333" />
-        <entry key="..\:/Users/lucas/AndroidStudioProjects/MoviePlanet/app/src/main/res/menu/menu_bar.xml" value="0.21822916666666667" />
       </map>
     </option>
   </component>
