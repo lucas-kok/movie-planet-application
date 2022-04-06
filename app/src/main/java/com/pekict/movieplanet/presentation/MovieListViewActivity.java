@@ -39,6 +39,7 @@ import com.pekict.movieplanet.domain.movie.MovieList;
 import com.pekict.movieplanet.logic.FilterOptionsManager;
 import com.pekict.movieplanet.logic.MovieFilter;
 import com.pekict.movieplanet.logic.adapters.MovieListAdapter;
+import com.pekict.movieplanet.logic.adapters.MovieListViewAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieListViewModel;
 import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
@@ -53,10 +54,10 @@ public class MovieListViewActivity extends AppCompatActivity {
     private TextView mMovieListTitleText;
     private TextView mNoResultsText;
     private RecyclerView mRecyclerView;
-    private MovieListAdapter mAdapter;
+    private MovieListViewAdapter mAdapter;
 
     private MovieList mMovieList;
-    private MovieListViewModel mMovieViewModel;
+    private MovieListViewModel mMovieListViewModel;
 
     private SharedPreferences mSharedPrefs;
     private SharedPreferences.Editor mSharedPrefsEditor;
@@ -103,7 +104,11 @@ public class MovieListViewActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, recyclerViewColumns));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(recyclerViewVerticalSpacing, false));
 
-        mMovieViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
+        mMovieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
+        mMovieListViewModel.getMovieList().observe(this, movieList -> {
+            mMovieList = movieList;
+            displayMovies(movieList.getMoviesAsArray());
+        });
 
         mSharedPrefs = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         mSharedPrefsEditor = mSharedPrefs.edit();
@@ -113,6 +118,10 @@ public class MovieListViewActivity extends AppCompatActivity {
         mFilterOptionsManager.initFilterOptions();
 
         loadMovies();
+    }
+
+    public void resetMovies() {
+        mMovieListViewModel.fetchMovieListById(mMovieList.getId());
     }
 
     // Function to load the Movies from the passed MovieList
@@ -132,7 +141,7 @@ public class MovieListViewActivity extends AppCompatActivity {
         mNoResultsText.setVisibility(movies.length == 0 ? View.VISIBLE : View.GONE);
 
         // Displaying the Movies to the RecyclerView using the MovieListAdapter
-        mAdapter = new MovieListAdapter(this, movies, MainActivity.getInstance());
+        mAdapter = new MovieListViewAdapter(this, mMovieList, this);
         mRecyclerView.setAdapter(mAdapter);
 
         Log.d(TAG_NAME, movies.length + " " + getResources().getString(R.string.label_toast_meals_found));

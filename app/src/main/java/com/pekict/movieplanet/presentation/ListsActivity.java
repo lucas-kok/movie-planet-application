@@ -176,33 +176,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    // Function that creates and shows a PopupView containing the menu_filter.xml (layout > menu_filter.xml)
-//    private void showFilterPopup() {
-//        // Inflating the layout of the PopupWindow
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//        View popupView = inflater.inflate(R.layout.menu_filter, null);
-//
-//        // Creating the PopupWindow
-//        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-//        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-//        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
-//
-//        // Showing the PopupWindow
-//        popupWindow.showAtLocation(mLoadMoreButton.getRootView(), Gravity.TOP, 250, 250);
-//
-//        // Setting the UI values to the users filter options
-//        mFilterOptionsManager.setFilterMenuUI(popupView);
-//
-//        popupView.findViewById(R.id.btn_action_filter_movies).setOnClickListener(view -> {
-//            // Updating the users filters and filtering + displaying fetched movies
-//            mFilterOptionsManager.updateFilterOptions(popupView);
-//            displayMovies(filterMovies(mMovieViewModel.getMovies().getValue()));
-//
-//            // Closing the PopupWindow
-//            popupWindow.dismiss();
-//        });
-//    }
-
     private void showAddListPopup() {
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -256,8 +229,12 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bar, menu);
+
         MenuItem sortButton = menu.findItem(R.id.btn_menu_sort);
+        MenuItem filterButton = menu.findItem(R.id.btn_menu_filter);
+
         sortButton.setVisible(false);
+        filterButton.setVisible(false);
 
         return true;
     }

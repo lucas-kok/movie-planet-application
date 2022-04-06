@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#B8382F"
             android:contentDescription="@string/iv_rv_movie_delete_description"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_close" />

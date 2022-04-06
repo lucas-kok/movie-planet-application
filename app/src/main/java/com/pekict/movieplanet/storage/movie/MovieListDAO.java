@@ -18,4 +18,7 @@ public interface MovieListDAO {
 
     @Query("SELECT * FROM movie_lists ORDER BY title ASC")
     MovieList[] getAllMovieLists();
+
+    @Query("SELECT * FROM movie_lists WHERE id = :id")
+    MovieList getMovieList(int id);
 }

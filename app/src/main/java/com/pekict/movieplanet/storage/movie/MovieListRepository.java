@@ -14,11 +14,13 @@ public class MovieListRepository {
     private static volatile MovieListRepository instance;
 
     private static MutableLiveData<MovieList[]> mMovieLists;
+    private static MutableLiveData<MovieList> mMovieList;
 
     private final MovieListDAO mMovieListDAO;
 
     public MovieListRepository(Application application) {
         mMovieLists = new MutableLiveData<>();
+        mMovieList = new MutableLiveData<>();
 
         mMovieListDAO = MovieDatabase.getInstance(application).getMovieListDAO();
     }
@@ -34,6 +36,10 @@ public class MovieListRepository {
     // Function that will start fetching the Movies based on if the user has internet
     public void fetchMovieLists() {
         new GetAllMovieListsAsyncTask(mMovieListDAO).execute();
+    }
+
+    public void fetchMovieListById(int id) {
+        new GetMovieListAsyncTask(mMovieListDAO, id).execute();
     }
 
     public void addNewList(MovieList newMovieList) {
@@ -55,6 +61,10 @@ public class MovieListRepository {
         return mMovieLists;
     }
 
+    public LiveData<MovieList> getMovieList() {
+        return mMovieList;
+    }
+
     // AsyncTask Class that will get all Movies from the SQLite DataBase
     private static class GetAllMovieListsAsyncTask extends AsyncTask<Void, Void, MovieList[]> {
         private final MovieListDAO mMovieListDAO;
@@ -70,6 +80,26 @@ public class MovieListRepository {
 
         protected void onPostExecute(MovieList[] result) {
             mMovieLists.setValue(result);
+        }
+    }
+
+    // AsyncTask Class that will get all Movies from the SQLite DataBase
+    private static class GetMovieListAsyncTask extends AsyncTask<Void, Void, MovieList> {
+        private final MovieListDAO mMovieListDAO;
+        private final int mId;
+
+        private GetMovieListAsyncTask(MovieListDAO movieListDAO, int id) {
+            mMovieListDAO = movieListDAO;
+            mId = id;
+        }
+
+        @Override
+        protected MovieList doInBackground(Void... voids) {
+            return mMovieListDAO.getMovieList(mId);
+        }
+
+        protected void onPostExecute(MovieList result) {
+            mMovieList.setValue(result);
         }
     }
 

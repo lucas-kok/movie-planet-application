@@ -317,6 +317,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.finish();
                 break;
             case R.id.action_list:
+                // If not clearing, the MainActivity will load in duplicate pages
+                mMovieViewModel.clearMovies();
+
                 startActivity(ListsActivity.class);
                 this.finish();
                 break;

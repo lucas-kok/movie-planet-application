@@ -16,6 +16,7 @@ public class MovieListViewModel extends AndroidViewModel {
 
     private final MovieListRepository mMovieListRepository;
     private LiveData<MovieList[]> mMovieLists;
+    private LiveData<MovieList> mMovieList;
 
 
     public MovieListViewModel(@NonNull Application application) {
@@ -23,15 +24,24 @@ public class MovieListViewModel extends AndroidViewModel {
 
         mMovieListRepository = MovieListRepository.getInstance(application);
         mMovieLists = mMovieListRepository.getMovieLists();
+        mMovieList = mMovieListRepository.getMovieList();
     }
 
     public LiveData<MovieList[]> getMovieLists() {
         return mMovieLists;
     }
 
+    public LiveData<MovieList> getMovieList() {
+        return mMovieList;
+    }
+
     // Function to fetch the meals
     public void fetchMovieLists() {
         mMovieListRepository.fetchMovieLists();
+    }
+
+    public void fetchMovieListById(int id) {
+        mMovieListRepository.fetchMovieListById(id);
     }
 
     public void addNewList(MovieList newMovieList) {
