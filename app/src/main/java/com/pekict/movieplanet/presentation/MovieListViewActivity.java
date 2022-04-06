@@ -149,6 +149,9 @@ public class MovieListViewActivity extends AppCompatActivity {
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
+        // Showing the PopupWindow
+        popupWindow.showAtLocation(mRecyclerView.getRootView(), Gravity.TOP, 250, 250);
+
         // Setting the UI values to the users filter options
         mFilterOptionsManager.setFilterMenuUI(popupView);
 
@@ -182,7 +185,7 @@ public class MovieListViewActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
-        } else if (id == R.id.btn_menu_sort) {
+        } else if (id == R.id.btn_menu_filter) {
             showFilterPopup();
             return true;
         }

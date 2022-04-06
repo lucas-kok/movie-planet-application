@@ -22,16 +22,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_no_lists_activity"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/label_tv_error_no_results"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
                 android:id="@+id/tv_mlv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,6 +30,16 @@
                 android:text="@string/label_tv_mlv_title"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_no_lists_activity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/label_tv_error_no_results"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_movie_lists"

@@ -101,4 +101,7 @@
     <string name="label_et_add_list_name_input">Geben Sie hier den Namen ein</string>
     <string name="label_btn_add_list">Liste machen</string>
 
+    <!-- MovieListViewActivity -->
+    <string name="label_tv_mlv_title">Liste name: %1$s</string>
+
 </resources>

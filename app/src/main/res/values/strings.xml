@@ -70,6 +70,7 @@
     <string name="label_tv_rv_movie_title">Title: </string>
     <string name="label_tv_rv_movie_genres">Genres: </string>
     <string name="label_tv_rv_movie_release_year">Release Year: </string>
+    <string name="iv_rv_movie_delete_description" translatable="false">Delete Movie Button</string>
     <string name="label_btn_rv_movie_delete_description">Delete Movie Button</string>
     <string name="label_btn_load_more">Load More</string>
     <string name="label_btn_fab_description">Floating Action Button</string>
