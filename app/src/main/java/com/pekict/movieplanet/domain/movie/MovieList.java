@@ -13,7 +13,7 @@ public class MovieList implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private final String title;
-    private List<Movie> movies;
+    private final List<Movie> movies;
 
     public MovieList(String title, List<Movie> movies) {
         this.title = title;
@@ -47,7 +47,7 @@ public class MovieList implements Parcelable {
     }
 
     public Movie[] getMoviesAsArray() {
-        return movies.toArray(new Movie[movies.size()]);
+        return movies.toArray(new Movie[0]);
     }
 
     public int getId() {

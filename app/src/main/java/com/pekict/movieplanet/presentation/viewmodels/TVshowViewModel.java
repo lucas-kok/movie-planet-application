@@ -12,13 +12,13 @@ import com.pekict.movieplanet.storage.tvshow.TVshowRepository;
 public class TVshowViewModel extends AndroidViewModel {
     private static final String TAG_NAME = TVshowViewModel.class.getSimpleName();
 
-    private TVshowRepository mTVshowRepository;
-    private LiveData<TVshow[]> mTVshows;
+    private final TVshowRepository mTVshowRepository;
+    private final LiveData<TVshow[]> mTVshows;
 
     public TVshowViewModel(@NonNull Application application) {
         super(application);
 
-        mTVshowRepository = TVshowRepository.getInstance(application);
+        mTVshowRepository = TVshowRepository.getInstance();
         mTVshows = mTVshowRepository.getmTVshows();
     }
 

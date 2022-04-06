@@ -6,17 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.movie.MovieList;
 import com.pekict.movieplanet.storage.movie.MovieListRepository;
-import com.pekict.movieplanet.storage.movie.MovieRepository;
 
 public class MovieListViewModel extends AndroidViewModel {
     private static final String TAG_NAME = MovieListViewModel.class.getSimpleName();
 
     private final MovieListRepository mMovieListRepository;
-    private LiveData<MovieList[]> mMovieLists;
-    private LiveData<MovieList> mMovieList;
+    private final LiveData<MovieList[]> mMovieLists;
+    private final LiveData<MovieList> mMovieList;
 
 
     public MovieListViewModel(@NonNull Application application) {

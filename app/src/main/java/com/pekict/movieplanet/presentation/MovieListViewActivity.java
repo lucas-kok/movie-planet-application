@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,42 +11,30 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.pekict.movieplanet.R;
 import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.movie.MovieList;
 import com.pekict.movieplanet.logic.FilterOptionsManager;
 import com.pekict.movieplanet.logic.MovieFilter;
-import com.pekict.movieplanet.logic.adapters.MovieListAdapter;
 import com.pekict.movieplanet.logic.adapters.MovieListViewAdapter;
 import com.pekict.movieplanet.presentation.viewmodels.MovieListViewModel;
-import com.pekict.movieplanet.presentation.viewmodels.MovieViewModel;
 
 import java.util.Map;
 import java.util.Objects;
 
 public class MovieListViewActivity extends AppCompatActivity {
     private static final String TAG_NAME = MovieListViewActivity.class.getSimpleName();
-    public static final String MOVIES = "MOVIES";
     private static volatile MovieListViewActivity instance;
 
     private TextView mMovieListTitleText;
@@ -62,7 +48,6 @@ public class MovieListViewActivity extends AppCompatActivity {
     private SharedPreferences mSharedPrefs;
     private SharedPreferences.Editor mSharedPrefsEditor;
     private FilterOptionsManager mFilterOptionsManager;
-    private Bundle mSavedInstanceState;
 
     public static Context getContext() {
         return instance.getApplicationContext();
@@ -112,7 +97,6 @@ public class MovieListViewActivity extends AppCompatActivity {
 
         mSharedPrefs = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         mSharedPrefsEditor = mSharedPrefs.edit();
-        mSavedInstanceState = savedInstanceState;
 
         mFilterOptionsManager = new FilterOptionsManager(mSharedPrefs, mSharedPrefsEditor, this);
         mFilterOptionsManager.initFilterOptions();

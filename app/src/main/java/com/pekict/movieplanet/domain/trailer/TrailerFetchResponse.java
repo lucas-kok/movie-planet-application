@@ -1,7 +1,7 @@
 package com.pekict.movieplanet.domain.trailer;
 
 public class TrailerFetchResponse {
-    private Trailer[] results;
+    private final Trailer[] results;
 
     public TrailerFetchResponse(Trailer[] results) {
         this.results = results;

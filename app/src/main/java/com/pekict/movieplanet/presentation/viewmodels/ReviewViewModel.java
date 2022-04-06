@@ -12,13 +12,13 @@ import com.pekict.movieplanet.storage.review.ReviewRepository;
 public class ReviewViewModel extends AndroidViewModel {
     private static final String TAG_NAME = ReviewViewModel.class.getSimpleName();
 
-    private ReviewRepository mReviewRepository;
-    private LiveData<Review[]> mReviews;
+    private final ReviewRepository mReviewRepository;
+    private final LiveData<Review[]> mReviews;
 
     public ReviewViewModel(@NonNull Application application) {
         super(application);
 
-        mReviewRepository = ReviewRepository.getInstance(application);
+        mReviewRepository = ReviewRepository.getInstance();
         mReviews = mReviewRepository.getReviews();
     }
 

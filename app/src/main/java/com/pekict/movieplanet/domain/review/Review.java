@@ -4,17 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Review implements Parcelable {
-    private String avatar_path;
-    private String author;
-    private String content;
-    private String created_at;
-
-    public Review(String avatar_path, String author, String content, String created_at) {
-        this.avatar_path = avatar_path;
-        this.author = author;
-        this.content = content;
-        this.created_at = created_at;
-    }
+    private final String avatar_path;
+    private final String author;
+    private final String content;
+    private final String created_at;
 
     protected Review(Parcel in) {
         avatar_path = in.readString();

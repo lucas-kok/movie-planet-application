@@ -7,9 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pekict.movieplanet.domain.movie.Movie;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Converters {
     private static final String TAG_NAME = Converters.class.getSimpleName();
@@ -23,8 +21,7 @@ public class Converters {
     @TypeConverter
     public static String fromListToIntegerString(List<Integer> list) {
         Gson gson = new Gson();
-        String json = gson.toJson(list);
-        return json;
+        return gson.toJson(list);
     }
 
     @TypeConverter
@@ -34,8 +31,7 @@ public class Converters {
         }
         Gson gson = new Gson();
         Type type = new TypeToken<List<Movie>>() {}.getType();
-        String json = gson.toJson(movies, type);
-        return json;
+        return gson.toJson(movies, type);
     }
 
     @TypeConverter
@@ -45,7 +41,6 @@ public class Converters {
         }
         Gson gson = new Gson();
         Type type = new TypeToken<List<Movie>>() {}.getType();
-        List<Movie> countryLangList = gson.fromJson(input, type);
-        return countryLangList;
+        return gson.fromJson(input, type);
     }
 }

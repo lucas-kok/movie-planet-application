@@ -16,12 +16,12 @@ public class TrailerViewModel extends AndroidViewModel {
 
     private final TrailerRepository mTrailerRepository;
 
-    private LiveData<Trailer[]> mTrailers;
+    private final LiveData<Trailer[]> mTrailers;
 
     public TrailerViewModel(@NonNull Application application) {
         super(application);
 
-        mTrailerRepository = TrailerRepository.getInstance(application);
+        mTrailerRepository = TrailerRepository.getInstance();
         mTrailers = mTrailerRepository.getTrailers();
     }
 

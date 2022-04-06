@@ -1,6 +1,5 @@
 package com.pekict.movieplanet.storage.trailer;
 
-import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,8 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.pekict.movieplanet.domain.trailer.Trailer;
 import com.pekict.movieplanet.domain.trailer.TrailerFetchResponse;
 import com.pekict.movieplanet.storage.APIService;
-import com.pekict.movieplanet.storage.movie.MovieDAO;
-import com.pekict.movieplanet.storage.movie.MovieDatabase;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,17 +21,15 @@ public class TrailerRepository {
 
     private static MutableLiveData<Trailer[]> mTrailers;
 
-    private static MovieDAO mMovieDAO;
 
-    public TrailerRepository(Application application) {
+    public TrailerRepository() {
         mTrailers = new MutableLiveData<>();
-        mMovieDAO = MovieDatabase.getInstance(application).getMovieDAO();
     }
 
     // Get instance of Singleton TrailerRepository
-    public static TrailerRepository getInstance(Application application) {
+    public static TrailerRepository getInstance() {
         if (instance == null) {
-            instance = new TrailerRepository(application);
+            instance = new TrailerRepository();
         }
         return instance;
     }
@@ -52,7 +47,7 @@ public class TrailerRepository {
 
     // AsyncTask Class that will fetch Movies from the API
     private static class FetchTrailersAPIAsyncTask extends AsyncTask<String, Void, TrailerFetchResponse> {
-        private int mMovieId;
+        private final int mMovieId;
 
         public FetchTrailersAPIAsyncTask(int movieId) {
             mMovieId = movieId;

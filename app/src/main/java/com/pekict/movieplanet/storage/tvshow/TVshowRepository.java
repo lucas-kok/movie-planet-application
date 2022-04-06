@@ -1,17 +1,14 @@
 package com.pekict.movieplanet.storage.tvshow;
 
-import android.app.Application;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.pekict.movieplanet.domain.review.ReviewFetchResponse;
 import com.pekict.movieplanet.domain.tvshow.TVshow;
 import com.pekict.movieplanet.domain.tvshow.TVshowFetchResponse;
 import com.pekict.movieplanet.storage.APIService;
-import com.pekict.movieplanet.storage.review.ReviewRepository;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,14 +21,14 @@ public class TVshowRepository {
 
     private static MutableLiveData<TVshow[]> mTVshows;
 
-    public static TVshowRepository getInstance(Application application) {
+    public static TVshowRepository getInstance() {
         if (instance == null) {
-            instance = new TVshowRepository(application);
+            instance = new TVshowRepository();
         }
         return instance;
     }
 
-    public TVshowRepository(Application application) {
+    public TVshowRepository() {
         mTVshows = new MutableLiveData<>();
     }
 
@@ -52,7 +49,7 @@ public class TVshowRepository {
 
     // AsyncTask Class that will fetch Reviews from the API
     private static class FetchTVshowsAPIAsyncTask extends AsyncTask<String, Void, TVshowFetchResponse> {
-        private String query;
+        private final String query;
 
         public FetchTVshowsAPIAsyncTask(String query) {
             this.query = query;

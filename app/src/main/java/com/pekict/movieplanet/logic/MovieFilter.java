@@ -2,14 +2,11 @@ package com.pekict.movieplanet.logic;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-
 import com.pekict.movieplanet.domain.movie.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class MovieFilter {
     private static final String TAG_NAME = MovieFilter.class.getSimpleName();

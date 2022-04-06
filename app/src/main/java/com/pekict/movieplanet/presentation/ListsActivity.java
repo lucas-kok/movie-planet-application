@@ -2,8 +2,6 @@ package com.pekict.movieplanet.presentation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -100,15 +98,11 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         mSavedInstanceState = savedInstanceState;
 
         mMovieListVieModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
-        mMovieListVieModel.getMovieLists().observe(this, movieLists -> {
-            displayMovieLists(movieLists);
-        });
+        mMovieListVieModel.getMovieLists().observe(this, this::displayMovieLists);
 
         // Listener for the FloatingButton to start the SearchActivity
         mFabButton = findViewById(R.id.btn_fab);
-        mFabButton.setOnClickListener(view -> {
-            showAddListPopup();
-        });
+        mFabButton.setOnClickListener(view -> showAddListPopup());
 
         loadLists();
     }
@@ -140,18 +134,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         mMovieListVieModel.fetchMovieLists();
     }
 
-    // Function that will start fetching Movies based on the selected RadioButtons text
-    public void fetchMovieLists() {
-        boolean hasInternet = isNetworkAvailable();
-        // Todo: Fetch MovieLists
-    }
-
-    // Function that will return the Movies matching the users filter options
-    public MovieList[] filterMovieLists(MovieList[] movieLists) {
-        // Todo: Filter MovieLists
-        return null;
-    }
-
     // Function that will display the given Movies in the RecyclerView
     public void displayMovieLists(MovieList[] movieLists) {
         if (movieLists == null) {
@@ -166,14 +148,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         mRecyclerView.setAdapter(mAdapter);
 
         Log.d(TAG_NAME, movieLists.length + " " + getResources().getString(R.string.label_toast_meals_found));
-    }
-
-    // Function that returns if the user has a internet-connection
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void showAddListPopup() {

@@ -15,8 +15,8 @@ public class MovieViewModel extends AndroidViewModel {
     private final MovieRepository mMovieRepository;
 
     private LiveData<Movie[]> mPopularMovies;
-    private LiveData<Movie[]> mSearchedMovies;
-    private LiveData<Movie> mSharedMovie;
+    private final LiveData<Movie[]> mSearchedMovies;
+    private final LiveData<Movie> mSharedMovie;
 
     private int popularMoviePages;
 

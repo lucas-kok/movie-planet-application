@@ -11,9 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.pekict.movieplanet.R;
-import com.pekict.movieplanet.presentation.MainActivity;
 
-import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +30,10 @@ public class FilterOptionsManager {
     public static final String LANGUAGE = "LANGUAGE";
     public static final String RATING = "RATING";
 
-    private SharedPreferences mSharedPrefs;
-    private SharedPreferences.Editor mSharedPrefsEditor;
-    private Map<String, String> mFilterOptions;
-    private Context mContext;
+    private final SharedPreferences mSharedPrefs;
+    private final SharedPreferences.Editor mSharedPrefsEditor;
+    private final Map<String, String> mFilterOptions;
+    private final Context mContext;
 
     public FilterOptionsManager(SharedPreferences sharedPrefs, SharedPreferences.Editor sharedPrefsEditor, Context context) {
         mSharedPrefs = sharedPrefs;

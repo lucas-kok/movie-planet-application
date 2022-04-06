@@ -2,7 +2,6 @@ package com.pekict.movieplanet.domain.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -14,11 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Filter;
 
 @Entity(tableName = "movies_table")
 public class Movie implements Parcelable {
-    private static final String TAG_NAME = Movie.class.getSimpleName();
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
@@ -72,7 +69,7 @@ public class Movie implements Parcelable {
         vote_average = in.readDouble();
     }
 
-    public int getDatabaseId(){
+    public int getDatabaseId() {
         return databaseId;
     }
 
@@ -93,7 +90,9 @@ public class Movie implements Parcelable {
     }
 
     public String getReleaseYear() {
-        if (release_date == null) { return null; }
+        if (release_date == null) {
+            return null;
+        }
         return !release_date.isEmpty() ? release_date.substring(0, 4) : null;
     }
 
@@ -111,11 +110,6 @@ public class Movie implements Parcelable {
 
     // Will return the URL of the Movies image with a width of w500
     public String getSmallImageURL() {
-        return "https://image.tmdb.org/t/p/w500" + backdrop_path;
-    }
-
-    // Will return the URL of the Movies image in its original size
-    public String getOriginalImageURL() {
         return "https://image.tmdb.org/t/p/w500" + backdrop_path;
     }
 

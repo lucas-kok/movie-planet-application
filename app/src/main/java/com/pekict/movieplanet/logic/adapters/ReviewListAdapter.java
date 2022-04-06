@@ -54,7 +54,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Re
     }
 
     @Override
-    public void onBindViewHolder(ReviewViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review mCurrent = mReviews[position];
         Log.d(TAG_NAME, String.valueOf(position));
 

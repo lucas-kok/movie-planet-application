@@ -52,6 +52,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class MovieViewActivity extends AppCompatActivity {
     private static final String TAG_NAME = MovieViewActivity.class.getSimpleName();
     private static final String VIDEOKEY = "VIDEOKEY";
@@ -131,7 +133,7 @@ public class MovieViewActivity extends AppCompatActivity {
         // Observing the ReviewViewModel LiveData<Review[]> for changes
         mReviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         // Displaying the reviews when present
-        mReviewViewModel.getReviews().observe(this, reviews -> displayReviews(reviews));
+        mReviewViewModel.getReviews().observe(this, this::displayReviews);
 
         // Observing the TrailerViewModel LiveData<Trailer[]> for changes
         mTrailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
@@ -140,7 +142,7 @@ public class MovieViewActivity extends AppCompatActivity {
             if (getBestTrailer(trailers) == null) return;
 
             // Showing the trailer button when a video is available
-            mVideoKey = getBestTrailer(trailers).getKey();
+            mVideoKey = Objects.requireNonNull(getBestTrailer(trailers)).getKey();
             showTrailerButton();
         });
 

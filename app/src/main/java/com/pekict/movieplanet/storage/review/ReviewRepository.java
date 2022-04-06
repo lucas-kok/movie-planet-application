@@ -1,6 +1,5 @@
 package com.pekict.movieplanet.storage.review;
 
-import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,14 +21,14 @@ public class ReviewRepository {
 
     private static MutableLiveData<Review[]> mReviews;
 
-    public static ReviewRepository getInstance(Application application) {
+    public static ReviewRepository getInstance() {
         if (instance == null) {
-            instance = new ReviewRepository(application);
+            instance = new ReviewRepository();
         }
         return instance;
     }
 
-    public ReviewRepository(Application application) {
+    public ReviewRepository() {
         mReviews = new MutableLiveData<>();
     }
 
@@ -49,7 +48,7 @@ public class ReviewRepository {
 
     // AsyncTask Class that will fetch Reviews from the API
     private static class FetchReviewsAPIAsyncTask extends AsyncTask<String, Void, ReviewFetchResponse> {
-        private int mMovieId;
+        private final int mMovieId;
 
         public FetchReviewsAPIAsyncTask(int movieId) {
             mMovieId = movieId;

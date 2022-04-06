@@ -173,7 +173,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mNoResultsText.setVisibility(tvShows.length == 0 ? View.VISIBLE : View.GONE);
 
         // Displaying the TV Shows to the RecyclerView using the MovieListAdapter
-        mTVAdapter = new TVshowListAdapter(this, tvShows, MainActivity.getInstance());
+        mTVAdapter = new TVshowListAdapter(this, tvShows);
         mRecyclerView.setAdapter(mTVAdapter);
     }
 

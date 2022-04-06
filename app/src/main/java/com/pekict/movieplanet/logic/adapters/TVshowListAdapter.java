@@ -1,8 +1,6 @@
 package com.pekict.movieplanet.logic.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +20,10 @@ public class TVshowListAdapter extends RecyclerView.Adapter<TVshowListAdapter.TV
 
     private final TVshow[] tvShows;
     private final LayoutInflater mInflater;
-    private final MainActivity mainActivity;
 
-    public TVshowListAdapter(Context context, TVshow[] tvShows, MainActivity mainActivity) {
+    public TVshowListAdapter(Context context, TVshow[] tvShows) {
         mInflater = LayoutInflater.from(context);
         this.tvShows = tvShows;
-        this.mainActivity = mainActivity;
     }
 
     @NonNull
