@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:buttonTint="@color/color_primary"
             android:checked="false"
-            android:text="@string/title_sort_title_desc"
+            android:text="@string/label_sort_title_desc"
             android:textColor="#000000"
             android:textColorHighlight="#4CAF50"
             android:textColorLink="#4CAF50"

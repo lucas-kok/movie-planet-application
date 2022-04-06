@@ -28,7 +28,7 @@
     <string name="sort_menu">Sort Menu</string>
 
     <string name="label_sort_title_asc">Titel (A-Z)</string>
-    <string name="title_sort_title_desc">Titel (Z-A)</string>
+    <string name="label_sort_title_desc">Titel (Z-A)</string>
     <string name="label_sort_popularity_asc">Populariteit (LAAG)</string>
     <string name="label_sort_popularity_desc">Populariteit (HOOG)</string>
     <string name="label_sort_rating_asc">Beoordeling (LAAG)</string>

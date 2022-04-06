@@ -31,7 +31,7 @@
     <string name="sort_menu">Sort Menu</string>
 
     <string name="label_sort_title_asc">Title (A-Z)</string>
-    <string name="title_sort_title_desc">Title (Z-A)</string>
+    <string name="label_sort_title_desc">Title (Z-A)</string>
     <string name="label_sort_popularity_asc">Popularity (ASC)</string>
     <string name="label_sort_popularity_desc">Popularity (DESC)</string>
     <string name="label_sort_rating_asc">Rating (ASC)</string>

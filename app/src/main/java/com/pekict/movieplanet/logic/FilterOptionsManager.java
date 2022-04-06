@@ -56,21 +56,22 @@ public class FilterOptionsManager {
         int minimumOfVotes = 50;
         String query = "";
 
+        // Can't be a switch because then the String need to be consistent
         if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
             query = "original_title.asc";
-        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_desc))) {
             query = "original_title.desc";
-        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_popularity_asc))) {
             query = "popularity.asc";
-        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_popularity_desc))) {
             query = "popularity.desc";
-        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_rating_asc))) {
             query = "vote_average.asc&vote_count.gte=" + minimumOfVotes;
-        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_rating_desc))) {
             query = "vote_average.desc&vote_count.gte=" + minimumOfVotes;
-        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_release_date_asc))) {
             query = "release_date.asc";
-        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_title_asc))) {
+        } else if (input.equals(mContext.getResources().getString(R.string.label_sort_release_date_desc))) {
             query = "release_date.desc";
         }
 

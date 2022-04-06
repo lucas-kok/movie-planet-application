@@ -28,7 +28,7 @@
     <string name="sort_menu">Sort Menu</string>
 
     <string name="label_sort_title_asc">Titel (A-Z)</string>
-    <string name="title_sort_title_desc">Titel (Z-A)</string>
+    <string name="label_sort_title_desc">Titel (Z-A)</string>
     <string name="label_sort_popularity_asc">Popularität (NIEDRIG)</string>
     <string name="label_sort_popularity_desc">Popularität (HOCH)</string>
     <string name="label_sort_rating_asc">Beurteilung (NIEDRIG)</string>
