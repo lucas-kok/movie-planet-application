@@ -190,6 +190,7 @@ public class MovieViewActivity extends AppCompatActivity {
         mNoReviewsText = findViewById(R.id.tv_mv_no_reviews);
 
         mPreferences = getSharedPreferences(getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
         mSavedInstanceState = savedInstanceState;
 
         // Loading in the meal the user clicked
@@ -470,9 +471,11 @@ public class MovieViewActivity extends AppCompatActivity {
         } else if (id == R.id.btn_unfavorite) {
             item.setIcon(isFavorite ? R.drawable.ic_unfavorite : R.drawable.ic_favorite);
             isFavorite = !isFavorite;
+            saveStarPreferences(isWatched, isFavorite);
         } else if (id == R.id.btn_watch) {
             item.setIcon(isWatched ? R.drawable.ic_notwatched : R.drawable.ic_watched);
             isWatched = !isWatched;
+            saveStarPreferences(isWatched, isFavorite);
         } else if (id == R.id.btn_share) {
             shareMovie();
         } else if (id == R.id.btn_print) {
@@ -490,6 +493,9 @@ public class MovieViewActivity extends AppCompatActivity {
         MenuItem watchedButton = menu.findItem(R.id.btn_watch);
 
         // Setting the menu_bar icons based on the user values, currently always false
+        isWatched = mPreferences.getBoolean(mMovieId + "isWatched", false);
+        isFavorite = mPreferences.getBoolean(mMovieId + "isFavorite", false);
+
         favoriteButton.setIcon(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_unfavorite);
         watchedButton.setIcon(isWatched ? R.drawable.ic_watched : R.drawable.ic_notwatched);
 
@@ -528,6 +534,14 @@ public class MovieViewActivity extends AppCompatActivity {
         mSharedPrefsEditor.putFloat(movieId, amountOfStars);
         mSharedPrefsEditor.apply();
         Log.d(TAG_NAME, "Saved amount of stars to SharedPreferences: " + amountOfStars);
+    }
+
+    // Saves booleans of isWatched and isFavorite to the SharedPreferences
+    public void saveStarPreferences(boolean isWatched, boolean isFavorite) {
+        SharedPreferences.Editor mSharedPrefsEditor = mPreferences.edit();
+        mSharedPrefsEditor.putBoolean(mMovieId + "isWatched", isWatched);
+        mSharedPrefsEditor.putBoolean(mMovieId + "isFavorite", isFavorite);
+        mSharedPrefsEditor.apply();
     }
 
     // Function that will send a print request containing a screenshot of the MovieViewActivity
