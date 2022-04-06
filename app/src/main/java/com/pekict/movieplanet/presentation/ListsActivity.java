@@ -293,7 +293,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
     // Function temporary to save the current fetched Movies
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-//        outState.putParcelableArray(MOVIELISTS, mMovieViewModel.getMovies().getValue());
         super.onSaveInstanceState(outState);
     }
 }

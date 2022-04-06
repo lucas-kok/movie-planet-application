@@ -1,6 +1,9 @@
 package com.pekict.movieplanet.logic.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import com.pekict.movieplanet.domain.movie.Movie;
 import com.pekict.movieplanet.domain.movie.MovieList;
 import com.pekict.movieplanet.presentation.ListsActivity;
 import com.pekict.movieplanet.presentation.MainActivity;
+import com.pekict.movieplanet.presentation.MovieListViewActivity;
 import com.pekict.movieplanet.presentation.MovieViewActivity;
 import com.pekict.movieplanet.presentation.SpaceItemDecoration;
 import com.pekict.movieplanet.presentation.viewmodels.MovieListViewModel;
@@ -65,6 +69,17 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.MovieViewHol
             Context context = ListsActivity.getContext() != null ? ListsActivity.getContext() : MovieViewActivity.getContext();
             MovieListAdapter mAdapter = new MovieListAdapter(context, mCurrent.getMoviesAsArray(), MainActivity.getInstance());
             holder.mMoviesRecyclerView.setAdapter(mAdapter);
+            holder.mMovieListCard.setOnClickListener(event -> {
+                // Todo: start Lists
+                Log.d(TAG_NAME, "List clicked");
+                Context listActivityContext = ListsActivity.getContext();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(ListsActivity.MOVIELISTS, mCurrent);
+
+                Intent movieListViewIntent = new Intent(listActivityContext, MovieListViewActivity.class);
+                movieListViewIntent.putExtra("bundle", bundle);
+                ListsActivity.getInstance().startActivity(movieListViewIntent);
+            });
 
             return;
         }

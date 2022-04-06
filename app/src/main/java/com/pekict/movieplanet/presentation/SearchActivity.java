@@ -123,9 +123,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         if (savedInstanceState != null) {
             boolean isSelected = savedInstanceState.getBoolean(ISSELECTED);
             if (!isSelected) {
+                // Only proceeding when
+                if (!savedInstanceState.containsKey(MOVIES)) { return; }
+
                 displayMovies((Movie[]) savedInstanceState.getParcelableArray(MOVIES));
                 Log.d(TAG_NAME, "Movies fetched with savedInstance.");
             } else {
+                if (!savedInstanceState.containsKey(TVSHOWS)) { return; }
+
                 displayTVshows((TVshow[]) savedInstanceState.getParcelableArray(TVSHOWS));
                 mSearchCheckBox.setChecked(true);
                 Log.d(TAG_NAME, "TV Shows fetched with savedInstance.");
@@ -151,6 +156,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     // Function that will display the given Movies in the RecyclerView
     private void displayMovies(Movie[] movies) {
+        if (movies == null) { return; }
+
         // Displaying a "No Results" TextView when there are no Movies
         mNoResultsText.setVisibility(movies.length == 0 ? View.VISIBLE : View.GONE);
 
@@ -160,6 +167,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     }
 
     private void displayTVshows(TVshow[] tvShows) {
+        if (tvShows == null) { return; }
+
         // Displaying a "No Results" TextView when there are no TV Shows
         mNoResultsText.setVisibility(tvShows.length == 0 ? View.VISIBLE : View.GONE);
 

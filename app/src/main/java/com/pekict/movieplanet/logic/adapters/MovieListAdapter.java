@@ -44,7 +44,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
         // Listener to open the MovieViewActivity passing the clicked Movie with it
         holder.mMovieImage.setOnClickListener(view -> {
-            // Todo: Create detail activity
             Bundle bundle = new Bundle();
             bundle.putParcelable("movieObj", mCurrent);
 

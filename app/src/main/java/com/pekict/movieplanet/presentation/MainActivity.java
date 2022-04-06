@@ -152,6 +152,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadMovies() {
         // Displaying the Movies from the SavedInstance when present
         if (mSavedInstanceState != null) {
+            Object[] arr = mSavedInstanceState.getParcelableArray(MOVIES);
+            if (arr.length == 0) { return; }
+            if (!arr[0].getClass().toString().equals(Movie.class)) { return; }
+
             displayMovies((Movie[])mSavedInstanceState.getParcelableArray(MOVIES));
             Log.d(TAG_NAME, "Movies fetched with savedInstance.");
 
@@ -310,9 +314,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.action_search:
                 startActivity(SearchActivity.class);
+                this.finish();
                 break;
             case R.id.action_list:
                 startActivity(ListsActivity.class);
+                this.finish();
                 break;
         }
 
